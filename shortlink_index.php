@@ -1488,6 +1488,8 @@ $method = "recaptchav2";
     } elseif(preg_match("#(rsshort.com)#is",$host)){
       $api = save("scraperapi");
       #$scrape = scrape_valid();
+      
+      for($c = 0;$c<=3;$c++){
       $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
       $time = time() + $seconds;
       if(md5($r["res"]) ==  "2334dc46017fbf6c6e1822a69efae72a"){
@@ -1496,6 +1498,14 @@ $method = "recaptchav2";
         goto ulang;
       }
       #die(print());
+      $link = $r["url2"][0];
+      if(!$link){
+        continue;
+      }
+      if($link){
+        break;
+      }
+      }
       $link = $r["url2"][0];
       if(!$link){
         return "refresh";
