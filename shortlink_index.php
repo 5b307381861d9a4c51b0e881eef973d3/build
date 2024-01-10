@@ -139,7 +139,9 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                     } elseif (mode == "vie_free") {
                         if (preg_match("#pre_verify#is", $r["visit"][$s])) {
                             $left = $r["left"][$s];
+                            $vv = str_replace("pre_verify", "go", $r["visit"][$s]);
                             $r = base_run($r["visit"][$s]);
+                            #die(print_r($r));
                             $cap = multi_atb($r["res"]);
 
                             if (!$cap) {
@@ -147,7 +149,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                             }
 
                             $rsp = ["antibotlinks" => $cap];
-                            $r["visit"][$s] = $r["visit"][0];
+                            $r["visit"][$s] = $vv;
                             $r["left"][$s] = $left;
                         }
 
