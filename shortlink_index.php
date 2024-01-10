@@ -1865,6 +1865,10 @@ function data_post($t, $type, $array = 0){
 
 function config(){
   $config[] = "fly";
+  $config[] = "fly1";
+  $config[] = "fly2";
+  $config[] = "fly3";
+  $config[] = "fly4";
   $config[] = "Linksfly";
   $config[] = "linksfly2";
   $config[] = "URLHives";
