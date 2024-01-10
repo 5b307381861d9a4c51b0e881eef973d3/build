@@ -39,7 +39,240 @@ function build($url=0){
       ]];
 }
 
-function visit_short($r, $site_url = 0, $data_token = 0){
+
+function visit_short($r, $site_url = 0, $data_token = 0) {
+    $file_name = "control";
+    $control = file($file_name);
+
+    if (!$control[0]) {
+        $control = ["tolol"];
+    }
+
+    $config = arr_rand(config());
+    $name = $r["name"];
+    $lefts = $r["left"];
+    $visit = $r["visit"];
+    
+    if (!$name[0] || !$lefts[0]) {
+        print p . "terjadi kesalahan tidak terdeteksi nama shortlinks";
+        sleep(2);
+        r();
+        return "refresh";
+    }
+
+    $count = count($config) + count($name);
+
+    for ($i = 0; $i < $count; $i++) {
+        for ($s = 0; $s < $count; $s++) {
+            $open = multiexplode(["_", "{", "[", "(", "-desktop", "-easy", "-mid", "-hard"], str_replace(" ", "", trimed(strtolower($name[$s]))))[0];
+
+            if (strtolower($config[$i]) == $open) {
+                for ($p = 0; $p < $count; $p++) {
+                    if (strtolower(str_replace(n, "", $control[$p])) == host.$open or strtolower(str_replace(n, "", $control[$p])) == $open or explode("/", $lefts[$s])[0] == "0") {
+                        goto up;
+                    }
+
+                    if (preg_match("#(•)#is", $lefts[$s])) {
+                        if (explode("•", $r["left"][$s])[0] == explode("•", $r["left"][$s])[1]) {
+                            goto up;
+                        }
+                    }
+                }
+
+                if (preg_replace("/[^0-9]/", "", $r["visit"][$s])) {
+                    if (mode == "af") {
+                        $r1 = base_run(host.$r["visit"][$s], http_build_query([$r["token"][1][$s] => $r["token"][2][$s]]));
+                    } elseif (mode == "icon") {
+                        $cap = icon_bits();
+
+                        if (!$cap) {
+                            return "refresh";
+                        }
+
+                        $data2 = http_build_query([
+                            "a" => "getShortlink",
+                            "data" => preg_replace("/[^0-9]/", "", $r["visit"][$s]),
+                            "token" => $r["token"],
+                            "captcha-idhf" => 0,
+                            "captcha-hf" => $cap
+                        ]);
+
+                        $r1 = base_run(host."system/ajax.php", $data2);
+
+                        if ($r1["json"]->shortlink) {
+                            $r1["url"] = $r1["json"]->shortlink;
+                        }
+                    } elseif (mode == "earnbitmoon") {
+                        $cap = captcha_bitmoon();
+
+                        if (!$cap) {
+                            return "refresh";
+                        }
+
+                        $data2 = http_build_query([
+                            "a" => "getShortlink",
+                            "data" => preg_replace("/[^0-9]/", "", $r["visit"][$s]),
+                            "token" => $r["token"],
+                            "ic-hf-id" => 1,
+                            "ic-hf-se" => $cap,
+                            "ic-hf-hp" => ""
+                        ]);
+
+                        $r1 = base_run(host."system/ajax.php", $data2);
+
+                        if ($r1["json"]->shortlink) {
+                            $r1["url"] = $r1["json"]->shortlink;
+                        }
+                    } elseif (mode == "no_icon") {
+                        $data = http_build_query([
+                            "a" => "getShortlink",
+                            "data" => preg_replace("/[^0-9]/", "", $r["visit"][$s]),
+                            "token" => $r["token"]
+                        ]);
+
+                        $res = base_run(host."system/ajax.php", $data)["json"];
+
+                        if ($res->shortlink) {
+                            $r1["url"] = $res->shortlink;
+                            goto run;
+                        }
+                    } elseif (mode == "vie_free") {
+                        if (preg_match("#pre_verify#is", $r["visit"][$s])) {
+                            $left = $r["left"][$s];
+                            $r = base_run($r["visit"][$s]);
+                            $cap = multi_atb($r["res"]);
+
+                            if (!$cap) {
+                                return "refresh";
+                            }
+
+                            $rsp = ["antibotlinks" => $cap];
+                            $r["visit"][$s] = $r["visit"][0];
+                            $r["left"][$s] = $left;
+                        }
+
+                        if ($r["token_csrf"][1][0]) {
+                            $data = data_post($r["token_csrf"], "one", $rsp);
+                        }
+
+                        if ($site_url == 1) {
+                            $r1 = base_run(str_replace("go", "cancel", $r["visit"][$s]), $data);
+
+                            if (preg_match("#".host."#is", $r1["url1"])) {
+                                preg_match_all('#location: (.*)#i', $r1["r"], $res);
+
+                                if ($res[1][1]) {
+                                    $r1["url1"] = trimed($res[1][1]);
+                                }
+                            }
+                        } else {
+                            $r1 = base_run($r["visit"][$s], $data);
+                        }
+
+                        if ($r1["url1"]) {
+                            $r1["url"] = $r1["url1"];
+                        }
+                    } elseif (mode == "only_site") {
+                        $r1 = base_run($site_url.$r["visit"][$s]);
+
+                        if ($r1["url1"]) {
+                            $r1["url"] = $r1["url1"];
+                        }
+                    } elseif (mode == "site_url") {
+                        if ($data_token) {
+                            $data_token = $data_token.$r["visit"][$s];
+                        }
+
+                        $r1 = base_run($site_url, $data_token);
+                    } elseif (mode == "path") {
+                        $r1 = base_run(host.$r["visit"][$s]);
+                    } elseif (mode == "firefaucet") {
+                        $data = $r[$name[$s]];
+                        for ($rq = 0; $rq < count($data[1]); $rq++) {
+                            if ($data[0][$rq]) {
+                                $rrq = "$rq";
+                            }
+                        }
+                        $raw = explode("&&", "&".$data[2][$rrq])[1];
+                        parse_str($raw, $out);
+
+                        for ($tq = 0; $tq < count($r["code"]); $tq++) {
+                            if ($out[$r["code"][$tq]]) {
+                                $data_post =  str_replace($out[$r["code"][$tq]], $r[$r["code"][$tq]], $raw);
+                            }
+                        }
+
+                        $r1 = base_run(host.$data[1][$rrq]."/", $data_post);
+                    } elseif (mode == "ofer") {
+                        $data = http_build_query(array_merge([
+                            "action" => "getShortlink",
+                            "data" => $r["visit"][$s],
+                        ], $data_token));
+
+                        $r1 = base_offer($site_url, $data, 1);
+                        $data = http_build_query(["action" => "redirect"]);
+
+                        if (!$r1["json"]->link) {
+                            return "refresh";
+                        }
+
+                        L(10);
+                        $r1 = base_offer($r1["json"]->link, $data, 1);
+                    } else {
+                        die(m."mode bypass not found".n);
+                    }
+
+                    if ($r1["failed"]) {
+                        if (!file_get_contents($file_name)) {
+                            file_put_contents($file_name, host.$open);
+                        } else {
+                            file_put_contents($file_name, get_e($file_name).n.host.$open);
+                        }
+
+                        print m.$r1["failed"]." ".p.$name[$s];
+                        r();
+                        return "refresh";
+                    }
+
+                    run:
+                    if (!parse_url($r1["url"])["scheme"]) {
+                        print m."Failed to generate this link ".p.$name[$s];
+                        r();
+                        return "refresh";
+                    }
+
+                    ket_line("", rtrim($name[$s]), "left", trimed($r["left"][$s]));
+                    ket("", k.$r1["url"]).line();
+
+                    for ($h = 0; $h < 5; $h++) {
+                        $r2 = bypass_shortlinks($r1["url"]);
+
+                        if (preg_match("#(http)#is", $r2)) {
+                            return $r2;
+                        }
+                    
+                        print m . "shortlinks gagal di bypass sedang mengulangi!";
+                        sleep(3);
+                        r();
+                    }
+                    
+                    if (preg_match("#(refresh|skip)#is", $r2)) {
+                        print p.$r2;
+                        r();
+                        return $r2;
+                    }
+                }
+            }
+        }
+
+        up:
+    }
+}
+
+
+
+
+function visit_shoryyyyt($r, $site_url = 0, $data_token = 0){
     $file_name = "control";
     $control = file($file_name);
     if(!$control[0]){
