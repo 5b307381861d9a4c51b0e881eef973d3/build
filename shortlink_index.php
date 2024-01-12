@@ -632,7 +632,7 @@ function bypass_shortlinks($url, $separator = 0){
       $url = "https://ser7.crazyblog.in".explode("p=",$url)[1];
       $host = parse_url($url)["host"];
     }
-    if(preg_match("#(cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me)#is",$host)){
+    if(preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me)#is",$host)){
       
       $run = build($url);
       $time = time() + $seconds;
@@ -645,8 +645,8 @@ function bypass_shortlinks($url, $separator = 0){
       }*/
       if(preg_match("#(clk.st)#is",$host)){
         $referer = $link;
-      } elseif(preg_match("#(cryptoflare.cc|myhealths.icu)#is",$host)){
-        $url = str_replace("cryptoflare.cc","linkhives.com",str_replace("myhealths.icu","urlhives.com",$url));
+      } elseif(preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu)#is",$host)){
+        $url = str_replace("luckydice.net","urlhives.com",str_replace("kalimbanote.com","linkhives.com",str_replace("cryptoflare.cc","linkhives.com",str_replace("myhealths.icu","urlhives.com",$url))));
         $run = str_replace(["clkclk./","flyinc./"],"",build($url));
         $referer = "https://mcrypto.club/";
       } else {
