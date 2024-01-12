@@ -64,8 +64,8 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
     for ($i = 0; $i < $count; $i++) {
         for ($s = 0; $s < $count; $s++) {
-            $open = multiexplode(["_", "{", "[", "(", "-desktop", "-easy", "-mid", "-hard"], str_replace(" ", "", trimed(strtolower($name[$s]))))[0];
-
+            $open = multiexplode(["_", "{", "[", "-", "(", "-desktop", "-easy", "-mid", "-hard"], str_replace(" ", "", trimed(strtolower($name[$s]))))[0];
+#die(print_r($open));
             if (strtolower($config[$i]) == $open) {
                 for ($p = 0; $p < $count; $p++) {
                     if (strtolower(str_replace(n, "", $control[$p])) == host.$open or strtolower(str_replace(n, "", $control[$p])) == $open or explode("/", $lefts[$s])[0] == "0") {
@@ -290,7 +290,7 @@ function visit_shoryyyyt($r, $site_url = 0, $data_token = 0){
     $count = count($config) + count($list);
     for($i=0;$i<$count;$i++){
       for($s=0;$s<$count;$s++){
-        $open = multiexplode(["_","{","[","(","-desktop","-easy","-mid","-hard"],str_replace(" ","",trimed(strtolower($list[$s]))))[0];
+        $open = multiexplode(["-[","_","{","[","(","-desktop","-easy","-mid","-hard"],str_replace(" ","",trimed(strtolower($list[$s]))))[0];
         if(strtolower($config[$i]) == $open){
           for($p=0;$p<$count;$p++){
             if(strtolower(str_replace(n,"",$control[$p])) == host.$open or strtolower(str_replace(n,"",$control[$p])) == $open or explode("/", $lefts[$s])[0] == "0"){
@@ -749,7 +749,7 @@ function bypass_shortlinks($url, $separator = 0){
         } elseif(preg_match("#(teralinks.in)#is",$host)){
           $referer = "https://daddy.webseriesreel.in/";
         } elseif(preg_match("#(urlpay.in)#is",$host)){
-          $referer = "https://securitywaittimes.us/";
+          $referer = "https://daddy.webseriesreel.in/";
         } elseif(preg_match("#(ez4short.xyz)#is",$host)){
           $referer = "https://healthynepal.in/";
         } else {
