@@ -645,7 +645,7 @@ function bypass_shortlinks($url, $separator = 0) {
         
         if ($t[1][2] == "f_n") {
             $method = "recaptchav2";
-            $cap = multibot($method, $r[$method], $run["links"]);
+            $cap = request_captcha($method, $r[$method], $run["links"]);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "four", $rsp);
             $r = base_short($run["links"], 0, $data, $run["links"], $cloud, join('', $cookie));
@@ -655,7 +655,7 @@ function bypass_shortlinks($url, $separator = 0) {
         
         if ($t[1][2] == "ref") {
             $method = "recaptchav2";
-            $cap = multibot($method, $r[$method], $run["links"]);
+            $cap = request_captcha($method, $r[$method], $run["links"]);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "five", $rsp);
             $r = base_short($run["links"], 0, $data, $run["links"], $cloud, join('', $cookie));
@@ -665,7 +665,7 @@ function bypass_shortlinks($url, $separator = 0) {
         
         if (explode('"', $t[1][2])[4] == "f_n") {
             $method = "recaptchav2";
-            $cap = multibot($method, $r[$method], $run["links"]);
+            $cap = request_captcha($method, $r[$method], $run["links"]);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "four2", $rsp);
             $r = base_short($run["links"], 0, $data, $run["links"], $cloud, join('', $cookie));
@@ -679,7 +679,7 @@ function bypass_shortlinks($url, $separator = 0) {
             if (!$r[$method]) {
                 $method = "invisible_recaptchav2";
             }
-            $cap = multibot($method, $r[$method], $run["links"]);
+            $cap = request_captcha($method, $r[$method], $run["links"]);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "five", $rsp);
             $r = base_short($run["links"], 0, $data, $run["links"], $cloud, join('', $cookie));
@@ -828,7 +828,7 @@ function bypass_shortlinks($url, $separator = 0) {
           }
           if ($t[2][2] == "captcha") {
             $method = "recaptchav2";
-            $cap = multibot($method, $r1[$method], $url);
+            $cap = request_captcha($method, $r1[$method], $url);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "five", $rsp);
             $r1 = base_short($url,0, $data, $url,  0, join('', $cookie));
@@ -896,7 +896,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $cookie[] = $r["cookie"];
         $t = $r["token_csrf"];
         $method = "invisible_recaptchav2";
-        $cap = multibot($method, $r[$method], $url);
+        $cap = request_captcha($method, $r[$method], $url);
         $rsp = array("g-recaptcha-response" => $cap);
         $data = data_post($t, "five", $rsp);
         $r = base_short($url,0, $data, $url,  0, join('', $cookie));
@@ -928,7 +928,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $cookie[] = $r["cookie"];
             $t = $r["token_csrf"];
             $method = "recaptchav2";
-            $cap = multibot($method, $r[$method], $url);
+            $cap = request_captcha($method, $r[$method], $url);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "null", $rsp);
             $r = base_short($url,0, $data, 0, 0, join('', $cookie));
@@ -955,7 +955,7 @@ function bypass_shortlinks($url, $separator = 0) {
         
         if ($t[1][2] == "f_n") {
             $method = "invisible_recaptchav2";
-            $cap = multibot($method, $r[$method], $run["links"]);
+            $cap = request_captcha($method, $r[$method], $run["links"]);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "four", $rsp);
             $r = base_short($run["links"], 0, $data, $run["links"], $cloud, join('', $cookie));
@@ -965,7 +965,7 @@ function bypass_shortlinks($url, $separator = 0) {
         
         if ($t[1][2] == "ref") {
             $method = "invisible_recaptchav2";
-            $cap = multibot($method, $r[$method], $run["links"]);
+            $cap = request_captcha($method, $r[$method], $run["links"]);
             $rsp = array("g-recaptcha-response" => $cap);
             $data = data_post($t, "five", $rsp);
             $r = base_short($run["links"], 0, $data, $run["links"],  0, join('', $cookie));
@@ -1035,7 +1035,7 @@ function bypass_shortlinks($url, $separator = 0) {
             return "refresh";
         }
         $r = base_short($r["url7"]);
-        $cap = multibot("recaptchav2", $sitekey,"https://kiktu.com/");
+        $cap = request_captcha("recaptchav2", $sitekey,"https://kiktu.com/");
         $data = http_build_query([
             "wgurl" => $t[2][0],
             "wgr" => $sitekey,
@@ -1078,7 +1078,7 @@ function bypass_shortlinks($url, $separator = 0) {
        
         if ($t[1][0] == "token") {
             $method = "hcaptcha";
-            $cap = multibot($method, $r[$method], $url1);
+            $cap = request_captcha($method, $r[$method], $url1);
             $rsp = array("h-recaptcha-response" => $cap);
             $data = data_post($t, "six", $rsp);
             $r = base_short($url1,0, $data, 0, 0, join('', $cookie));
@@ -1121,7 +1121,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 $cap = recaptchav3($r[$method], $url1);
             } elseif (preg_match("#(easycut.io)#is", $host)) {
                 $method = "recaptchav2";
-                $cap = multibot($method, $r[$method], $url1);
+                $cap = request_captcha($method, $r[$method], $url1);
             }
             $data = http_build_query([
                 "g-recaptcha-response" => $cap,
@@ -1237,7 +1237,7 @@ function bypass_shortlinks($url, $separator = 0) {
       $cookie[] = $r["cookie"];
       $t = $r["token_csrf"];
       $method = "recaptchav2";
-      $cap = multibot($method, $r[$method], $link);
+      $cap = request_captcha($method, $r[$method], $link);
       if (!$cap) {
         unset($cookie);
         continue;
@@ -1304,7 +1304,7 @@ function bypass_shortlinks($url, $separator = 0) {
 
 
 $method = "recaptchav2";
-      $cap = multibot($method, $r[$method], $link);
+      $cap = request_captcha($method, $r[$method], $link);
       if (!$cap) {
         unset($cookie);
         continue;
@@ -1521,7 +1521,7 @@ $method = "recaptchav2";
       parse_str(str_replace("?", "&", $link), $tk);
       
       $method = "hcaptcha";
-          $cap = multibot($method,"c328fbe1-085c-4246-a274-6a11b4ae4cd7", $referer);
+          $cap = request_captcha($method,"c328fbe1-085c-4246-a274-6a11b4ae4cd7", $referer);
       $data = http_build_query(["safe_link" => $tk["tk"], 
       $method => $cap, "abv" => false, "adfl" => false
       
@@ -1604,7 +1604,7 @@ $method = "recaptchav2";
         $r = base_short(str_replace("link4m.com", "link4m.com/go", $url));
         $cookie[] = $r["cookie"];
         $method = "recaptchav2";
-        $cap = multibot($method, $r[$method], $url);
+        $cap = request_captcha($method, $r[$method], $url);
         $data = http_build_query(
             array(
                 "g-recaptcha-response" => $cap,
@@ -1651,7 +1651,7 @@ $method = "recaptchav2";
                 
             } elseif ($t[2][2] == 1) {
                 $method = "hcaptcha";
-                $cap = multibot($method, $r[$method], $link);
+                $cap = request_captcha($method, $r[$method], $link);
                 $rsp = array(
                     "g-recaptcha-response" => $cap,
                     "h-captcha-response" => $cap
@@ -1699,7 +1699,7 @@ $method = "recaptchav2";
         }
         $cookie[] = $r["cookie"];
         $method = "recaptchav2";
-        $cap = multibot($method, $r[$method], $link);
+        $cap = request_captcha($method, $r[$method], $link);
         $rsp = array(
           "g-recaptcha-response" => $cap,
           $t[1][0] => $t[2][0]
