@@ -673,8 +673,8 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         $default[CURLOPT_HEADER] = 1;
         $default[CURLOPT_SSL_VERIFYPEER] = 0;
         $default[CURLOPT_SSL_VERIFYHOST] = 0;
-        $default[CURLOPT_CONNECTTIMEOUT] = 40;
-        $default[CURLOPT_TIMEOUT] = 20;
+        $default[CURLOPT_CONNECTTIMEOUT] = 15;
+        $default[CURLOPT_TIMEOUT] = 30;
         if ($header) {
             $default[CURLOPT_HTTPHEADER] = $header;
         }
@@ -923,6 +923,90 @@ function multibot($method, $sitekey, $pageurl, $rr = 0) {
     print p;
     $host = "api.multibot.in";
     $name_api = "apikey_multibot";
+    $apikey = save($name_api);
+    $recaptchav2 = http_build_query([
+        "key" => $apikey,
+        "method" => "userrecaptcha",
+        "googlekey" => $sitekey,
+        "pageurl" => $pageurl
+    ]);
+    $hcaptcha = http_build_query([
+        "key" => $apikey,
+        "method" => "hcaptcha",
+        "sitekey" => $sitekey,
+        "pageurl" => $pageurl
+    ]);
+    $type = [
+        "recaptchav2" => $recaptchav2,
+        "hcaptcha" => $hcaptcha
+    ];
+    $ua = [
+        "host: " . $host,
+        "content-type: application/json/x-www-form-urlencoded"
+    ];
+    $s = 0;
+    while (true) {
+        $s++;
+        $r = curl("http://" . $host . "/in.php?" . $type[$method], $ua)[1];
+        if ($r == "ERROR_USER_BALANCE_ZERO") {
+            unlink($name_api);
+            goto refresh;
+        } elseif ($r == "ERROR_WRONG_USER_KEY") {
+            if ($s == 3) {
+                unlink($name_api);
+                goto refresh;
+            }
+        }
+        $id = explode('|', $r)[1];
+        if (!$id) {
+            if ($s == 3) {
+                return "";
+            }
+            print "Get ID Captcha";
+            r();
+            continue;
+        }
+        sleep(5);
+        $x = 0;
+        while (true) {
+            $x++;
+            if ($x == 40) {
+                return "";
+            }
+            $r1 = curl("http://" . $host . "/res.php?" . http_build_query([
+                    "key" => $apikey,
+                    "action" => "get",
+                    "id" => $id
+                ]), $ua)[1];
+            if ($r1 == "CAPCHA_NOT_READY") {
+                print str_replace("_", " ", $r1);
+                sleep(5);
+                r();
+                continue;
+            } elseif (strlen($r1) >= 50) {
+                return explode('|', $r1)[1];
+            } else {
+                print str_replace("_", " ", $r1);
+                r();
+                goto refresh;
+            }
+        }
+    }
+}
+function xevil($method, $sitekey, $pageurl, $rr = 0) {
+    if ($method == 'invisible_recaptchav2') {
+        $method = 'recaptchav2';
+    }
+    if (!$sitekey) {
+        print m . "sitekey not found";
+        sleep(2);
+        r();
+        return "";
+    }
+    refresh:
+    print p;
+    $host = "sctg.xyz";
+    $name_api = "apikey_xevil";
     $apikey = save($name_api);
     $recaptchav2 = http_build_query([
         "key" => $apikey,
