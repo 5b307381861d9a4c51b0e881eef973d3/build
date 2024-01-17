@@ -586,7 +586,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $run = build($url);#die(print_r($run));
         $r = base_short($run["links"], 0, 0, $referer, $cloud);
         $cookie[] = $r["cookie"];
-        $t = $r["token_csrf"];die(print_r($r));
+        $t = $r["token_csrf"];
         
         if (preg_match("#(verify/[?]/)#is", $r["url"])) {
             $verify = str_replace("http:", "https:", $r["url"]);
