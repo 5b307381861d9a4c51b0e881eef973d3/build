@@ -531,7 +531,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://healthmedic.xyz/";
         } elseif (preg_match("#(link.revly.click)#is", $host)) {
             $referer = "https://coinsrev.com/";
-        } elseif (preg_match("#(go.tinygo.co||m.tinygo.co|s3.addurl.biz|hbz.us)#is", $host)) {
+        } elseif (preg_match("#(go.tinygo.co|m.tinygo.co|s3.addurl.biz|hbz.us)#is", $host)) {
             $referer = "https://wpcheap.net/";
         } elseif (preg_match("#(go.wez.info|m.wez.info|s2.addurl.biz)#is", $host)) {
             $referer = "https://aduzz.com/";
@@ -587,11 +587,11 @@ function bypass_shortlinks($url, $separator = 0) {
             $proxy = 0;
         }
         $url = str_replace("go.cutlink.xyz", "cutlink.xyz", str_replace("go.paylinks.cloud", "paylinks.cloud", str_replace("go.shortsme.in", "shortsme.in", str_replace("short.paylinks.cloud", "paylinks.cloud", str_replace("clik.pw", "pwrpa.cc/go", str_replace("teralinks.in", "go.teralinks.in", str_replace("short2money.com", "forextrader.site/NewLink", str_replace("lollty.com", "forextrader.site/SkipLink", str_replace("adbitfly.com/short", "adbitfly.com", str_replace("m.pkr.pw", "jameeltips.us/blog", str_replace("go.foxylinks.site", "link.foxylinks.site", str_replace("go.bitss.sbs", "bitss.sbs", str_replace("go.shtfly.com", "shtfly.com", str_replace(["go.eazyurl.xyz", "link.eazyurl.xyz"],"eazyurl.xyz", str_replace(["go.faho.us", "141989.xyz"], "faho.us", str_replace(["go.urlcut.pro", "131989.xyz"], "urlcut.pro", str_replace(["go.revcut.net", "l2.revcut.net", "go.revcut.net", "121989.xyz"], "revcut.net", str_replace("kyshort.xyz/go", "kyshort.xyz", str_replace(["go.viewfr.com", "m.viewfr.com", "s1.addurl.biz"], "thanks.viewfr.com", str_replace(["go.wez.info", "m.wez.info",  "s2.addurl.biz"] ,"thanks.wez.info", str_replace(["go.tinygo.co", "m.tinygo.co", "s3.addurl.biz", "hbz.us"],"thanks.tinygo.co", str_replace("links.earnify.pro", "earnify.pro", str_replace("link.revly.click", "en.revly.click", str_replace("link.short2url.in", "techyuth.xyz/blog", str_replace("short.dash-free.com", "dash-free.com", str_replace("link.vielink.top", "short.vielink.top", str_replace("usalink.io", "link.theconomy.me", str_replace("url.beycoin.xyz/short", "url.beycoin.xyz", str_replace("link.adlink.click", "blog.adlink.click", str_replace("linksfly.link", "go.linksfly.link", str_replace(["go.shorti.io", "shorti.io"],"blog.financeandinsurance.xyz", str_replace("link.shrinkme.link", "blog.shrinkme.link", str_replace("go.hatelink.me", "q.hatelink.me", str_replace("linksly.co", "go.linksly.co", str_replace("link.usalink.io", "link.theconomy.me", str_replace("go.megafly.in", "get.megafly.in", str_replace("go.megaurl.in", "get.megaurl.in", str_replace("go.mtraffics.com", "get.mtraffics.com", str_replace(["go.illink.net", "link.illink.net"], "illink.net", str_replace(["go.owllink.net", "link.owllink.net"] ,"owllink.net", str_replace(["go.birdurls.com", "link.birdurls.com"], "birdurls.com", str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace(["shrinkme.org", "shrinkme.info"],"en.shrinke.me", str_replace("shrinke.us", "en.shrinke.me", $url))))))))))))))))))))))))))))))))))))))))))));
-        $run = build($url);#die(print_r($run));
+        $run = build($url);#die(print_r($referer));
         $r = base_short($run["links"], 0, 0, $referer, $cloud);
         $cookie[] = $r["cookie"];
         $t = $r["token_csrf"];;
-        
+        #die(print_r($r));
         if (preg_match("#(verify/[?]/)#is", $r["url"])) {
             $verify = str_replace("http:", "https:", $r["url"]);
             $r = base_short($verify, 0, 0, $verify);
@@ -600,7 +600,7 @@ function bypass_shortlinks($url, $separator = 0) {
         }
         
         if (explode('"', $t[2][3])[0] == "2") {
-            $data = data_post($t, "five");#die(urldecode($data));
+            $data = data_post($t, "five");
             $r = base_short($run["links"], 0, $data, $run["links"], $cloud, join('', $cookie));
             $cookie[] = $r["cookie"];
             $t = $r["token_csrf"];
