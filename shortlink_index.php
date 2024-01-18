@@ -209,8 +209,11 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                             return "refresh";
                         }
 
-                        L(10);
+                      //  L(15);
                         $r1 = base_offer($r1["json"]->link, $data, 1);
+                        if ($r1["json"]->link) {
+                            $r1["url"] = $r1["json"]->link;
+                        }
                     } else {
                         die(m."mode bypass not found".n);
                     }
@@ -236,8 +239,14 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
                     ket_line("", rtrim($name[$s]), "left", trimed($r["left"][$s]));
                     ket("", k.$r1["url"]).line();
+                    
+                    if (preg_match("#rsshort.com#is", $r1["url"])) {
+                        $xxnx = 7;
+                    } else {
+                        $xxnx = 5;
+                    }
 
-                    for ($h = 0; $h < 5; $h++) {
+                    for ($h = 0; $h < $xxnx; $h++) {
                         $r2 = bypass_shortlinks($r1["url"]);
 
                         if (preg_match("#(http)#is", $r2)) {
@@ -1950,7 +1959,7 @@ function config() {
     $config[] = "vielink";
     $config[] = "oii";
     $config[] = "oii.io";
-   // $config[] = "fc";
+    $config[] = "fc";
     $config[] = "fclc";
     $config[] = "fc-lc";
     $config[] = "fc.lc";
