@@ -664,7 +664,7 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
             sleep(2);
             r();
         }
-        $default[CURLOPT_URL] = $url;
+        $default[CURLOPT_URL] = trimed($url);
         if ($followlocation) {
             $default[CURLOPT_FOLLOWLOCATION] = $followlocation;
         }
