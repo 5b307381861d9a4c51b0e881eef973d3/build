@@ -56,9 +56,9 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
     for ($i = 0; $i < $count; $i++) {
         for ($s = 0; $s < $count; $s++) {
-            $open = multiexplode(["_", "{", "[", "(", "-desktop", "-easy", "-mid", "-hard"], str_replace("- [", "[", str_replace(" ", "", trimed(strtolower($name[$s])))))[0];
+            $open = multiexplode(["_", "{", "[", "(", "-desktop", "-easy", "-mid", "-hard"], str_replace("-[", "[", trimed(strtolower($name[$s]))))[0];
             #die(print_r($open));
-            
+            #print $open.n;
             if (strtolower($config[$i]) == $open) {
                 for ($p = 0; $p < $count; $p++) {
                     
