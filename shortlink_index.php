@@ -215,7 +215,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                             return "refresh";
                         }
 
-                       print_r($r1);
+                       #print_r($r1);
                         $r1 = base_offer($r1["json"]->link, $data, 1);
                         if ($r1["json"]->link) {
                             $r1["url"] = $r1["json"]->link;
@@ -1386,16 +1386,16 @@ $method = "recaptchav2";
             }
             $link = $r["url2"][0];
             
-            if (strpos($link, "http") === false) {
+            if (!$link) {
                 continue;
             }
             
-            if (strpos($link, "http") !== false) {
+            if ($link) {
                 break;
             }
         }
         $link = $r["url2"][0];
-        if (strpos($link, "http") === false) {
+        if (!$link) {
             return "refresh";
         }
         $cookie[] = $r["cookie"];
@@ -1403,7 +1403,7 @@ $method = "recaptchav2";
             unset($coordinate);
             $r = base_short($link, 0, 0, $link,  0, join('', $cookie));#print_r($r);
             
-            if (strpos($r["url"], "http") !== false) {
+            if ($r["url"]) {
               
                 if ($r["status"] == 307) {
                     return "refresh";
@@ -1418,7 +1418,7 @@ $method = "recaptchav2";
                 return $r["url"];
             }
             $link1 = $r["url1"][0];
-            if (strpos($link1, "http") === false) {
+            if (!$link1) {
                 return "refresh";
             }
             $cookie[] = $r["cookie"];
@@ -1486,7 +1486,7 @@ $method = "recaptchav2";
             }
             $r = base_short($link,0, $data_post, $rs,  0, join('', $cookie));
             $url = $r["url"];
-            if (strpos($url, "http") === false) {
+            if (!$url) {
                 continue;
             }
             $cookie[] = $r["cookie"];
