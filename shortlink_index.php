@@ -246,7 +246,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                     ket_line("", rtrim($name[$s]), "left", trimed($r["left"][$s]));
                     ket("", k.$r1["url"]).line();
                     
-                    if (preg_match("#rsshort.com#is", $r1["url"])) {
+                    if (preg_match("#_rsshort.com#is", $r1["url"])) {
                         $xxnx = 7;
                     } else {
                         $xxnx = 5;
