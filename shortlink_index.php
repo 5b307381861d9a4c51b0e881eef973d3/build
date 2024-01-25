@@ -151,7 +151,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                             $data = data_post($r["token_csrf"], "one", $rsp);
                         }
 
-                        if ($site_url == 1 || preg_match("#free-ltc-info#is", $r["visit"][$s])) {
+                        if ($site_url == 1 || preg_match("#(free-ltc-info|feyorra.site)#is", $r["visit"][$s])) {
                             $r1 = base_run(str_replace("go", "cancel", $r["visit"][$s]), $data);
 #die(print_r($r1)["r"]);
 #preg_match_all('#location: (.*)#i', $r1["r"], $res);die(print_r($res));
@@ -244,7 +244,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                         return "refresh";
                     }
 
-                    ket_line("", rtrim($name[$s]), "left", trimed($r["left"][$s]));
+                    ket_line("", ltrim(rtrim($name[$s])), "left", trimed($r["left"][$s]));
                     ket("", k.$r1["url"]).line();
                     
                     if (preg_match("#rsshort.com#is", $r1["url"])) {
@@ -1965,6 +1965,7 @@ function config() {
     $config[] = "LFly";
     $config[] = "Chaininfo";
     $config[] = "chainfo";
+    $config[] = "chainfo.xyz";
     $config[] = "Clkst";
     $config[] = "Clk.st";
     $config[] = "Insfly";
@@ -2092,6 +2093,7 @@ function config() {
     $config[] = "TinyGo";
     $config[] = "Tiny.go";
     $config[] = "Tiny.co";
+    $config[] = "tinygo.co";
     $config[] = "wez-info";
     $config[] = "wez.info";
     $config[] = "wez";
