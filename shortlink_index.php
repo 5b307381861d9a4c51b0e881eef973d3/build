@@ -1529,7 +1529,7 @@ $method = "recaptchav2";
         }
     } elseif (preg_match("#(clks.pro)#is", $host)) {
         $run = build($url);
-        if (file_get_contents("key_bbbhpe")) {
+        if (file_get_contents("key_scrape")) {
             $scrape = scrape_valid();
         }
         $time = time() + $seconds;
