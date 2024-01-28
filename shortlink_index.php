@@ -62,7 +62,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
             if (strtolower($config[$i]) == $open) {
                 for ($p = 0; $p < $count; $p++) {
                     
-                    if (strtolower(str_replace(n, "", $control[$p])) == host.$open or strtolower(str_replace(n, "", $control[$p])) == $open or explode("/", $lefts[$s])[0] == "0") {
+                    if (strtolower(str_replace(n, "", $control[$p])) == host.$open or strtolower(str_replace(n, "", $control[$p])) == $open or explode("/", $lefts[$s])[0] == "0" or $lefts[$s] == "0") {
                         goto up;
                     }
 
@@ -153,7 +153,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
                         if ($site_url == 1 || preg_match("#(free-ltc-info|feyorra.site)#is", $r["visit"][$s])) {
                             $r1 = base_run(str_replace("go", "cancel", $r["visit"][$s]), $data);
-#die(print_r($r1)["r"]);
+#die(print_r($r1));
 #preg_match_all('#location: (.*)#i', $r1["r"], $res);die(print_r($res));
                             if (preg_match("#".host."#is", $r1["url1"])) {
                                 preg_match_all('#location: (.*)#i', $r1["r"], $res);
@@ -567,7 +567,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } elseif (preg_match("#(short2money.com)#is", $host)) {
             $referer = "https://lollty.pro/";
         } elseif (preg_match("#(10short.com)#is", $host)) {
-            $referer = "https://10short.vip/";
+            $referer = "https://mobprice.shop/";
         } elseif (preg_match("#(sox.link)#is", $host)) {
             $referer = "https://coincroco.com/";
         } elseif (preg_match("#(teralinks.in)#is", $host)) {
@@ -1687,7 +1687,7 @@ $method = "recaptchav2";
             L(15);
             return $r2->url;
         }
-    } elseif (preg_match("#(adbx.pro|adbits.xyz|v2p.icu)#is", $host)) {
+    } elseif (preg_match("#(adbx.pro|adbits.xyz|adbits.pro|v2p.icu)#is", $host)) {
         $r = base_short($url);
         $link = $r["url"];
         
@@ -2159,6 +2159,7 @@ function config() {
     $config[] = "v2p";
     $config[] = "v2p.icu";
     $config[] = "adbits";
+    $config[] = "adbits.pro";
     $config[] = "adbits.xyz";
     $config[] = "Urlcash";
     $config[] = "Urlcash.site";
