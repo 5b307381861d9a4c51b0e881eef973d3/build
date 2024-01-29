@@ -554,7 +554,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://panytourism.online/";
         } elseif (preg_match("#(droplink.co)#is", $host)) {
             $referer = "https://yoshare.net/";
-        } elseif (preg_match("#(go.bitss.sbs|546512.xyz|go.shtfly.com|go.revcut.net.co|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|nx.chainfo.xyz|bitcosite.com)#is", $host)) {
+        } elseif (preg_match("#(go.bitss.sbs|546512.xyz|go.shtfly.com|go.revcut.net.co|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com)#is", $host)) {
             $referer = ["https", "wss"][rand(0, 1)]."://away.vk.com/";
         } elseif (preg_match("#(linkjust.com)#is", $host)) {
             $referer = "https://forexrw7.com/";
@@ -582,6 +582,8 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://zegtrends.com/";
         } elseif (preg_match("#(freeltc.top)#is", $host)) {
             $referer = "https://linx.cc/";
+        } elseif (preg_match("#(nx.chainfo.xyz)#is", $host)) {
+            $referer = "https://bitzite.com/";
         } else {
             $referer = 0;
         }
@@ -1731,7 +1733,7 @@ $method = "recaptchav2";
                 $cookie[] = $r["cookie"];
                 
             } else {
-                L(26);
+                L(29);
                 $data = data_post($t, "one");
                 $r = base_short($link, 0, $data, $link, 0, join('', $cookie));
                 $cookie[] = $r["cookie"];
