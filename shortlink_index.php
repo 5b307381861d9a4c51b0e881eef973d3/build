@@ -2107,6 +2107,7 @@ function config() {
     $config[] = "Oscut";
     $config[] = "KyShort";
     $config[] = "RevCut";
+    $config[] = "RevCut.net";
     $config[] = "revly.click";
     $config[] = "URLCut";
     $config[] = "EazyUrl";
