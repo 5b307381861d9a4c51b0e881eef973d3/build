@@ -335,7 +335,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     preg_match_all("#(url='|location.href ='|<a href='|var api =".n."  ')(.*?)(')#is", $r[1], $url2);
     preg_match_all("#window.open(.*?)'(.*?)'#is", $r[1], $url3);
     preg_match('#share(.*?)url=(.*?)"#is', $r[1], $url4);
-    #preg_match('#skip_button" href="(.*?)"#is', $r[1], $url5);
+    preg_match('#pingback" href="(.*?)"#is', $r[1], $url9);
     preg_match('#</noscript><title>(.*?)<#is', $r[1], $url5);
     preg_match('#url=(.*?)"#is', $r[1], $url6);
     preg_match('#var url="(.*?)"#is', $r[1], $url7);
@@ -370,6 +370,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
         "url6" => $url6[1],
         "url7" => $url7[1],
         "url8" => $url8[1],
+        "url9" => $url9[1],
         "code_data_ajax" => $code_data_ajax[2],
         "sessionId" => $sessionId[2],
         "json_ajax" => json_decode($json_ajax[2])
@@ -1135,7 +1136,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|_easycut.io)#is", $host)) {
         while(true) {
           
             if (preg_match("#(ctr.sh)#is", $host)) {
@@ -1165,10 +1166,13 @@ function bypass_shortlinks($url, $separator = 0) {
                 "g-recaptcha-response" => $cap,
                 "validator" => "true"
             ]);
-            $r = base_short($url1,  1, $data, $url1,  0, join('', $cookie));
+            $r = base_short($url1,  1, $data, $url1,  0, join('', $cookie));#die(print_r($r));
             $cookie[] = $r["cookie"];
             $url2 = $r["url"];
             
+            if (!parse_url($url2)["scheme"]) {
+                $url2 = $r["url9"];
+            }
             if (!parse_url($url2)["scheme"]) {
                 unset($cookie);
                 continue;
@@ -2070,9 +2074,9 @@ function config() {
     $config[] = "ctr.sh";
     $config[] = "ouo";
     $config[] = "revly";
-    $config[] = "easycut";
+    /*$config[] = "easycut";
     $config[] = "easycut.io";
-    $config[] = "easycut-io";
+    $config[] = "easycut-io";*/
     $config[] = "TeraFlyOwoo";
     $config[] = "TeraFlyOgoo";
     $config[] = "TeraFlyOmoo";
