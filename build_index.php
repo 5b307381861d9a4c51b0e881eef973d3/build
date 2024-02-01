@@ -1,5 +1,39 @@
 <?php
-  
+
+function new_save($name, $delete = false){
+    $file = "data.json";
+    $host = explode("/", $name)[2] ? explode("/", $name)[2] : ($name ? $name : "");
+    
+    if (!file_get_contents($file)) {
+        file_put_contents($file,"[]");
+    }    
+    $decode = json_decode(file_get_contents($file), true);
+    
+    if ($decode[$host] == null) {
+        $data[$host] = tx("input_".$host);
+    } else {
+        $data[$host] = $decode[$host];
+    }
+    $array = array_merge($decode, $data);
+    
+    if (!$array[$host]) {
+        unset($array[$host]);
+    }
+    
+    if ($delete) {
+        unset($array[$host]);
+    }
+    
+    if (preg_match("#(Mozilla)#is", http_build_query($array))) {
+        $array_up["user-agent"] = $data["user-agent"];
+        $array = array_merge($array_up, $array);
+    }
+    file_put_contents($file, json_encode($array, JSON_PRETTY_PRINT));
+    return json_decode(file_get_contents($file), true);
+
+}
+
+
 function captcha_bitmoon() {
     $eol = "\n";
     $boundary = "------WebKitFormBoundary";
