@@ -23,6 +23,10 @@ function new_save($name, $delete = false){
     if ($delete) {
         unset($array[$host]);
     }
+    if (preg_match("#(email)#is", http_build_query($array))) {
+        $array_up["email"] = $data["email"];
+        $array = array_merge($array_up, $array);
+    }
     
     if (preg_match("#(Mozilla)#is", http_build_query($array))) {
         $array_up["user-agent"] = $data["user-agent"];
