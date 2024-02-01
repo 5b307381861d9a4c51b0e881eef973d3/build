@@ -10,7 +10,7 @@ function new_save($name, $delete = false){
     $decode = json_decode(file_get_contents($file), true);
     
     if ($decode[$host] == null) {
-        $data[$host] = tx("input_".$host);
+        $data[$host] = tx($host);
     } else {
         $data[$host] = $decode[$host];
     }
