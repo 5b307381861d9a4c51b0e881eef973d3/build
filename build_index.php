@@ -20,8 +20,10 @@ function new_save($name, $delete = false){
         unset($array[$host]);
     }
     
-    if ($delete) {
-        unset($array[$host]);
+    if ($array[$host]) {
+        if ($delete) {
+            unset($array[$host]);
+        }
     }
     if (preg_match("#(email)#is", http_build_query($array))) {
         $array_up["email"] = $data["email"];
