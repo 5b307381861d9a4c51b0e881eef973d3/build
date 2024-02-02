@@ -20,7 +20,7 @@ function new_save($name, $delete = false){
         unset($array[$host]);
     }
     
-    if ($array[$host]) {
+    if (strpos(http_build_query($array), $host) !== false) {
         if ($delete) {
             unset($array[$host]);
         }
