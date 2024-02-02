@@ -570,7 +570,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } elseif (preg_match("#(short2money.com)#is", $host)) {
             $referer = "https://lollty.pro/";
         } elseif (preg_match("#(10short.com)#is", $host)) {
-            $referer = "https://mobprice.shop/";
+            $referer = "https://forextrade.10short.pro/";
         } elseif (preg_match("#(sox.link)#is", $host)) {
             $referer = "https://coincroco.com/";
         } elseif (preg_match("#(teralinks.in)#is", $host)) {
