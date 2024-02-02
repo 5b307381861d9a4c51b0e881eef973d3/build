@@ -17,11 +17,6 @@ function new_save($name, $delete = false){
     }
     $array = array_merge($decode, $data);
     
-    if (!$array[$host]) {
-        unset($array[$host]);
-        $remove = 1;
-    }
-    
     if (strpos(http_build_query($array), $host) !== false) {
         if ($delete) {
             unset($array[$host]);
@@ -52,7 +47,7 @@ function new_save($name, $delete = false){
             }
         }
     }
-    if ($create || $up || $del || $remove) {
+    if ($create || $up || $del) {
         file_put_contents($file, json_encode($array, JSON_PRETTY_PRINT));
         return json_decode(file_get_contents($file), true);
     } else {
