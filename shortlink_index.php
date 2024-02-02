@@ -56,7 +56,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
     for ($i = 0; $i < $count; $i++) {
         for ($s = 0; $s < $count; $s++) {
-            $open = multiexplode(["_", "{", "[", "(", "-desktop", "-easy", "-mid", "-hard"], str_replace("-[", "[", trimed(strtolower($name[$s]))))[0];
+            $open = multiexplode(["_", "{", "[", "(", "-desktop", "-easy", "-mid", "-hard", "vip"], str_replace("-[", "[", trimed(strtolower($name[$s]))))[0];
             #die(print_r($open));
             #print $open.n;
             if (strtolower($config[$i]) == $open) {
@@ -1381,8 +1381,8 @@ $method = "recaptchav2";
             return $r1["url"];
           }
       }
-    } elseif (preg_match("#(_rsshort.com)#is", $host)) {
-        $api = save("scraperapi");
+    } elseif (preg_match("#(rsshort.com)#is", $host)) {
+        $api = new_save("scraperapi")["scraperapi"];
         /*if (file_get_contents("key_scrape")) {
             $scrape = scrape_valid();
         }
@@ -1418,12 +1418,13 @@ $method = "recaptchav2";
                 break;
             }
         }*/
+        $time = time() + $seconds;
         for ($c = 0; $c < 3; $c++) {
             $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
-            $time = time() + $seconds;
             
-            if (md5($r["res"]) ==  "2334dc46017fbf6c6e1822a69efae72a") {
-                unlink("scraperapi");
+            //print_r($r);
+            if ($r["status"] == 401 || md5($r["res"]) ==  "2334dc46017fbf6c6e1822a69efae72a") {
+                new_save("scraperapi", 1);
                 print m."scraperapi telah mencapai batas limit".n;
                 goto ulang;
             }
@@ -1444,7 +1445,8 @@ $method = "recaptchav2";
         $cookie[] = $r["cookie"];
         while(true) {
             unset($coordinate);
-            $r = base_short($link, 0, 0, $link,  1, join('', $cookie));print_r($r);
+            $r = base_short($link, 0, 0, $link,  1, join('', $cookie));
+            //print_r($r);
             
             if ($r["url"]) {
               
@@ -1938,6 +1940,7 @@ function config() {
     $config[] = "fly3";
     $config[] = "fly4";
     $config[] = "Linksfly";
+    $config[] = "Linksfly1";
     $config[] = "linksfly2";
     $config[] = "URLHives";
     $config[] = "Linkfly";
