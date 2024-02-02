@@ -19,11 +19,13 @@ function new_save($name, $delete = false){
     
     if (!$array[$host]) {
         unset($array[$host]);
+        $remove = 1;
     }
     
     if (strpos(http_build_query($array), $host) !== false) {
         if ($delete) {
             unset($array[$host]);
+            $del = 1;
         }
     }
     if (preg_match_all('/"([^"]+)"\s*:\s*/', file_get_contents($file), $matches, PREG_SET_ORDER)) {
@@ -50,7 +52,7 @@ function new_save($name, $delete = false){
             }
         }
     }
-    if ($create || $up) {
+    if ($create || $up || $del || $remove) {
         file_put_contents($file, json_encode($array, JSON_PRETTY_PRINT));
         return json_decode(file_get_contents($file), true);
     } else {
