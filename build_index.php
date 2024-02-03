@@ -9,6 +9,13 @@ function new_save($name, $delete = false){
     }    
     $decode = json_decode(file_get_contents($file), true);
     
+    if ($delete) {
+      
+        if (strpos(http_build_query($decode), $host) === false) {
+            return $decode;
+        }
+    }
+    
     if ($decode[$host] == null) {
         $data[$host] = tx($host);
         $create = 1;
@@ -18,15 +25,20 @@ function new_save($name, $delete = false){
     $array = array_merge($decode, $data);
     
     if (strpos(http_build_query($array), $host) !== false) {
+      
         if ($delete) {
             unset($array[$host]);
             $del = 1;
         }
     }
+    
     if (preg_match_all('/"([^"]+)"\s*:\s*/', file_get_contents($file), $matches, PREG_SET_ORDER)) {
         $count = count($matches);
+        
         for ($i = 2; $i < $count; $i++) {
+          
             if ($matches[$i][1] == "email") {
+              
                 if (preg_match("#(email)#is", http_build_query($array))) {
                     $array_up["email"] = $data["email"];
                     $array = array_merge($array_up, $array);
@@ -37,7 +49,9 @@ function new_save($name, $delete = false){
         }
         
         for ($i = 2; $i < $count; $i++) {
+          
             if ($matches[$i][1] == "user-agent") {
+              
                 if (preg_match("#(Mozilla)#is", http_build_query($array))) {
                     $array_up["user-agent"] = $data["user-agent"];
                     $array = array_merge($array_up, $array);
@@ -47,6 +61,7 @@ function new_save($name, $delete = false){
             }
         }
     }
+    
     if ($create || $up || $del) {
         file_put_contents($file, json_encode($array, JSON_PRETTY_PRINT));
         return json_decode(file_get_contents($file), true);
