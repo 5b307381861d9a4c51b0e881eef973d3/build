@@ -1,74 +1,7 @@
 <?php
 
-function new_save($name, $delete = false){
-    $file = "data.json";
-    $host = explode("/", $name)[2] ? explode("/", $name)[2] : ($name ? $name : "");
-    
-    if (!file_get_contents($file)) {
-        file_put_contents($file,"[]");
-    }    
-    $decode = json_decode(file_get_contents($file), true);
-    
-    if ($delete) {
-      
-        if (strpos(http_build_query($decode), $host) === false) {
-            return $decode;
-        }
-    }
-    
-    if ($decode[$host] == null) {
-        $data[$host] = tx($host);
-        $create = 1;
-    } else {
-        $data[$host] = $decode[$host];
-    }
-    $array = array_merge($decode, $data);
-    
-    if (strpos(http_build_query($array), $host) !== false) {
-      
-        if ($delete) {
-            unset($array[$host]);
-            $del = 1;
-        }
-    }
-    
-    if (preg_match_all('/"([^"]+)"\s*:\s*/', file_get_contents($file), $matches, PREG_SET_ORDER)) {
-        $count = count($matches);
-        
-        for ($i = 2; $i < $count; $i++) {
-          
-            if ($matches[$i][1] == "email") {
-              
-                if (preg_match("#(email)#is", http_build_query($array))) {
-                    $array_up["email"] = $data["email"];
-                    $array = array_merge($array_up, $array);
-                    $up = 1;
-                    break;
-                }
-            }
-        }
-        
-        for ($i = 2; $i < $count; $i++) {
-          
-            if ($matches[$i][1] == "user-agent") {
-              
-                if (preg_match("#(Mozilla)#is", http_build_query($array))) {
-                    $array_up["user-agent"] = $data["user-agent"];
-                    $array = array_merge($array_up, $array);
-                    $up = 1;
-                    break;
-                }
-            }
-        }
-    }
-    
-    if ($create || $up || $del) {
-        file_put_contents($file, json_encode($array, JSON_PRETTY_PRINT));
-        return json_decode(file_get_contents($file), true);
-    } else {
-        return $decode;
-    }
-}
+
+
 
 
 function captcha_bitmoon() {
@@ -374,6 +307,20 @@ function multiexplode($delimiters, $string) {
     return explode($delimiters[0], $ready);
 }
 
+function multi_strpos($haystack, $needles) {
+    if (!is_array($needles)) {
+        $needles = array($needles);
+    }
+
+    foreach ($needles as $needle) {
+        if (strpos(strtolower($haystack), strtolower($needle)) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function arr_rand($my_array = array()) {
     $copy = array();
     while (count($my_array)) {
@@ -578,6 +525,77 @@ function tx($a, $b = 0) {
 function ex($a, $b, $c, $d) {
     return explode($b, explode($a, $d)[$c])[0];
 }
+
+function new_save($name, $delete = false){
+    $file = "data.json";
+    $host = explode("/", $name)[2] ? explode("/", $name)[2] : ($name ? $name : "");
+    
+    if (!file_get_contents($file)) {
+        file_put_contents($file,"[]");
+    }    
+    $decode = json_decode(file_get_contents($file), true);
+    
+    if ($delete) {
+      
+        if (strpos(http_build_query($decode), $host) === false) {
+            return $decode;
+        }
+    }
+    
+    if ($decode[$host] == null) {
+        $data[$host] = tx($host);
+        $create = 1;
+    } else {
+        $data[$host] = $decode[$host];
+    }
+    $array = array_merge($decode, $data);
+    
+    if (strpos(http_build_query($array), $host) !== false) {
+      
+        if ($delete) {
+            unset($array[$host]);
+            $del = 1;
+        }
+    }
+    
+    if (preg_match_all('/"([^"]+)"\s*:\s*/', file_get_contents($file), $matches, PREG_SET_ORDER)) {
+        $count = count($matches);
+        
+        for ($i = 2; $i < $count; $i++) {
+          
+            if ($matches[$i][1] == "email") {
+              
+                if (preg_match("#(email)#is", http_build_query($array))) {
+                    $array_up["email"] = $data["email"];
+                    $array = array_merge($array_up, $array);
+                    $up = 1;
+                    break;
+                }
+            }
+        }
+        
+        for ($i = 2; $i < $count; $i++) {
+          
+            if ($matches[$i][1] == "user-agent") {
+              
+                if (preg_match("#(Mozilla)#is", http_build_query($array))) {
+                    $array_up["user-agent"] = $data["user-agent"];
+                    $array = array_merge($array_up, $array);
+                    $up = 1;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if ($create || $up || $del) {
+        file_put_contents($file, json_encode($array, JSON_PRETTY_PRINT));
+        return json_decode(file_get_contents($file), true);
+    } else {
+        return $decode;
+    }
+}
+
 
 function Save($a) {
     if (file_exists($a)) {
