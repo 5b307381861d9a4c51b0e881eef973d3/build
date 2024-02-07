@@ -165,7 +165,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                         } else {
                             $r1 = base_run($r["visit"][$s], $data);
                         }
-
+#die(print_r($r1));
                         if ($r1["url1"]) {
                             $r1["url"] = $r1["url1"];
                         }
@@ -221,6 +221,18 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                         if ($r1["json"]->link) {
                             $r1["url"] = $r1["json"]->link;
                         }
+                    
+                    } elseif (mode == "dutchy") {
+                        #file_put_contents("instan.html",$r["res"]);
+                        $data = dutchy($r["res"], $r["visit"][$s]);
+                        
+                        $r1 = base_run(host.$data);#, "icon=".$data[1][$s]);
+                        /*print_r($r1);
+                        print_r($data[0]);
+                        print $r["name"][$s].n;
+                        die(print("icon=".$data[1][$s]));
+                        die();*/
+                        #print_r($r1);
                     } else {
                         die(m."mode bypass not found".n);
                     }
@@ -452,15 +464,18 @@ function bypass_shortlinks($url, $separator = 0) {
     $url = str_replace("http:", "https:", $url);
     $coundown = 15;
     $seconds = 90;
-    $host = parse_url(
-    $url)["host"];
+    $host = parse_url($url)["host"];
     $query = parse_url($url);
     
     if (explode("=", $query["query"])[0] == "api") {
-        $url = "https://".explode("=", $query["query"])[2];
+        $query = explode("=", $query["query"])[2];
+        
+        if (strpos($query, "http") === false) {
+            $url = "https://".$query;
+        }
         $host = parse_url($url)["host"];
     }
-    
+    #die(print($url));
     if (explode("p=", $url)[1]) {
         $url = "https://ser7.crazyblog.in".explode("p=", $url)[1];
         $host = parse_url($url)["host"];
@@ -1629,7 +1644,7 @@ $method = "recaptchav2";
         $r = base_short($url);
         $cookie[] = $r["cookie"];
         $link = explode("https:", parse_url($r["url"])["path"])[1];
-        
+        #die(print($link));
         if ($link) {
             $r1 = base_short($r["url"], 0, 0, $url, 0, join('', $cookie));
            
@@ -1645,6 +1660,15 @@ $method = "recaptchav2";
                 return "https:".$link;
             }
         } else {
+            $fix = explode("url=", $url)[1];
+            if (preg_match("#(http)#is", $fix)) {
+                $timer = $time - time();
+                
+                if ($timer >= 1) {
+                    L($timer);
+                }
+                return $fix;
+            }
             return "refresh";
       }
     } elseif (preg_match("#(adrinolinks.com)#is", $host)) {
@@ -1992,6 +2016,7 @@ function config() {
     $config[] = "insfly.pw";
     $config[] = "Adrevlinks";
     $config[] = "Ezshort";
+    $config[] = "Ez4";
     $config[] = "Ez4Short";
     $config[] = "ez4shortx";
     $config[] = "Shrinkme";
