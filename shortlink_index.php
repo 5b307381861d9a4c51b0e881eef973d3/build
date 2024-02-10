@@ -1398,43 +1398,9 @@ $method = "recaptchav2";
           }
       }
     } elseif (preg_match("#(rsshort.com)#is", $host)) {
-        $api = new_save("scraperapi")["scraperapi"];
-        /*if (file_get_contents("key_scrape")) {
-            $scrape = scrape_valid();
-        }
-        for ($c = 0; $c < 3; $c++) {
-            $r = $r = base_short($url, 0, 0, 0, 0, 0, 0, $scrape);
-            $time = time() + $seconds;
-            
-            $link = $r["url"];
-            
-            if (!$link) {
-                continue;
-            }
-            $cookie[] = $r["cookie"];
-            $r = base_short($link, 0, 0, $link, 0, join('', $cookie));
-            
-            $link = $r["url"];
-            
-            if (!$link) {
-                continue;
-            }
-            $cookie[] = $r["cookie"];
-            $r = base_short($link, 0, 0, $link, 1, join('', $cookie));
-            
-            die(print_r($r));
-            
-            $link = $r["url2"][0];
-            
-            if (!$link) {
-                continue;
-            }
-            
-            if ($link) {
-                break;
-            }
-        }*/
         $time = time() + $seconds;
+        if (json_decode(file_get_contents("data.json"))->scraperapi) {
+        #$api = new_save("scraperapi")["scraperapi"];
         for ($c = 0; $c < 3; $c++) {
             $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
             
@@ -1454,6 +1420,48 @@ $method = "recaptchav2";
                 break;
             }
         }
+        } else {
+        for ($c = 0; $c < 3; $c++) {
+            $r = $r = base_short($url);
+            $time = time() + $seconds;
+            
+            $link = $r["url"];
+            
+            if (!$link) {
+                continue;
+            }
+            $cookie[] = $r["cookie"];
+            $r = base_short($link, 0, 0, $link, 0, join('', $cookie));
+            
+            $link = $r["url"];
+            
+            if (!$link) {
+                continue;
+            }
+            $cookie[] = $r["cookie"];
+            $r = base_short($link, 0, 0, $link, 0, join('', $cookie));
+            $link = $r["url"];
+            
+            if (!$link) {
+                continue;
+            }
+            $cookie[] = $r["cookie"];
+            $r = base_short($link, 0, 0, $link, 0, join('', $cookie));
+            
+            #die(print_r($r));
+            
+            $link = $r["url2"][0];
+            
+            if (!$link) {
+                continue;
+            }
+            
+            if ($link) {
+                break;
+            }
+        }
+        }
+
         $link = $r["url2"][0];
         if (!$link) {
             return "refresh";
