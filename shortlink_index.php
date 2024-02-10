@@ -1400,7 +1400,7 @@ $method = "recaptchav2";
     } elseif (preg_match("#(rsshort.com)#is", $host)) {
         $time = time() + $seconds;
         if (json_decode(file_get_contents("data.json"))->scraperapi) {
-        #$api = new_save("scraperapi")["scraperapi"];
+        $api = new_save("scraperapi")["scraperapi"];
         for ($c = 0; $c < 3; $c++) {
             $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
             
