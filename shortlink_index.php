@@ -481,7 +481,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $host = parse_url($url)["host"];
     }
     
-    if (preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me)#is", $host)) {
+    if (preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me|clicksfly.me)#is", $host)) {
         $run = build($url);
         $time = time() + $seconds;
         $r = base_short($url); #print_r($r);
@@ -1399,7 +1399,7 @@ $method = "recaptchav2";
       }
     } elseif (preg_match("#(rsshort.com)#is", $host)) {
         $time = time() + $seconds;
-        if (json_decode(file_get_contents("data.json"))->scraperapi) {
+       # if (json_decode(file_get_contents("data.json"))->scraperapi) {
         $api = new_save("scraperapi")["scraperapi"];
         for ($c = 0; $c < 3; $c++) {
             $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
@@ -1420,7 +1420,7 @@ $method = "recaptchav2";
                 break;
             }
         }
-        } else {
+       /* } else {
         for ($c = 0; $c < 3; $c++) {
             $r = $r = base_short($url);
             $time = time() + $seconds;
@@ -1460,7 +1460,7 @@ $method = "recaptchav2";
                 break;
             }
         }
-        }
+        }*/
 
         $link = $r["url2"][0];
         if (!$link) {
@@ -1978,6 +1978,9 @@ function config() {
     $config[] = "URLHives";
     $config[] = "Linkfly";
     $config[] = "Linksfly.me";
+    $config[] = "clickfly";
+    $config[] = "clicksflyme";
+    $config[] = "clicksfly.me";
     $config[] = "Urlsfly";
     $config[] = "Urlsfly.me";
     $config[] = "Shortfly";
