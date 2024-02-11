@@ -1405,7 +1405,8 @@ $method = "recaptchav2";
             $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
             
             //print_r($r);
-            if ($r["status"] == 401 || md5($r["res"]) ==  "2334dc46017fbf6c6e1822a69efae72a") {
+            #if ($r["status"] == 401 || md5($r["res"]) ==  "2334dc46017fbf6c6e1822a69efae72a") {
+            if (md5($r["res"]) ==  "2334dc46017fbf6c6e1822a69efae72a") {
                 new_save("scraperapi", true);
                 print m."scraperapi telah mencapai batas limit".n;
                 goto ulang;
