@@ -1978,6 +1978,7 @@ function config() {
     $config[] = "Linkfly";
     $config[] = "Linksfly.me";
     $config[] = "clickfly";
+    $config[] = "Flyclick";
     $config[] = "clicksflyme";
     $config[] = "clicksfly.me";
     $config[] = "Urlsfly";
