@@ -1971,6 +1971,7 @@ function config() {
     $config[] = "fly2";
     $config[] = "fly3";
     $config[] = "fly4";
+    $config[] = "fly5";
     $config[] = "Linksfly";
     $config[] = "Linksfly1";
     $config[] = "linksfly2";
@@ -2217,6 +2218,7 @@ function config() {
     //$config[] = "adrinolinks";
     //$config[] = "adrinolinks.com";
     $config[] = "v2p";
+    $config[] = "View2Pay";
     $config[] = "v2p.icu";
     $config[] = "adbits";
     $config[] = "adbits.pro";
