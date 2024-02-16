@@ -558,7 +558,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } elseif (preg_match("#(go.tinygo.co|m.tinygo.co|s3.addurl.biz|hbz.us)#is", $host)) {
             $referer = "https://wpcheap.net/";
         } elseif (preg_match("#(go.wez.info|m.wez.info|s2.addurl.biz)#is", $host)) {
-            $referer = "https://aduzz.com/";
+            $referer = "https://izseo.net/";
         } elseif (preg_match("#(go.viewfr.com|m.viewfr.com|s1.addurl.biz)#is", $host)) {
             $referer = "https://cryptfaucet.com/";
         } elseif (preg_match("#(cashlinko.com)#is", $host)) {
