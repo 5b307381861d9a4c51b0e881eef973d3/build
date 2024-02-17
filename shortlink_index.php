@@ -1006,7 +1006,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 }
             }
         }
-    } elseif (preg_match("#(oii.io|fc-lc.xyz)#is", $host)) {
+    } elseif (preg_match("#(oii.io|_fc-lc.xyz)#is", $host)) {
         $run = build($url);
         $r = base_short($run["links"]);
         $cookie[] = $r["cookie"];
@@ -1156,7 +1156,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io)#is", $host)) {
+    } elseif (preg_match("#(_ctr.sh|_easycut.io)#is", $host)) {
       
         if (preg_match("#(ctr.sh)#is", $host)) {
             $re = "https://sinonimos.de/?url8j=";
@@ -2095,10 +2095,6 @@ function config() {
     $config[] = "vielink";
     $config[] = "oii";
     $config[] = "oii.io";
-    $config[] = "fc";
-    $config[] = "fclc";
-    $config[] = "fc-lc";
-    $config[] = "fc.lc";
     $config[] = "Bestlink";
     $config[] = "1short";
     $config[] = "1shorten.com";
@@ -2121,14 +2117,18 @@ function config() {
     $config[] = "Clickflcom";
     $config[] = "Clicksfly.com";
     $config[] = "Genlink";
-    $config[] = "ctr";
-    $config[] = "ctrsh";
-    $config[] = "ctr.sh";
     $config[] = "ouo";
     $config[] = "revly";
+    /*$config[] = "ctr";
+    $config[] = "ctrsh";
+    $config[] = "ctr.sh";
     $config[] = "easycut";
     $config[] = "easycut.io";
     $config[] = "easycut-io";
+    $config[] = "fc";
+    $config[] = "fclc";
+    $config[] = "fc-lc";
+    $config[] = "fc.lc";*/
     $config[] = "TeraFlyOwoo";
     $config[] = "TeraFlyOgoo";
     $config[] = "TeraFlyOmoo";
