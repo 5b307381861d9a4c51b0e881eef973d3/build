@@ -633,6 +633,7 @@ function text_line($input) {
     line();
 }
 
+
 function tmr($a, $tmr) {
     date_default_timezone_set('UTC').r();
     $timr = time() + $tmr;
@@ -1022,9 +1023,17 @@ function multibot($method, $sitekey, $pageurl, $rr = 0) {
         "sitekey" => $sitekey,
         "pageurl" => $pageurl
     ]);
+    $turnstile = http_build_query([
+        "key" => $apikey,
+        "method" => "turnstile",
+        "sitekey" => $sitekey,
+        "pageurl" => $pageurl
+    ]);
     $type = [
         "recaptchav2" => $recaptchav2,
-        "hcaptcha" => $hcaptcha
+        "hcaptcha" => $hcaptcha,
+        "cf-turnstile" => $turnstile,
+        "turnstile" => $turnstile
     ];
     $ua = [
         "host: " . $host,
