@@ -610,7 +610,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } else {
             $referer = 0;
         }
-        if (preg_match("#(dz4link.com|Nx.chainfo.xyz|go.illink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|go.illink.net|link.illink.net)#is", $host)) {
+        if (preg_match("#(dz4link.com|Nx.chainfo.xyz|go.illink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|go.illink.net|link.illink.net|go.megaurl.in)#is", $host)) {
             $cloud = 1;
         } else {
             $cloud = 0;
@@ -1568,7 +1568,7 @@ $method = "recaptchav2";
             $scrape = scrape_valid();
         }
         $time = time() + $seconds;
-        $r = base_short($run["inc"], 0, 0, "https://mdn.lol/", 0, 0, 0, $scrape);
+        $r = base_short($run["inc"], 0, 0, "https://homeculina.com/", 0, 0, 0, $scrape);
         
         if (preg_match("#(-cut|final)#is", $r["url"])) {
             print "limit";
@@ -2182,7 +2182,7 @@ function config() {
     #$config[] = "shortyearn";
     #$config[] = "shortyearn.com";
     //$config[] = "doshrink";
-    //$config[] = "doshrink.com";
+    //$config[] = "doshrink.com";*/
     $config[] = "linkjust.com";
     $config[] = "Linkjust";
     $config[] = "clks";
@@ -2222,6 +2222,7 @@ function config() {
     //$config[] = "adrinolinks";
     //$config[] = "adrinolinks.com";
     $config[] = "v2p";
+    $config[] = "V2PEasyShortlink";
     $config[] = "View2Pay";
     $config[] = "v2p.icu";
     $config[] = "adbits";
