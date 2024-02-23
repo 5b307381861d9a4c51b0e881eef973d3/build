@@ -62,7 +62,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
             if (strtolower($config[$i]) == $open) {
                 for ($p = 0; $p < $count; $p++) {
                     
-                    if (strtolower(str_replace(n, "", $control[$p])) == host.$open or strtolower(str_replace(n, "", $control[$p])) == $open or explode("/", $lefts[$s])[0] == "0" or $lefts[$s] == "0") {
+                    if (strtolower(str_replace(n, "", $control[$p])) == host.$open or strtolower(str_replace(n, "", $control[$p])) == $open or explode("/", $lefts[$s])[0] == "0" or $lefts[$s] == "0" or strpos($lefts[$s], "-") !== false) {
                         goto up;
                     }
 
