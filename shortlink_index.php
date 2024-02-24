@@ -1992,6 +1992,7 @@ function config() {
     $config[] = "Wefly";
     $config[] = "Wefly.me";
     $config[] = "TryLink";
+    $config[] = "Tri2link";
     $config[] = "Try2link";
     $config[] = "try2link.com";
     $config[] = "shorti";
@@ -2018,6 +2019,7 @@ function config() {
     $config[] = "AdLink";
     $config[] = "adlink.click";
     $config[] = "Links.link";
+    $config[] = "LinksFly.l";
     $config[] = "LinksFly.link";
     $config[] = "LinksFlylink";
     $config[] = "Lksfly";
@@ -2115,6 +2117,7 @@ function config() {
     $config[] = "ex-foary";
     $config[] = "ex-foary.com";
     $config[] = "Clicksfly";
+    $config[] = "Clicksfly.";
     $config[] = "clicksflycom";
     $config[] = "Clickflcom";
     $config[] = "Clicksfly.com";
