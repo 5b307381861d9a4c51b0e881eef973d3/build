@@ -2225,6 +2225,7 @@ function config() {
     //$config[] = "adrinolinks";
     //$config[] = "adrinolinks.com";
     $config[] = "v2p";
+    $config[] = "V2pay";
     $config[] = "V2PEasyShortlink";
     $config[] = "View2Pay";
     $config[] = "v2p.icu";
