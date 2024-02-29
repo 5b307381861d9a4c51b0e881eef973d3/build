@@ -610,7 +610,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } else {
             $referer = 0;
         }
-        if (preg_match("#(dz4link.com|Nx.chainfo.xyz|go.illink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|go.illink.net|link.illink.net|go.megaurl.in)#is", $host)) {
+        if (preg_match("#(dz4link.com|Nx.chainfo.xyz|go.illink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|go.illink.net|link.illink.net|go.megaurl.in|link.adlink.click)#is", $host)) {
             $cloud = 1;
         } else {
             $cloud = 0;
@@ -752,7 +752,10 @@ function bypass_shortlinks($url, $separator = 0) {
             }
             $r1 = base_short(str_replace("pwrpa.cc", "pwrpa.cc/go", str_replace("jameeltips.us", "jameeltips.us/blog", str_replace("techyuth.xyz", "techyuth.xyz/blog", $run["go"][0]))), 1, $data, 0, $cloud, join('', $cookie))["json"];
            
-            if (preg_match("#(http)#is", $r1->url)) {
+            if(strpos($r1->url, "limit") !== false){
+                print m."kena limit kontol".n;
+                return "refresh";
+            } elseif (preg_match("#(http)#is", $r1->url)) {
                 print h."success";
                 r();
                 return $r1->url;
@@ -767,7 +770,9 @@ function bypass_shortlinks($url, $separator = 0) {
             
             $r1 = base_short( $run["go"][0], 1, $data, 0, $cloud, join('', $cookie))["json"];
            
-            if (preg_match("#(http)#is", $r1->url)) {
+            if(strpos($r1->url, "limit") !== false){
+                return "refresh";
+            } elseif (preg_match("#(http)#is", $r1->url)) {
                 print h."success";
                 r();
                 return $r1->url;
@@ -1568,10 +1573,12 @@ $method = "recaptchav2";
             $scrape = scrape_valid();
         }
         $time = time() + $seconds;
-        $r = base_short($run["inc"], 0, 0, "https://homeculina.com/", 0, 0, 0, $scrape);
-        
-        if (preg_match("#(-cut|final)#is", $r["url"])) {
-            print "limit";
+        $r = base_short($url);
+        $link = explode("backup", $r["url"])[0];
+        $r = base_short($run["inc"], 0, 0, $link, 0, 0, 0, $scrape);
+#die(print_r($r));
+        if(multi_strpos($r["url"], "bypass", "-cut", "final", "limit") !== false) {
+            print m."Shorlinks KONTOL".n;
             return "refresh";
         }
         if ($r["url"]) {
@@ -1783,7 +1790,7 @@ $method = "recaptchav2";
                 $cookie[] = $r["cookie"];
                 
             } else {
-                L(29);
+                L(30);
                 $data = data_post($t, "one");
                 $r = base_short($link, 0, $data, $link, 0, join('', $cookie));
                 $cookie[] = $r["cookie"];
