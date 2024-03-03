@@ -153,7 +153,14 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
                         if ($site_url == 1 || preg_match("#(free-ltc-info|feyorra.site)#is", $r["visit"][$s])) {
                             $r1 = base_run(str_replace("go", "cancel", $r["visit"][$s]), $data);
-#die(print_r($r1));
+                            
+                            if (preg_match("#(free-ltc-info)#is", $r["visit"][$s])) {
+                                preg_match_all('#location: (.*)#i', $r1["r"], $res);
+                                if ($res[1][1]) {
+                                    $r1["url1"] = trimed($res[1][1]);
+                                }
+                            }
+##die(print_r($r1));
 #preg_match_all('#location: (.*)#i', $r1["r"], $res);die(print_r($res));
                             if (preg_match("#".host."#is", $r1["url1"])) {
                                 preg_match_all('#location: (.*)#i', $r1["r"], $res);
@@ -483,9 +490,18 @@ function bypass_shortlinks($url, $separator = 0) {
         $host = parse_url($url)["host"];
     }
     
-    if (preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me|clicksfly.me)#is", $host)) {
+    if (preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me|clicksfly.me|3link.co)#is", $host)) {
         $run = build($url);
         $time = time() + $seconds;
+        
+        if (preg_match("#(3link.co)#is", $host)) {
+            $r = base_short("https://3link.co/links/gosl/?".str_replace("/", "alias=", parse_url($url)["path"]))["json"];
+            
+            if (strpos($r->url, "http") !== false) {
+                $run = build($r->url);
+            }
+            
+        }
         $r = base_short($url); #print_r($r);
         $link = $r["url"];
         
@@ -590,7 +606,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } elseif (preg_match("#(short2money.com)#is", $host)) {
             $referer = "https://lollty.pro/";
         } elseif (preg_match("#(10short.com)#is", $host)) {
-            $referer = "https://skip.10short.vip/";
+            $referer = "https://10.10short.vip";
         } elseif (preg_match("#(sox.link)#is", $host)) {
             $referer = "https://coincroco.com/";
         } elseif (preg_match("#(teralinks.in)#is", $host)) {
@@ -1015,7 +1031,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 }
             }
         }
-    } elseif (preg_match("#(oii.io|_fc-lc.xyz)#is", $host)) {
+    } elseif (preg_match("#(oii.io|fc-lc.xyz)#is", $host)) {
         $run = build($url);
         $r = base_short($run["links"]);
         $cookie[] = $r["cookie"];
@@ -1041,17 +1057,17 @@ function bypass_shortlinks($url, $separator = 0) {
             $t = $r["token_csrf"];
       }
       $link = $r["url1"][0];
-      
-      if (preg_match("#(http)#is", $link)) {
-        
+      #die(print_r($r));
+      if (strpos($link, "http") !== false) {
+        #die(print_r($r));
           if (explode('"', $t[1][4])[0] == "user_faucet") {
-              $data = data_post($t, "four");
+              $data = data_post($t, "five");
               $r = base_short($link, 1, $data, 0, 0, join('', $cookie));
               $cookie[] = $r["cookie"];
               $t = $r["token_csrf"];
             
-          } elseif ($t[1][1] == "random_token") {
-              $data = data_post($t, "four");
+          } elseif (trimed($t[1][1]) == "random_token") {#die(print_r($r));
+              $data = data_post($t, "five");
               $r = base_short($link, 1, $data, 0, 0, join('', $cookie));
               $cookie[] = $r["cookie"];
               $t = $r["token_csrf"];
@@ -1406,7 +1422,7 @@ $method = "recaptchav2";
       }
     } elseif (preg_match("#(rsshort.com)#is", $host)) {
         $time = time() + $seconds;
-       # if (json_decode(file_get_contents("data.json"))->scraperapi) {
+        if (json_decode(file_get_contents("data.json"))->scraperapi) {
         $api = new_save("scraperapi")["scraperapi"];
         for ($c = 0; $c < 3; $c++) {
             $r = base_short("http://api.scraperapi.com?api_key=".$api."&keep_headers=true&url=".$url);
@@ -1428,7 +1444,7 @@ $method = "recaptchav2";
                 break;
             }
         }
-       /* } else {
+        } else {
         for ($c = 0; $c < 3; $c++) {
             $r = $r = base_short($url);
             $time = time() + $seconds;
@@ -1468,7 +1484,7 @@ $method = "recaptchav2";
                 break;
             }
         }
-        }*/
+        }
 
         $link = $r["url2"][0];
         if (!$link) {
@@ -1591,7 +1607,11 @@ $method = "recaptchav2";
                 L($timer);
             }
             parse_str(explode("?", $r["url"])[1], $get);
-            
+            if(multi_strpos(base64_decode($get["get"]), "bypass", "-cut", "final", "limit") !== false) {
+                print m."Shorlinks KONTOL".n;
+                return "refresh";
+              
+            }
             if ($get["get"]) {
                 return base64_decode($get["get"]);
               
