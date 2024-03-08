@@ -368,7 +368,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     preg_match('#(id="second">|varcountdownValue=|PleaseWait|class="timer"value="|class="timer">)([0-9]{1}|[0-9]{2})(;|"|<|s)#is', str_replace([n," "],"", $r[1]), $timer);
     preg_match_all('#(dirrectSiteCode = |ai_data_id=|ai_ajax_url=)"(.*?)(")#is', $r[1], $code_data_ajax);
     preg_match('#(sessionId: ")(.*?)(")#is', $r[1], $sessionId);
-    preg_match('#(var Wtpsw = )(.*?)(;)#is', $r[1], $json_ajax);//die(print_r($r[0]));
+    preg_match('#class="custom-heading">(.*?)<#is', $r[1], $only);//die(print_r($r[0]));
     return [
         "status" => $r[0][1]["http_code"],
         "cookie" => set_cookie($r[0][2]),
@@ -397,7 +397,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
         "url9" => $url9[1],
         "code_data_ajax" => $code_data_ajax[2],
         "sessionId" => $sessionId[2],
-        "json_ajax" => json_decode($json_ajax[2])
+        "only" => $only[1]
     ];
 }
 
@@ -1789,15 +1789,16 @@ $method = "recaptchav2";
             $cookie[] = $r["cookie"];
             $t = $r["token_csrf"];
             $t4 = $r["token_csrf4"];
-            #print_r($r);
+           # die(file_put_contents("instan.html", $r["res"]));
+            #die(print_r($r));
             if (!$t[1][0]) {
                 return "refresh";
                 
             } elseif ($t[2][2] == 1) {
-                
+
                 if ($t4[1][0] == "antibot_number_0") {
                     $rsp = array(
-                        $t4[1][0] => substr(preg_replace("/[^0-9]/", "", $t4[2][0]), 0, 6)
+                        $t4[1][0] => substr(preg_replace("/[^0-9]/", "", $t4[2][0]), 0, preg_replace("/[^0-9]/", "", $r["only"]))
                     );
                 } else {
                     $method = "hcaptcha";
