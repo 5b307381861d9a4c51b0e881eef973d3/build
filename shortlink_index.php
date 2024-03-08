@@ -547,7 +547,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://ez4mods.com/";
         } elseif (preg_match("#(link.shrinkme.link)#is", $host)) {
             $referer = "https://blog.anywho-com.com/";
-        } elseif (preg_match("#(_shrinkme.pro)#is", $host)) {
+        } elseif (preg_match("#(shrinkme.pro)#is", $host)) {
             $referer = "https://themezon.net/";
         } elseif (preg_match("#(sheralinks.com)#is", $host)) {
             $referer = "https://blogyindia.com/";
