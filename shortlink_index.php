@@ -346,10 +346,10 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     $r = curl($url,h_short($xml, $referer, $agent, $boundary), $data,false,false, $alternativ_cookie, $proxy);
     if ($r[0][1]["http_code"] == "0") {
       goto start;
-    }
+    }#class="h-captcha is-hidden" data-callback="onCaptchaPass" data-sitekey="215ae94b-b7f2-4cc6-9af0-ee259eca5ad1"></div>
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
     preg_match('#(invisible_reCAPTCHA_site_key":")(.*?)(")#is', $r[1], $invisible_recaptchav2);
-    preg_match('#(hcaptcha_checkbox_site_key":"|h-captcha" data-sitekey="|get_cap_data" data-site_key=")(.*?)(")#is', $r[1], $hcaptcha);
+    preg_match('#(h-captcha is-hidden" data-callback="onCaptchaPass" data-sitekey="|hcaptcha_checkbox_site_key":"|h-captcha" data-sitekey="|get_cap_data" data-site_key=")(.*?)(")#is', $r[1], $hcaptcha);
     preg_match('#(render=|g-recaptcha btn btn-warning" data-sitekey=")(.*?)(")#is', $r[1], $recaptchav3);
     preg_match_all('#(submit_data" action="|<a href="|action="|href = ")(.*?)(")#is', $r[1], $url1);
     preg_match_all("#(url='|location.href ='|<a href='|var api =".n."  ')(.*?)(')#is", $r[1], $url2);
@@ -489,7 +489,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $url = "https://ser7.crazyblog.in".explode("p=", $url)[1];
         $host = parse_url($url)["host"];
     }
-    if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click)#is", $host)) {
+    if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|_revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click)#is", $host)) {
         if (file_get_contents("key_scrape")) {
              $proxy = scrape_valid();
         }
@@ -537,7 +537,7 @@ function bypass_shortlinks($url, $separator = 0) {
             }
             return $r1;
         }
-    } elseif (preg_match("#(link1s.com|link1s.net|insfly.pw|earnify.pro|links.earnify.pro|shrinke.us|adrev.link|nx.chainfo.xyz|linksly.co|owllink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|mitly.us|go.illink.ne|link.illink.net|coinpayz.link|oko.sh|go.mtraffics.com|go.megaurl.in|go.megafly.in|clik.pw|usalink.io|link.usalink.io|go.hatelink.me|ez4short.com|link.shrinkme.link|go.shorti.io|shorti.io|sheralinks.com|linksfly.link|link.adlink.click|url.beycoin.xyz|cryptosh.pro|aii.sh|link.vielink.top|bestlink.pro|ccurl.net|1shorten.com|adbull.me|ser7.crazyblog.in|ex-foary.com|short.dash-free.com|shrinkme.info|shrinkme.site|shortplus.xyz|atglinks.com|link.short2url.in|link.revly.click|go.tinygo.co|m.tinygo.co|hbz.us|s3.addurl.biz|go.wez.info|m.wez.info|s2.addurl.biz|go.viewfr.com|m.viewfr.com|s1.addurl.biz|cashlinko.com|linkjust.com|dz4link.com|panylink.com|panyflay.me|panyshort.link|droplink.co|oscut.space|oscut.fun|kyshort.xyz|go.revcut.net|revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|clockads.in|go.shtfly.com|go.bitss.sbs|489651.xyz|546512.xyz|dailytime.store|go.foxylinks.site|m.pkr.pw|linkjust.com|adbitfly.com|adshort.co|lollty.com|10short.com|short2money.com|shrinkme.org|shrinkme.us|teralinks.in|urlpay.in|linksly.pw|short.paylinks.cloud|ez4short.xyz|go.shortsme.in|exashorts.fun|go.paylinks.cloud|go.cutlink.xyz|151989.xyz|go.urlcash.site|link.24payu.top|icutlink.com|120898.xyz|freeltc.top|linksfly.top|bitcosite.com|161989.xyz|adcorto.com|go.favelink.top|m.onelinks.nl|shrinkme.pro|845265.xyz|viefaucet.link)#is", $host)) {
+    } elseif (preg_match("#(link1s.com|link1s.net|insfly.pw|earnify.pro|links.earnify.pro|shrinke.us|adrev.link|nx.chainfo.xyz|linksly.co|owllink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|mitly.us|go.illink.ne|link.illink.net|coinpayz.link|oko.sh|go.mtraffics.com|go.megaurl.in|go.megafly.in|clik.pw|usalink.io|link.usalink.io|go.hatelink.me|ez4short.com|link.shrinkme.link|go.shorti.io|shorti.io|sheralinks.com|linksfly.link|link.adlink.click|url.beycoin.xyz|cryptosh.pro|aii.sh|link.vielink.top|bestlink.pro|ccurl.net|1shorten.com|adbull.me|ser7.crazyblog.in|ex-foary.com|short.dash-free.com|shrinkme.info|shrinkme.site|shortplus.xyz|atglinks.com|link.short2url.in|link.revly.click|go.tinygo.co|m.tinygo.co|hbz.us|s3.addurl.biz|go.wez.info|m.wez.info|s2.addurl.biz|go.viewfr.com|m.viewfr.com|s1.addurl.biz|cashlinko.com|linkjust.com|dz4link.com|panylink.com|panyflay.me|panyshort.link|droplink.co|oscut.space|oscut.fun|kyshort.xyz121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|clockads.in|go.shtfly.com|go.bitss.sbs|489651.xyz|546512.xyz|dailytime.store|go.foxylinks.site|m.pkr.pw|linkjust.com|adbitfly.com|adshort.co|lollty.com|10short.com|short2money.com|shrinkme.org|shrinkme.us|teralinks.in|urlpay.in|linksly.pw|short.paylinks.cloud|ez4short.xyz|go.shortsme.in|exashorts.fun|go.paylinks.cloud|go.cutlink.xyz|151989.xyz|go.urlcash.site|link.24payu.top|icutlink.com|120898.xyz|freeltc.top|linksfly.top|bitcosite.com|161989.xyz|adcorto.com|go.favelink.top|m.onelinks.nl|shrinkme.pro|845265.xyz|viefaucet.link|swiftlnx.com|short.earnfeyonline.online)#is", $host)) {
         if (preg_match("#(link1s.com)#is", $host)) {
               $referer = "https://google.com/";
         } elseif (preg_match("#(insfly.pw|oscut.space|oscut.fun|kyshort.xyz|clockads.in|linksly.pw|exashorts.fun)#is", $host)) {
@@ -634,6 +634,8 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://oncoin.info/";
         } elseif (preg_match("#(viefaucet.link)#is", $host)) {
             $referer = "https://helpowi.com/";
+        } elseif (preg_match("#(swiftlnx.com)#is", $host)) {
+            $referer = "https://hasri.xyz/";
         } else {
             $referer = 0;
         }
@@ -1189,25 +1191,34 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(_ctr.sh|_easycut.io)#is", $host)) {
-      
-        if (preg_match("#(ctr.sh)#is", $host)) {
-            $re = "https://sinonimos.de/?url8j=";
-        } elseif (preg_match("#(easycut.io)#is", $host)) {
-            $re = "https://quesignifi.ca/?url8j=";
-        }
-        
-        $r = base_short($re.$url);
+    } elseif (preg_match("#(_ctr.sh|easycut.io|revcut.net|crypto-radio.eu)#is", $host)) {
+        $r = base_short($url);
         $cookie[] = $r["cookie"];
-        $url1 = $r["url1"][0];
+        $url0 = $r["url6"];
         
+        if (!$url0) {
+            return "refresh";
+        }
+        #die(print_r($r));
+        $cookie[] = $r["cookie"];
+        $url_parse =  urldecode($url0);
+        parse_str($url_parse, $url1);
+        
+        if (!$url1["url"]) {
+            return "refresh";
+        }
+        $r = base_short($url1["url"]."?url8j=".$url);
+        $cookie[] = $r["cookie"];
+        $url1 = $r["url1"][0];#die(print_r($r));
+        $cookie[] = $r["cookie"];
+        #die(print_r($r));
             while(true) {
               
                 if (strpos($url1, "http") === false) {
                     return "refresh";
                 }
                 $cookie[] = array_reverse($cookie);
-                $r = base_short($url1, 0, 0, $url1, 0, join('', $cookie));
+                $r = base_short($url1, 0, 0, $url1, 0, join('', $cookie));#print_r($r);
                 $cookie[] = $r["cookie"];
                 
                 if ($r["recaptchav3"] ? $r["recaptchav3"] : "") {
@@ -1231,32 +1242,39 @@ function bypass_shortlinks($url, $separator = 0) {
                         "g-recaptcha-response" => $cap,
                         $r["token_csrf5"][1][0] => "true"
                     ]);
+                } else {
+                    L(20);
                 }
                 
+                if (!$r["token_csrf5"][1][0]) {
+                    return "refresh";
+                }
                 if ($r["token_csrf"][1][0] == "no-recaptcha-noresponse") {
                     $data = http_build_query([
                         $r["token_csrf"][1][0] => "true",
                         $r["token_csrf5"][1][0] => "true"
                     ]);
-                }
+                }#print_r($data);
                 $r = base_short($url1, 0, $data, $url1, 0, join('', $cookie));
                 $cookie[] = $r["cookie"];
-                $final = $r["url6"];
+                $final = urldecode($r["url1"][0] ? $r["url1"][0] : ($r["url6"] ? $r["url6"] : ""));
 
                 if (strpos($final, $host) !== false) {
                     break;
                 } elseif (strpos($final, "http") !== false) {
-                    return "refresh";
+                    continue;
+                    #return "refresh";
                 }
             }
-            $r = base_short(str_replace("&tk", "?token", $final), 0, 0, 0, 0, join('', $cookie));
+            $step_final = explode("?url=", str_replace("&tk", "?token", $final))[1];
+            $r = base_short($step_final, 0, 0, $final, 0, join('', $cookie));
             $cookie[] = $r["cookie"];
             $t = $r["token_csrf"];
             
             if (explode('"', $t[1][2])[0] == "ad_form_data") {
                 $data = data_post($t, "four");
                 L($coundown);
-                $r1 = base_short(build($final)["go"][0], 1, $data, 0, 0, join('', $cookie))["json"];
+                $r1 = base_short(build($step_final)["go"][0], 1, $data, $step_final, 0, join('', $cookie))["json"];
                 
                 if (preg_match("#(http)#is", $r1->url)) {
                     print h.$r1->status;
@@ -2164,12 +2182,13 @@ function config() {
     $config[] = "Genlink";
     $config[] = "ouo";
     $config[] = "revly";
+    $config[] = "CryptoShorty";
     /*$config[] = "ctr";
     $config[] = "ctrsh";
-    $config[] = "ctr.sh";
+    $config[] = "ctr.sh";*/
     $config[] = "easycut";
     $config[] = "easycut.io";
-    $config[] = "easycut-io";*/
+    $config[] = "easycut-io";
     $config[] = "fc";
     $config[] = "fclc";
     $config[] = "fc-lc";
@@ -2296,6 +2315,9 @@ function config() {
     $config[] = "onelinks";
     $config[] = "teralinks";
     $config[] = "teralinks.in";
+    $config[] = "EarnFey-Short";
+    $config[] = "SwiftLink";
+    $config[] = "SwiftLink.com";
     $config[] = "inlinks";
     $config[] = "Favelink";
     $config[] = "Favelink.top";
