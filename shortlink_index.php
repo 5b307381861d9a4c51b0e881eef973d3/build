@@ -1191,7 +1191,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(_ctr.sh|easycut.io|revcut.net|crypto-radio.eu)#is", $host)) {
+    } elseif (preg_match("#(_ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store)#is", $host)) {
         $r = base_short($url);
         $cookie[] = $r["cookie"];
         $url0 = $r["url6"];
@@ -2186,6 +2186,8 @@ function config() {
     /*$config[] = "ctr";
     $config[] = "ctrsh";
     $config[] = "ctr.sh";*/
+    $config[] = "todaynewsview";
+    $config[] = "todaynewsview.store";
     $config[] = "easycut";
     $config[] = "easycut.io";
     $config[] = "easycut-io";
