@@ -1191,7 +1191,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(_ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store)#is", $host)) {
+    } elseif (preg_match("#(_ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link)#is", $host)) {
         $r = base_short($url);
         $cookie[] = $r["cookie"];
         $url0 = $r["url6"];
