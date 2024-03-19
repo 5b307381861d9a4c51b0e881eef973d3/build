@@ -4,6 +4,27 @@
 
 
 
+function joen($inputArray, $delete = false) {
+    $result = "";
+    $temp = [];
+
+    foreach ($inputArray as $value) {
+        if (!is_array($value)) {
+            $value = preg_replace('/;+/', ';', $value);
+
+            if ($delet) { $value = preg_replace('/\b('.$delete.')=[^;]*;/', '', $value);}
+
+            if (!isset($temp[$value])) {
+                $temp[$value] = true;
+                $result .= $value;
+            }
+        }
+    }
+
+    parse_str(str_replace(';', '&', $result), $array);
+    $newString = http_build_query($array, '', ';');
+    return $newString;
+}
 function captcha_bitmoon() {
     $eol = "\n";
     $boundary = "------WebKitFormBoundary";
@@ -686,7 +707,7 @@ function diff_time($fr, $time) {
     }
 }
 
-function L($t) {
+/*function L($t) {
     r();
     $col = [b, c, h, k, m, p, u];
     
@@ -697,7 +718,35 @@ function L($t) {
     }
     
     r();
+}*/
+
+function L($seconds) {
+    if (!function_exists('display_loading')) {
+        function display_loading($percent) {
+            $bar_length = 25;
+            $progress = round($percent * $bar_length / 100);
+
+            print p." Loading [";
+            for ($i = 0; $i < $bar_length; $i++) {
+                if ($i < $progress) {
+                    print "-";
+                } else {
+                    print " ";
+                }
+            }
+            print "]> " . $percent . "%\r";
+        }
+    }
+
+    $percent = 0;
+    for ($percent = 0; $percent <= 100; $percent++) {
+        display_loading($percent);
+        usleep(intval($seconds) * 10000);
+    }
+    r();
 }
+
+
 
 function r() {
     sleep(1);
@@ -1014,7 +1063,7 @@ function multibot($method, $sitekey, $pageurl, $rr = 0) {
     $recaptchav2 = http_build_query([
         "key" => $apikey,
         "method" => "userrecaptcha",
-        "googlekey" => $sitekey,
+        "googlekey" => rtrim(ltrim($sitekey)),
         "pageurl" => $pageurl
     ]);
     $hcaptcha = http_build_query([
