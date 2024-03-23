@@ -1221,19 +1221,20 @@ function bypass_shortlinks($url, $separator = 0) {
         parse_str($url_parse, $url1);
         
         if (!$url1["url"]) {
-            return "refresh";
+            unset($cookie);
+            goto ulang;
         }
-        L(5);
+        L(10);
         $r = base_short($url1["url"]."?url8j=".$url);
         $cookie[] = $r["cookie"];
-        $url1 = $r["url1"][0];#
-        #die(print_r($r));
+        $url1 = $r["url1"][0];
+        
+        if (strpos($url1, "http") === false) {
+          print m."mencoba generate ulang";
+          sleep(2);
+          goto ulang;
+        }
             while(true) {
-                
-                
-                if (strpos($url1, "http") === false) {
-                    return "refresh";
-                }
                 
                 $cookie[] = "";
                 $r = base_short($url1, 0, 0, $url1, 0, joen($cookie));#print_r($r);
@@ -1299,15 +1300,23 @@ function bypass_shortlinks($url, $separator = 0) {
                         $n = 0;
                         while($n < 10) {
                             if (file_get_contents("api_ant")) {
-                                $apikey = trimed(arr_rand(file("api_ant"))[0]);
+                                $apikey = save("api_ant");
                             }
                             $r = base_short("https://api.scrapingant.com/v2/general?url=".str_replace("http:", "https:", $step_final)."&x-api-key=$apikey", 0, 0, $final, 0, joen($cookie));
                               $t = $r["token_csrf"];
-                              #die(print_r($r));
-                              if (md5($r["res"]) == "f146cd21a629ba8d2530c45eb9b9946b") {
-                                  #new_save("scrapingant", true);
+                              #die(print(md5($r["res"])));
+                              if (md5($r["res"]) == "edcf9e778ac825fc298cd21823c758d2") {
+                                  print m."apikey telah mencapai batas!".n;
+                                  unlink("api_ant");
+                                  line();
+                                  save("api_ant");
+                                  continue;
+                              } elseif (md5($r["res"]) == "f146cd21a629ba8d2530c45eb9b9946b") {
                                   print m."invalid: ".$apikey.n;
-                                  goto ulang;
+                                  unlink("api_ant");
+                                  line();
+                                  save("api_ant");
+                                  continue;
                               } elseif (md5($r["res"]) == "6ded99e75e182f05c8a15d34ef48fd65") {
                                   print m."scrapingant terkena limit mohon tunggu!";
                                   sleep(rand(2, 10));
