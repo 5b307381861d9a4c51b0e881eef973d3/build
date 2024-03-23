@@ -1223,10 +1223,11 @@ function bypass_shortlinks($url, $separator = 0) {
         if (!$url1["url"]) {
             return "refresh";
         }
+        L(5);
         $r = base_short($url1["url"]."?url8j=".$url);
         $cookie[] = $r["cookie"];
         $url1 = $r["url1"][0];#
-        
+        #die(print_r($r));
             while(true) {
                 
                 
