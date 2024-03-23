@@ -5,40 +5,6 @@
 #https://urlcorner.com/CBqzuo1tu69
 #https://cutp.in/TnqH
 #eval(str_replace('<?php',"",file_get_contents(("build_index.php"))));
-/*
-$base[]  = "https://shrinkme.link/Fmg9nVv";
-$base[]  = "https://todaynewsview.store/mX3UnQL";
-$base[]  = "https://crypto-radio.eu/VTvaQOF";
-$base[]  = "https://revcut.net/30459";
-$base[]  = "https://faho.us/RNlC";
-$base[]  = "http://cutlink.xyz/LX0G";
-$base[]  = "https://bitad.org/CqLTyHJS";
-$base[]  = "https://urlcut.pro/bKTYg";
-$base[]  = "https://droplink.co/xw6ZXJO9";
-$base[]  = "https://inlinks.online/wEQB4FCJ";
-$base[]  = "http://shortino.link/eQFx";
-$base[]  = "https://ez4short.com/X3FOxkV";
-
-
-$apikey = trimed(array_filter(file("link_sl"))[0]);
-$nomor = 0;
-while ($nomor <= count($base)) {
-    if (!$base[$nomor]) {
-        $nomor = 0;
-    }
-    $only_sl = $base[$nomor];
-    print k.$only_sl.n;
-    $r = bypass_shortlinks($only_sl);
-    
-    if ($r->status == "success") {
-        print_r($r);
-    } else {
-        print m."invalid!".n;
-    }
-    line();
-    $nomor++;
-}
-*/
 
 
 function build($url = 0) {
@@ -1241,7 +1207,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|panyflay.me)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|panyflay.me|earnify.pro)#is", $host)) {
         $url = str_replace("/short/", "/", $url);
         $r = base_short($url);
         $cookie[] = $r["cookie"];
@@ -1343,7 +1309,7 @@ function bypass_shortlinks($url, $separator = 0) {
                                   goto ulang;
                               } elseif (md5($r["res"]) == "6ded99e75e182f05c8a15d34ef48fd65") {
                                   print m."scrapingant terkena limit mohon tunggu!";
-                                  sleep(rand(1, 5));
+                                  sleep(rand(2, 10));
                                   r();
                                   continue;
                               } elseif ($t[1][0]) {
