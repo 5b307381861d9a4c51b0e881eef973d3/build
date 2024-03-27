@@ -821,7 +821,8 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
             $default[CURLOPT_COOKIEJAR] = $cookiejar;
         }
         if ($alternativ_cookie) {
-            $default[CURLOPT_COOKIE] = $alternativ_cookie;
+            $mergedCookies = call_user_func_array('array_merge', $alternativ_cookie);
+            $default[CURLOPT_COOKIE] = urldecode(http_build_query($mergedCookies, '', '; ', PHP_QUERY_RFC3986).";");
         }
         if ($proxy) {
             $default[CURLOPT_PROXY] = $proxy;
@@ -1069,19 +1070,19 @@ function multibot($method, $sitekey, $pageurl, $rr = 0) {
     $hcaptcha = http_build_query([
         "key" => $apikey,
         "method" => "hcaptcha",
-        "sitekey" => $sitekey,
+        "sitekey" => rtrim(ltrim($sitekey)),
         "pageurl" => $pageurl
     ]);
     $turnstile = http_build_query([
         "key" => $apikey,
         "method" => "turnstile",
-        "sitekey" => $sitekey,
+        "sitekey" => rtrim(ltrim($sitekey)),
         "pageurl" => $pageurl
     ]);
     $type = [
         "recaptchav2" => $recaptchav2,
         "hcaptcha" => $hcaptcha,
-        "cf-turnstile" => $turnstile,
+        "cf-turnstile" => rtrim(ltrim($turnstile)),
         "turnstile" => $turnstile
     ];
     $ua = [
