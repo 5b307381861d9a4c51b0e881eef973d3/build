@@ -1233,12 +1233,15 @@ function bypass_shortlinks($url, $separator = 0) {
           print m."mencoba generate ulang";
           sleep(2);
           goto ulang;
+          r();
         }
             while(true) {
                 
                 
                 $r = base_short($url1, 0, 0, $url1, 0, $cookie);#print_r($r);
                 $cookie[] = $r["cookie"];
+                $rr = base_short("https://adclick.g.doubleclick.net/pcs/click", 0, 0, $url1, 0, $cookie);#print_r($r);
+                $cookie[] = $rr["cookie"];
                 
                 if ($r["recaptchav3"] ? $r["recaptchav3"] : "") {
                     $cap = recaptchav3($r["recaptchav3"], $url1);
@@ -1331,7 +1334,7 @@ function bypass_shortlinks($url, $separator = 0) {
                     
                     if (explode('"', $t[1][2])[0] == "ad_form_data") {
                         $data = data_post($t, "four");
-                        L($coundown+30);
+                        L($coundown);
                         $r1 = base_short(build($step_final)["go"][0], 1, $data, $step_final, 0, $cookie)["json"];
                         #die(print_r($r1));
                         if (preg_match("#(http)#is", $r1->url)) {
