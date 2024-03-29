@@ -1225,7 +1225,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|_inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|panyflay.me|earnify.pro|btcut.io)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|_inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|panyflay.me|earnify.pro|btcut.io|slfly.net)#is", $host)) {
         $url = str_replace("/short/", "/", $url);
         
         if ($method_proxy == "proxyscrape") {
