@@ -402,44 +402,60 @@ function scrape_valid() {
     $key_scrape = save("key_scrape");
     $h = ["user-agent: Mozilla/5.0"];
     $url = "https://api.proxyscrape.com/v2/account/datacenter_shared/whitelist?sessionid=$key_scrape&userid=$key_scrape&type=";
-    $my_ip = curl("https://api.proxyscrape.com/ip.php", $h)[1];
 
-    while (true) {
-        $ip = curl($url . "get", $h)[2];
-
-        if (!$ip || $ip->status == "invalid") {
-            print "key tidak berguna lagi silakan ganti";
-            sleep(2);
-            r();
-            #unlink("key_scrape");
-            goto re;
-        }
-
-        $list = explode(n, curl("https://api.proxyscrape.com/v2/account/datacenter_shared/proxy-list?sessionid=$key_scrape&userid=$key_scrape&type=displayproxies&protocol=http", $h)[1]);
-
-        if (!$list[2]) {
+    while(true) {
+        print p."mengecek ip";
+        r();
+        $my_ip = curl("https://api.proxyscrape.com/ip.php", $h)[1];
+      
+        if (file_get_contents("my_ip") == $my_ip) {
+            break;
+        } elseif (!file_get_contents("my_ip")) {
+            file_put_contents("my_ip", $my_ip);
+            sleep(5);
+            continue;
+        } elseif (file_get_contents("my_ip") !== $my_ip) {
+            file_put_contents("my_ip", $my_ip);
+            sleep(5);
+            unlink("my_ip");
             continue;
         }
+    }
 
-        $proxy = str_replace(n,"",trimed(arr_rand(array_filter($list))[0]));
-
-        if (!$ip->whitelisted[0]) {
-            $req = curl($url . "add&ip[]=$my_ip", $h)[2];
-
-            if ($req->status == "ok") {
-                return $proxy;
+    while(true) {
+        print p."verifikasi proxy api";
+        r();
+        $bas = curl($url."get", $h)[2];
+        $my_ip_up = $bas->whitelisted[0];
+        if ($bas->status == "invalid") {
+            print "key tidak berguna lagi silakan ganti".n;
+            unlink("key_scrape");
+            goto re;
+        } elseif ($my_ip == $my_ip_up) {
+            $base = curl("https://api.proxyscrape.com/v2/account/datacenter_shared/proxy-list?sessionid=$key_scrape&userid=$key_scrape&type=displayproxies&format=json&draw=2&columns[0][data]=0&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=1&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=false&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=2&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=false&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=3&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=false&columns[3][search][value]=&columns[3][search][regex]=false&start=0&length=100&search[value]=&search[regex]=false&protocol=http", $h)[2]->data;
+            
+            while(true) {
+                print p."mencari proxy online";
+                r();
+                
+                if ($base[0][1] == "HTTP") {
+                    $array = arr_rand($base);
+                    
+                    if ($array[0][2] == "Online") {
+                        print p."proxy siap digunakan";
+                        r();
+                        return $array[0][0];
+                    }
+                }
             }
-        }
-
-        if ($my_ip == $ip->whitelisted[0]) {
-            return $proxy;
-        }
-
-        if ($my_ip !== $ip->whitelisted[0]) {
-            $req = curl($url . "remove&ip[]=" . $ip->whitelisted[0], $h)[2];
-
-            if ($req->status == "ok") {
-                continue;
+        } elseif ($my_ip !== $my_ip_up) {
+          
+            if (curl($url."remove&ip[]=".$my_ip_up, $h)[2]->status == "ok") {
+                sleep(2);
+                
+                if (curl($url."add&ip[]=$my_ip", $h)[2]->status == "ok") {
+                    continue;
+                }
             }
         }
     }
@@ -822,7 +838,8 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         }
         if ($alternativ_cookie) {
             $mergedCookies = call_user_func_array('array_merge', $alternativ_cookie);
-            $default[CURLOPT_COOKIE] = urldecode(http_build_query($mergedCookies, '', '; ', PHP_QUERY_RFC3986).";");
+            $default[CURLOPT_COOKIE] = urldecode(http_build_query($mergedCookies, '', '%3B', PHP_QUERY_RFC3986)."%3B");
+            //$default[CURLOPT_COOKIE] = $alternativ_cookie;
         }
         if ($proxy) {
             $default[CURLOPT_PROXY] = $proxy;
@@ -834,7 +851,15 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         $response = substr($output, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $info = curl_getinfo($ch);
         curl_close($ch);
+        
+        /*if (curl_error($ch) == "CONNECT tunnel failed, response 407") {
+            print c.movePage()[$info["http_code"]];
+            r();
+            return "error";
+        }*/
+        
         if (!$info["primary_ip"]) {
+          
             print m.movePage()[$info["http_code"]];
             r();
             print explode("port", curl_error($ch))[0];
