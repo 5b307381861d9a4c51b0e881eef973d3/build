@@ -397,6 +397,8 @@ function scrape_list() {
     return trimed(array_values(arr_rand(file($file)))[0]);
 }
 
+
+
 function scrape_valid() {
     re:
     $key_scrape = save("key_scrape");
@@ -408,7 +410,9 @@ function scrape_valid() {
         r();
         $my_ip = curl("https://api.proxyscrape.com/ip.php", $h)[1];
       
-        if (file_get_contents("my_ip") == $my_ip) {
+        if (!file_get_contents("key_scrape")) {
+            goto re;
+        } elseif (file_get_contents("my_ip") == $my_ip) {
             break;
         } elseif (!file_get_contents("my_ip")) {
             file_put_contents("my_ip", $my_ip);
@@ -423,6 +427,10 @@ function scrape_valid() {
     }
 
     while(true) {
+      
+        if (!file_get_contents("key_scrape")) {
+            goto re;
+        }
         print p."verifikasi proxy api";
         r();
         $bas = curl($url."get", $h)[2];
