@@ -399,7 +399,7 @@ function scrape_list() {
 
 
 
-function scrape_valid() {
+function scrape_valid($validasi = false) {
     re:
     $key_scrape = save("key_scrape");
     $h = ["user-agent: Mozilla/5.0"];
@@ -412,8 +412,6 @@ function scrape_valid() {
       
         if (!file_get_contents("key_scrape")) {
             goto re;
-        } elseif (file_get_contents("my_ip") == $my_ip) {
-            break;
         } elseif (!file_get_contents("my_ip")) {
             file_put_contents("my_ip", $my_ip);
             sleep(5);
@@ -423,7 +421,9 @@ function scrape_valid() {
             sleep(5);
             unlink("my_ip");
             continue;
-        }
+        } elseif (file_get_contents("my_ip") == $my_ip) {
+            break;
+        } 
     }
 
     while(true) {
@@ -440,21 +440,34 @@ function scrape_valid() {
             unlink("key_scrape");
             goto re;
         } elseif ($my_ip == $my_ip_up) {
+          
+            if ($validasi) {
+                print p."proxy safety";
+                r();
+                return "ok";
+            }
             $base = curl("https://api.proxyscrape.com/v2/account/datacenter_shared/proxy-list?sessionid=$key_scrape&userid=$key_scrape&type=displayproxies&format=json&draw=2&columns[0][data]=0&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=1&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=false&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=2&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=false&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=3&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=false&columns[3][search][value]=&columns[3][search][regex]=false&start=0&length=100&search[value]=&search[regex]=false&protocol=http", $h)[2]->data;
             
-            while(true) {
+            
+            if ($base[0][1] == "HTTP") {
                 print p."mencari proxy online";
                 r();
+                $array = arr_rand($base);
                 
-                if ($base[0][1] == "HTTP") {
-                    $array = arr_rand($base);
+                for ($i = 0; $i < count($array); $i++) {
+                  
+                    if (!$array[$i][2]) {
+                        goto re;
+                    }
                     
-                    if ($array[0][2] == "Online") {
+                    if ($array[$i][2] == "Online") {
                         print p."proxy siap digunakan";
                         r();
-                        return $array[0][0];
+                        return $array[$i][0];
                     }
                 }
+            } else {
+                goto re;
             }
         } elseif ($my_ip !== $my_ip_up) {
           
