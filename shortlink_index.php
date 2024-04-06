@@ -1334,7 +1334,9 @@ function bypass_shortlinks($url, $separator = 0) {
                 $knt[] = $final;
                 #print_r($r);//exit;
                 if (strpos($final, $host) !== false) {
-                    scrape_valid(1);
+                    if ($method_proxy == "proxyscrape") {
+                        scrape_valid(1);
+                    }
                     $cookie[] = ["ab" => 2];
                     if (strpos($final, "&token") !== false) {
                         $step_final = explode("?url=", str_replace("&token", "?tk", $final))[1];
