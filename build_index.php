@@ -400,7 +400,9 @@ function scrape_list() {
 
 
 function scrape_valid($validasi = false) {
+    $boost = 0;
     re:
+    $boost++;
     $key_scrape = save("key_scrape");
     $h = ["user-agent: Mozilla/5.0"];
     $url = "https://api.proxyscrape.com/v2/account/datacenter_shared/whitelist?sessionid=$key_scrape&userid=$key_scrape&type=";
@@ -436,6 +438,10 @@ function scrape_valid($validasi = false) {
         $bas = curl($url."get", $h)[2];
         $my_ip_up = $bas->whitelisted[0];
         if ($bas->status == "invalid") {
+            
+            if ($boost > 4) {
+                goto re;
+            }
             print "key tidak berguna lagi silakan ganti".n;
             unlink("key_scrape");
             goto re;
