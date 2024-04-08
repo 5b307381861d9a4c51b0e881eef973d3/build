@@ -438,7 +438,7 @@ function scrape_valid($validasi = false) {
         $my_ip_up = $bas->whitelisted[0];
         if ($bas->status == "invalid") {
             
-            if ($boost > 5) {
+            if ($boost >= 5) {
                 print k."sedang memastikan key";
                 sleep(5);
                 r();
