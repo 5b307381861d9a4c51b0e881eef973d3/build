@@ -412,6 +412,9 @@ function scrape_valid($validasi = false) {
       
         if (!file_get_contents("key_scrape")) {
             goto re;
+        } elseif (!$my_ip) {
+            sleep(5);
+            continue;
         } elseif (!file_get_contents("my_ip")) {
             file_put_contents("my_ip", $my_ip);
             sleep(5);
