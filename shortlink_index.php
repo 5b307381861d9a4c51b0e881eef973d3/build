@@ -2361,6 +2361,8 @@ function config() {
     $config[] = "sharecut";
     $config[] = "mslinks";
     $config[] = "bonklinks";
+    $config[] = "MSfaucet";
+    $config[] = "linkz";
     $config[] = "flukesnips";
     $config[] = "Favelink";
     $config[] = "Favelink.top";
