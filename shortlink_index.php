@@ -1229,7 +1229,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|linkzfly.xyz)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io)#is", $host)) {
         $url = str_replace("/short/", "/", $url);
         
         if ($method_proxy == "proxyscrape") {
@@ -2359,6 +2359,9 @@ function config() {
     $config[] = "Earnow";
     $config[] = "shortino";
     $config[] = "sharecut";
+    $config[] = "mslinks";
+    $config[] = "bonklinks";
+    $config[] = "flukesnips";
     $config[] = "Favelink";
     $config[] = "Favelink.top";
     return $config;
