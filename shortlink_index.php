@@ -660,6 +660,8 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://publicearn.com/";
         } elseif (preg_match("#(ser2.crazyblog.in)#is", $host)) {
             $referer = "https://publicearn.com/";
+        } elseif (preg_match("#(go.shortsme.in)#is", $host)) {
+            $referer = "https://gameblog.in/";
         } else {
             $referer = 0;
         }
@@ -1350,7 +1352,7 @@ function bypass_shortlinks($url, $separator = 0) {
                     $cookie[] = $r["cookie"];
                     $t = $r["token_csrf"];
                     
-                    if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz)#is", $host)) {
+                    if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs)#is", $host)) {
                         $proxy = 0;
                     }
                     if (explode('"', $t[1][2])[0] == "ad_form_data") {
