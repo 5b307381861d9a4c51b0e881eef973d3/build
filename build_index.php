@@ -2,8 +2,6 @@
 
 
 
-
-
 function joen($inputArray, $delete = false) {
     $result = "";
     $temp = [];
@@ -333,12 +331,10 @@ function multi_strpos($haystack, $needles) {
     }
 
     foreach ($needles as $needle) {
-        if (strpos(strtolower($haystack), strtolower($needle)) !== false) {
+        if (strpos(strtolower(urldecode($haystack)), strtolower($needle)) !== false) {
             return true;
         }
     }
-
-    return false;
 }
 
 function arr_rand($my_array = array()) {
