@@ -1229,7 +1229,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|chainfo.xyz)#is", $host)) {
         $url = str_replace("/short/", "/", $url);
         
         if ($method_proxy == "proxyscrape") {
@@ -1332,12 +1332,18 @@ function bypass_shortlinks($url, $separator = 0) {
                     return "refresh";
                 }
                 $cookie[] = $r["cookie"];
-                $final = urldecode($r["url1"][0] ? $r["url1"][0] : ($r["url6"] ? $r["url6"] : ""));
+                $final = urldecode($r["url1"][1] ? $r["url1"][1] :  ($r["url1"][0] ? $r["url1"][0] : ($r["url6"] ? $r["url6"] : "")));
                 $knt[] = $final;
                 #print_r($r);//exit;
                 if (strpos($final, $host) !== false) {
+                    
                     if ($method_proxy == "proxyscrape") {
-                        scrape_valid(1);
+                      
+                        if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz|slfly.net)#is", $host)) {
+                            $proxy = 0;
+                        } else {
+                            scrape_valid(1);
+                        }
                     }
                     $cookie[] = ["ab" => 2];
                     if (strpos($final, "&token") !== false) {
@@ -1352,9 +1358,6 @@ function bypass_shortlinks($url, $separator = 0) {
                     $cookie[] = $r["cookie"];
                     $t = $r["token_csrf"];
                     
-                    if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs)#is", $host)) {
-                        $proxy = 0;
-                    }
                     if (explode('"', $t[1][2])[0] == "ad_form_data") {
                         $data = data_post($t, "four");
                         L($coundown);
