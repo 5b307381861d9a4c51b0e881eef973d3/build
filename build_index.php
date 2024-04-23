@@ -547,12 +547,24 @@ function scrape_valid($validasi = false) {
             
             
             if ($base[0][1] == "HTTP") {
+                unset($count_offline);
                 print p."mencari proxy online";
                 r();
                 $array = arr_rand($base);
                 
                 for ($i = 0; $i < count($array); $i++) {
                   
+                    if ($array[$i][2] == "Offline") {
+                        $count_offline[] = $i;
+                        
+                        if (count(array_filter($count_offline)) + 1 == count($array)) {
+                            print m."semua proxy sedang Offline".n;
+                            tx("enter to continue");
+                            goto re;
+                        }
+                        continue;
+                    }
+                    
                     if (!$array[$i][2]) {
                         goto re;
                     }
