@@ -527,7 +527,7 @@ function scrape_valid($validasi = false) {
         $my_ip_up = $bas->whitelisted[0];
         if ($bas->status == "invalid") {
             
-            if ($boost >= 5) {
+            if (5 > $boost) {
                 print k."sedang memastikan key";
                 sleep(5);
                 r();
@@ -1113,7 +1113,7 @@ function user_agent() {
 function head($xml = 0, $boundary = 0) {
     global $u_a, $u_c;
     $header = [];
-    //$header[] = "Host: " . explode("/", host)[2];
+    $header[] = "Host: " . explode("/", host)[2];
     if ($boundary) {
         $header[] = "content-type: multipart/form-data; boundary=----WebKitFormBoundary" . $boundary;
     }
@@ -1123,8 +1123,9 @@ function head($xml = 0, $boundary = 0) {
     if ($xml == 2) {
         $header[] = "content-type: application/x-www-form-urlencoded";
        // $header[] = "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7";
-        $header[] = "referer: ".host;
+        //$header[] = "referer: ".host;
     }
+    $header[] = "referer: ".host;
     
     if (!$u_a) {
         $u_a = user_agent();
