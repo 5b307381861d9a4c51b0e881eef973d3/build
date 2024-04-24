@@ -151,7 +151,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                             $data = data_post($r["token_csrf"], "one", $rsp);
                         }
 
-                        if ($site_url == 1 || preg_match("#(free-ltc-info|feyorra.site)#is", $r["visit"][$s])) {
+                        if ($site_url == 1 || preg_match("#(free-ltc-info)#is", $r["visit"][$s])) {
                             $r1 = base_run(str_replace("go", "cancel", $r["visit"][$s]), $data);
                             
                             if (preg_match("#(free-ltc-info)#is", $r["visit"][$s])) {
@@ -160,7 +160,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                                     $r1["url1"] = trimed($res[1][1]);
                                 }
                             }
-##die(print_r($r1));
+#die(print_r($r1));
 #preg_match_all('#location: (.*)#i', $r1["r"], $res);die(print_r($res));
                             if (preg_match("#".host."#is", $r1["url1"])) {
                                 preg_match_all('#location: (.*)#i', $r1["r"], $res);
@@ -2384,6 +2384,8 @@ function config() {
     $config[] = "Favelink";
     $config[] = "Favelink.top";
     $config[] = "coinfays.com";
+    $config[] = "wdu";
+    $config[] = "addurl";
     $config[] = "btcut";
     $config[] = "btcut.io";
     return $config;
