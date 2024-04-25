@@ -2403,6 +2403,10 @@ function config() {
     $config[] = "coinfays.com";
     $config[] = "wdu";
     $config[] = "addurl";
+    $config[] = "freebonk.paycut.io";
+    $config[] = "freebonk";
+    $config[] = "flukesnips.com";
+    $config[] = "flukesnips";
     $config[] = "btcut";
     $config[] = "btcut.io";
     return $config;
