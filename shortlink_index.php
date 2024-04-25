@@ -493,10 +493,14 @@ function bypass_shortlinks($url, $separator = 0) {
         $url = "https://ser7.crazyblog.in".explode("p=", $url)[1];
         $host = parse_url($url)["host"];
     }
-    if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|_revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link".$request_proxy.")#is", $host)) {
+    if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|_revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz".$request_proxy.")#is", $host)) {
       
         if ($method_proxy == "proxyscrape") {
             $proxy = scrape_valid();
+            if (preg_match("#(chainfo.xyz)#is", $host)) {
+                $proxyv = $proxy;
+                $proxy = 0;
+            }
         } elseif ($method_proxy == "scraperapi") {
             $apikey = save("scraperapi");
             $r = base_short(str_replace("http:", "https:", $url), 0, 0, "https://away.vk.com/", 0, 0, 0, "http://scraperapi:".$apikey."@proxy-server.scraperapi.com:8001");sleep(30);
@@ -557,7 +561,7 @@ function bypass_shortlinks($url, $separator = 0) {
             }
             return $r1;
         }
-    } elseif (preg_match("#(link1s.com|link1s.net|insfly.pw|links.earnify.pro|shrinke.us|adrev.link|linksly.co|owllink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|mitly.us|go.illink.ne|link.illink.net|coinpayz.link|oko.sh|go.mtraffics.com|go.megaurl.in|go.megafly.in|clik.pw|usalink.io|link.usalink.io|go.hatelink.me|link.shrinkme.link|go.shorti.io|shorti.io|sheralinks.com|linksfly.link|link.adlink.click|url.beycoin.xyz|cryptosh.pro|aii.sh|link.vielink.top|bestlink.pro|ccurl.net|1shorten.com|adbull.me|ser7.crazyblog.in|ex-foary.com|short.dash-free.com|shrinkme.info|shrinkme.site|shortplus.xyz|atglinks.com|link.short2url.in|link.revly.click|go.tinygo.co|m.tinygo.co|hbz.us|s3.addurl.biz|go.wez.info|m.wez.info|s2.addurl.biz|go.viewfr.com|m.viewfr.com|s1.addurl.biz|cashlinko.com|linkjust.com|dz4link.com|panylink.com|panyshort.link|oscut.space|oscut.fun|kyshort.xyz|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|clockads.in|go.shtfly.com|go.bitss.sbs|489651.xyz|546512.xyz|dailytime.store|go.foxylinks.site|m.pkr.pw|linkjust.com|adshort.co|lollty.com|10short.com|short2money.com|shrinkme.cc|shrinkme.org|shrinkme.us|teralinks.in|urlpay.in|linksly.pw|short.paylinks.cloud|ez4short.xyz|go.shortsme.in|exashorts.fun|go.paylinks.cloud|go.cutlink.xyz|151989.xyz|go.urlcash.site|link.24payu.top|icutlink.com|120898.xyz|freeltc.top|linksfly.top|bitcosite.com|161989.xyz|adcorto.com|go.favelink.top|m.onelinks.nl|shrinkme.pro|845265.xyz|viefaucet.link|swiftlnx.com|short.earnfeyonline.online|link.urlfly.xyz|_inlinks.online|panyflay.me|ser2.crazyblog.in)#is", $host)) {
+    } elseif (preg_match("#(link1s.com|link1s.net|insfly.pw|links.earnify.pro|shrinke.us|adrev.link|linksly.co|owllink.net|go.birdurls.com|link.birdurls.com|go.owllink.net|link.owllink.net|mitly.us|go.illink.ne|link.illink.net|coinpayz.link|oko.sh|go.mtraffics.com|go.megaurl.in|go.megafly.in|clik.pw|usalink.io|link.usalink.io|go.hatelink.me|link.shrinkme.link|go.shorti.io|shorti.io|sheralinks.com|linksfly.link|link.adlink.click|url.beycoin.xyz|cryptosh.pro|aii.sh|link.vielink.top|bestlink.pro|ccurl.net|1shorten.com|adbull.me|ser7.crazyblog.in|ex-foary.com|short.dash-free.com|shrinkme.info|shrinkme.site|shortplus.xyz|atglinks.com|link.short2url.in|link.revly.click|go.tinygo.co|m.tinygo.co|hbz.us|s3.addurl.biz|go.wez.info|m.wez.info|s2.addurl.biz|go.viewfr.com|m.viewfr.com|s1.addurl.biz|cashlinko.com|linkjust.com|dz4link.com|panylink.com|panyshort.link|oscut.space|oscut.fun|kyshort.xyz|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|clockads.in|go.shtfly.com|go.bitss.sbs|489651.xyz|546512.xyz|dailytime.store|go.foxylinks.site|m.pkr.pw|linkjust.com|adshort.co|lollty.com|10short.com|short2money.com|shrinkme.cc|shrinkme.org|shrinkme.us|teralinks.in|urlpay.in|linksly.pw|short.paylinks.cloud|ez4short.xyz|go.shortsme.in|exashorts.fun|go.paylinks.cloud|go.cutlink.xyz|151989.xyz|go.urlcash.site|link.24payu.top|icutlink.com|120898.xyz|freeltc.top|linksfly.top|bitcosite.com|161989.xyz|adcorto.com|go.favelink.top|m.onelinks.nl|shrinkme.pro|845265.xyz|viefaucet.link|swiftlnx.com|short.earnfeyonline.online|link.urlfly.xyz|_inlinks.online|panyflay.me|ser2.crazyblog.in|m.wdu.info|m.addurl.biz|chainfo.xyz)#is", $host)) {
         if (preg_match("#(link1s.com)#is", $host)) {
               $referer = "https://google.com/";
         } elseif (preg_match("#(insfly.pw|oscut.space|oscut.fun|kyshort.xyz|clockads.in|linksly.pw|exashorts.fun)#is", $host)) {
@@ -620,7 +624,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://panytourism.online/";
         } elseif (preg_match("#(droplink.co)#is", $host)) {
             $referer = "https://yoshare.net/";
-        } elseif (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz)#is", $host)) {
+        } elseif (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|m.wdu.info|m.addurl.biz)#is", $host)) {
             $referer = ["https", "wss"][rand(0, 1)]."://away.vk.com/";
         } elseif (preg_match("#(linkjust.com)#is", $host)) {
             $referer = "https://forexrw7.com/";
@@ -648,7 +652,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $referer = "https://zegtrends.com/";
         } elseif (preg_match("#(freeltc.top)#is", $host)) {
             $referer = "https://linx.cc/";
-        } elseif (preg_match("#(nx.chainfo.xyz)#is", $host)) {
+        } elseif (preg_match("#(chainfo.xyz)#is", $host)) {
             $referer = "https://bitzite.com/";
         } elseif (preg_match("#(m.onelinks.nl)#is", $host)) {
             $referer = "https://oncoin.info/";
@@ -671,8 +675,8 @@ function bypass_shortlinks($url, $separator = 0) {
             $cloud = 0;
         }
         
-        $url = str_replace("ser2.crazyblog.in", "ser3.crazyblog.in", str_replace("link.urlfly.xyz", "urlfly.xyz",str_replace("845265.xyz", "inlinks.online", str_replace("m.onelinks.nl", "finish.onelinks.nl", str_replace("go.favelink.top", "favelink.top", str_replace("adcorto.com", "link.adcorto.com", str_replace("120898.xyz", "c2g.at", str_replace("link.24payu.top", "go2.24payu.top", str_replace("go.urlcash.site", "urlcash.site", str_replace(["go.cutlink.xyz", "151989.xyz"], "cutlink.xyz", str_replace("go.paylinks.cloud", "paylinks.cloud", str_replace("go.shortsme.in", "shortsme.in", str_replace("short.paylinks.cloud", "paylinks.cloud", str_replace("clik.pw", "pwrpa.cc/go", str_replace("teralinks.in", "go.teralinks.in", str_replace("short2money.com", "forextrader.site/NewLink", str_replace("lollty.com", "forextrader.site/SkipLink", str_replace("adbitfly.com/short", "adbitfly.com", str_replace("m.pkr.pw", "jameeltips.us/blog", str_replace("go.foxylinks.site", "link.foxylinks.site", str_replace(["go.bitss.sbs", "546512.xyz", "489651.xyz"], "bitss.sbs", str_replace("go.shtfly.com", "shtfly.com", str_replace(["go.eazyurl.xyz", "link.eazyurl.xyz"],"eazyurl.xyz", str_replace(["go.faho.us", "141989.xyz"], "faho.us", str_replace(["go.urlcut.pro", "131989.xyz"], "urlcut.pro", str_replace(["go.revcut.net", "l2.revcut.net", "go.revcut.net", "121989.xyz"], "revcut.net", str_replace("kyshort.xyz/go", "kyshort.xyz", str_replace(["go.viewfr.com", "m.viewfr.com", "s1.addurl.biz"], "thanks.viewfr.com", str_replace(["go.wez.info", "m.wez.info", "s2.addurl.biz"] ,"thanks.wez.info", str_replace(["go.tinygo.co", "m.tinygo.co", "s3.addurl.biz", "hbz.us"],"thanks.tinygo.co", str_replace("links.earnify.pro", "earnify.pro", str_replace("link.revly.click", "en.revly.click", str_replace("link.short2url.in", "techyuth.xyz/blog", str_replace("short.dash-free.com", "dash-free.com", str_replace("link.vielink.top", "short.vielink.top", str_replace("usalink.io", "link.theconomy.me", str_replace("url.beycoin.xyz/short", "url.beycoin.xyz", str_replace("link.adlink.click", "blog.adlink.click", str_replace("linksfly.link", "linksfly.link", str_replace(["go.shorti.io", "shorti.io"],"blog.financeandinsurance.xyz", str_replace(["shrinkme.cc", "shrinkme.pro"], "en.shrinke.me", str_replace(["link.shrinkme.link"], "blog.shrinkme.link", str_replace("go.hatelink.me", "q.hatelink.me", str_replace("linksly.co", "go.linksly.co", str_replace("link.usalink.io", "link.theconomy.me", str_replace("go.megafly.in", "get.megafly.in", str_replace("go.megaurl.in", "get.megaurl.in", str_replace("go.mtraffics.com", "get.mtraffics.com", str_replace(["go.illink.net", "link.illink.net"], "illink.net", str_replace(["go.owllink.net", "link.owllink.net"] ,"owllink.net", str_replace(["go.birdurls.com", "link.birdurls.com"], "birdurls.com", str_replace(["bitcosite.com/1", "nx.chainfo.xyz"], "go.bitcosite.com", str_replace(["shrinkme.site", "shrinkme.org", "shrinkme.info", "shrinkme.us"],"en.shrinke.me", str_replace("shrinke.us", "en.shrinke.me", $url))))))))))))))))))))))))))))))))))))))))))))))))))))));
-        $run = build($url);#die(print_r($cookie));
+        $url = str_replace("m.addurl.biz", "finish.addurl.biz", str_replace("m.wdu.info", "finish.wdu.info", str_replace("ser2.crazyblog.in", "ser3.crazyblog.in", str_replace("link.urlfly.xyz", "urlfly.xyz",str_replace("845265.xyz", "inlinks.online", str_replace("m.onelinks.nl", "finish.onelinks.nl", str_replace("go.favelink.top", "favelink.top", str_replace("adcorto.com", "link.adcorto.com", str_replace("120898.xyz", "c2g.at", str_replace("link.24payu.top", "go2.24payu.top", str_replace("go.urlcash.site", "urlcash.site", str_replace(["go.cutlink.xyz", "151989.xyz"], "cutlink.xyz", str_replace("go.paylinks.cloud", "paylinks.cloud", str_replace("go.shortsme.in", "shortsme.in", str_replace("short.paylinks.cloud", "paylinks.cloud", str_replace("clik.pw", "pwrpa.cc/go", str_replace("teralinks.in", "go.teralinks.in", str_replace("short2money.com", "forextrader.site/NewLink", str_replace("lollty.com", "forextrader.site/SkipLink", str_replace("adbitfly.com/short", "adbitfly.com", str_replace("m.pkr.pw", "jameeltips.us/blog", str_replace("go.foxylinks.site", "link.foxylinks.site", str_replace(["go.bitss.sbs", "546512.xyz", "489651.xyz"], "bitss.sbs", str_replace("go.shtfly.com", "shtfly.com", str_replace(["go.eazyurl.xyz", "link.eazyurl.xyz"],"eazyurl.xyz", str_replace(["go.faho.us", "141989.xyz"], "faho.us", str_replace(["go.urlcut.pro", "131989.xyz"], "urlcut.pro", str_replace(["go.revcut.net", "l2.revcut.net", "go.revcut.net", "121989.xyz"], "revcut.net", str_replace("kyshort.xyz/go", "kyshort.xyz", str_replace(["go.viewfr.com", "m.viewfr.com", "s1.addurl.biz"], "thanks.viewfr.com", str_replace(["go.wez.info", "m.wez.info", "s2.addurl.biz"] ,"thanks.wez.info", str_replace(["go.tinygo.co", "m.tinygo.co", "s3.addurl.biz", "hbz.us"],"thanks.tinygo.co", str_replace("links.earnify.pro", "earnify.pro", str_replace("link.revly.click", "en.revly.click", str_replace("link.short2url.in", "techyuth.xyz/blog", str_replace("short.dash-free.com", "dash-free.com", str_replace("link.vielink.top", "short.vielink.top", str_replace("usalink.io", "link.theconomy.me", str_replace("url.beycoin.xyz/short", "url.beycoin.xyz", str_replace("link.adlink.click", "blog.adlink.click", str_replace("linksfly.link", "linksfly.link", str_replace(["go.shorti.io", "shorti.io"],"blog.financeandinsurance.xyz", str_replace(["shrinkme.cc", "shrinkme.pro"], "en.shrinke.me", str_replace(["link.shrinkme.link"], "blog.shrinkme.link", str_replace("go.hatelink.me", "q.hatelink.me", str_replace("linksly.co", "go.linksly.co", str_replace("link.usalink.io", "link.theconomy.me", str_replace("go.megafly.in", "get.megafly.in", str_replace("go.megaurl.in", "get.megaurl.in", str_replace("go.mtraffics.com", "get.mtraffics.com", str_replace(["go.illink.net", "link.illink.net"], "illink.net", str_replace(["go.owllink.net", "link.owllink.net"] ,"owllink.net", str_replace(["go.birdurls.com", "link.birdurls.com"], "birdurls.com", str_replace(["bitcosite.com/1", "chainfo.xyz/next", "nx.chainfo.xyz"], "go.bitcosite.com", str_replace(["shrinkme.site", "shrinkme.org", "shrinkme.info", "shrinkme.us"],"en.shrinke.me", str_replace("shrinke.us", "en.shrinke.me", $url))))))))))))))))))))))))))))))))))))))))))))))))))))))));
+        $run = build($url);#die(print_r($r));
         $r = base_short($run["links"], 0, 0, $referer, $cloud, $cookie, 0, $proxy);
         $cookie[] = $r["cookie"];
         $t = $r["token_csrf"];;
@@ -801,7 +805,8 @@ function bypass_shortlinks($url, $separator = 0) {
                 array_merge(array_diff($t[2], [$t[1][0], $t[2][0]]))
             );
         }
-
+        
+        
         if (explode('"', $t[1][2])[0] == "ad_form_data" || explode('"', $t[1][1])[0] == "ad_form_data") {
             $data = data_post($t, "four");
             L($coundown);
@@ -811,7 +816,7 @@ function bypass_shortlinks($url, $separator = 0) {
             } elseif (preg_match("#(short2money.com)#is", $host)) {
                 $run["go"][0] = str_replace("forextrader.site", "forextrader.site/NewLink", $run["go"][0]);
             }
-            $r1 = base_short(str_replace("pwrpa.cc", "pwrpa.cc/go", str_replace("jameeltips.us", "jameeltips.us/blog", str_replace("techyuth.xyz", "techyuth.xyz/blog", $run["go"][0]))), 1, $data, 0, $cloud, $cookie)["json"];
+            $r1 = base_short(str_replace("pwrpa.cc", "pwrpa.cc/go", str_replace("jameeltips.us", "jameeltips.us/blog", str_replace("techyuth.xyz", "techyuth.xyz/blog", $run["go"][0]))), 1, $data, 0, $cloud, $cookie, 0, $proxyv)["json"];
             #die(print_r($r1));
             if (strpos($r1->url, "limit") !== false){
                 print m."kena limit kontol!".n;
@@ -1239,7 +1244,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|chainfo.xyz|coinfays.com)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com)#is", $host)) {
         $url = str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace("/short/", "/", $url));
         
         if ($method_proxy == "proxyscrape") {
@@ -1346,7 +1351,18 @@ function bypass_shortlinks($url, $separator = 0) {
                 $knt[] = $final;
                 #print_r($r);//exit;
                 #if (multi_strpos($final, [$host, "go.bitcosite.com"]) !== false) {
-                if (strpos($final, "go.bitcosite.com") !== false || strpos($final, $host) !== false) {
+                //if (strpos($final, "go.bitcosite.com") !== false || strpos($final, $host) !== false) {
+                $find = array_merge([$r["url6"]] ?? [], $r["url1"] ?? []);
+                
+                for ($c = 0; $c < count ($find); $c++) {
+                    
+                    if (strpos($find[$c], str_replace("/", "", $query["path"]))) {
+                        $final = urldecode($find[$c]);
+                        break;
+                    }
+                }
+                
+                if (strpos($final, $query["path"])) {
                     
                     if ($method_proxy == "proxyscrape") {
                       
@@ -2383,6 +2399,7 @@ function config() {
     $config[] = "flukesnips";
     $config[] = "Favelink";
     $config[] = "Favelink.top";
+    $config[] = "coinfays";
     $config[] = "coinfays.com";
     $config[] = "wdu";
     $config[] = "addurl";
