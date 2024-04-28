@@ -2,6 +2,31 @@
 
 
 
+
+function getUserAgent()
+{
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-A205U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-A102U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-G960U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-N960U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; LM-X420) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; LM-Q720) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; LM-Q710(FGN)) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+	$userAgentArray[] = "Mozilla/5.0 (Android 14; Seluler; rv:68.0) Gecko/68.0 Firefox/125.0";
+	$userAgentArray[] = "Mozilla/5.0 (Android 14; Seluler; LG-M255; rv:125.0) Gecko/125.0 Firefox/125.0";
+	
+	$getArrayKey = array_rand($userAgentArray);
+	return $userAgentArray[$getArrayKey];
+
+}
+
+
+
+
+
+
+
 function joen($inputArray, $delete = false) {
     $result = "";
     $temp = [];
@@ -395,105 +420,10 @@ function scrape_list() {
 
 
 
-/*function scrape_valid($validasi = false) {
-    re:
-    $key_scrape = save("key_scrape");
-    $h = ["user-agent: Mozilla/5.0"];
-    $url = "https://api.proxyscrape.com/v2/account/datacenter_shared/whitelist?sessionid=$key_scrape&userid=$key_scrape&type=";
-
-    while(true) {
-        print p."mengecek ip";
-        r();
-        $my_ip = curl("https://api.proxyscrape.com/ip.php", $h)[1];
-      
-        if (!file_get_contents("key_scrape")) {
-            unlink("key_scrape");
-            goto re;
-        } elseif (!$my_ip) {
-            sleep(5);
-            continue;
-        } elseif (!file_get_contents("my_ip")) {
-            file_put_contents("my_ip", $my_ip);
-            sleep(5);
-            continue;
-        } elseif (file_get_contents("my_ip") !== $my_ip) {
-            file_put_contents("my_ip", $my_ip);
-            sleep(5);
-            unlink("my_ip");
-            continue;
-        } elseif (file_get_contents("my_ip") == $my_ip) {
-            break;
-        } 
-    }
-    
-    $boost = 0;
-    while(true) {
-        $boost++;
-        if (!file_get_contents("key_scrape")) {
-            goto re;
-        }
-        print p."verifikasi proxy api";
-        r();
-        $bas = curl($url."get", $h)[2];
-        $my_ip_up = $bas->whitelisted[0];
-        if ($bas->status == "invalid") {
-            
-            if ($boost >= 5) {
-                print k."sedang memastikan key";
-                sleep(5);
-                r();
-                continue;
-            }
-            print "key tidak berguna lagi silakan ganti".n;
-            unlink("key_scrape");
-            goto re;
-        } elseif ($my_ip == $my_ip_up) {
-          
-            if ($validasi) {
-                print p."proxy safety";
-                r();
-                return "ok";
-            }
-            $base = curl("https://api.proxyscrape.com/v2/account/datacenter_shared/proxy-list?sessionid=$key_scrape&userid=$key_scrape&type=displayproxies&format=json&draw=2&columns[0][data]=0&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=1&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=false&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=2&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=false&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=3&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=false&columns[3][search][value]=&columns[3][search][regex]=false&start=0&length=100&search[value]=&search[regex]=false&protocol=http", $h)[2]->data;
-            
-            
-            if ($base[0][1] == "HTTP") {
-                print p."mencari proxy online";
-                r();
-                $array = arr_rand($base);
-                
-                for ($i = 0; $i < count($array); $i++) {
-                  
-                    if (!$array[$i][2]) {
-                        goto re;
-                    }
-                    
-                    if ($array[$i][2] == "Online") {
-                        print p."proxy siap digunakan";
-                        r();
-                        return $array[$i][0];
-                    }
-                }
-            } else {
-                goto re;
-            }
-        } elseif ($my_ip !== $my_ip_up) {
-          
-            if (curl($url."remove&ip[]=".$my_ip_up, $h)[2]->status == "ok") {
-                sleep(2);
-                
-                if (curl($url."add&ip[]=$my_ip", $h)[2]->status == "ok") {
-                    continue;
-                }
-            }
-        }
-    }
-}*/
-
 
 
 function scrape_valid($validasi = false) {
-    re:
+    re:// return 0;
     $key_scrape = save("key_scrape");
     $h = ["user-agent: Mozilla/5.0"];
     $url = "https://api.proxyscrape.com/v2/account/datacenter_shared/whitelist?sessionid=$key_scrape&userid=$key_scrape&type=";
@@ -988,7 +918,7 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         }
         if ($alternativ_cookie) {
             $mergedCookies = call_user_func_array('array_merge', $alternativ_cookie);
-            $default[CURLOPT_COOKIE] = urldecode(http_build_query($mergedCookies, '', '%3B', PHP_QUERY_RFC3986)."%3B");
+            $default[CURLOPT_COOKIE] = http_build_query($mergedCookies, '', ';', PHP_QUERY_RFC3986).";";
             //$default[CURLOPT_COOKIE] = $alternativ_cookie;
         }
         if ($proxy) {
