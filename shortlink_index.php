@@ -1,6 +1,6 @@
 <?php
-
-
+#ndie(print_r(curl("https://api.whatismybrowser.com/api/v2/software_version_numbers/all")));
+$userAgentArray = getUserAgent();
 #https://nx.chainfo.xyz/u9Mke
 #https://urlcorner.com/CBqzuo1tu69
 #https://cutp.in/TnqH
@@ -308,6 +308,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
 
 function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
+    global $userAgentArray;
     if ($xml){
       $headers[] = 'Accept: */*';
     } else {
@@ -320,12 +321,15 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
       $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8';
     }
     $headers[] = 'Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7';
+    $headers[] = 'Proxy-Connection: close';
     ///$headers[] = 'CF-Connecting-IP: 127.0.0.1, 68.180.194.242';
     if ($agent){
     #$agent = ' (compatible; Google-Youtube-Links)';
     $agent = ' (compatible; Googlebot/2.1; +https://www.google.com/bot.html)';
     } else {
-    $user_agent = user_agent();
+    //$user_agent = user_agent();
+    //$user_agent = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+    $user_agent = $userAgentArray;
     }
     $headers[] = 'User-agent: '.$user_agent.$agent;
     if ($xml){
@@ -370,6 +374,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     preg_match('#(sessionId: ")(.*?)(")#is', $r[1], $sessionId);
     preg_match('#class="custom-heading">(.*?)<#is', $r[1], $only);//die(print_r($r[0]));
     preg_match('#var pdata = "(.*?)"#is', $r[1], $ads);//die(print_r($r[0]));
+   // print_r(set_cookie($r[0][2], 1));
     return [
         "status" => $r[0][1]["http_code"],
         "cookie" => set_cookie($r[0][2], 1),
@@ -1244,7 +1249,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com)#is", $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|_shortify.online|www.linkswift.click|shortano.link)#is", $host)) {
         $url = str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace("/short/", "/", $url));
         
         if ($method_proxy == "proxyscrape") {
@@ -1366,30 +1371,32 @@ function bypass_shortlinks($url, $separator = 0) {
                     
                     if ($method_proxy == "proxyscrape") {
                       
-                        if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz|_slfly.net|coinfays.com)#is", $host)) {
+                        if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz|_slfly.net|coinfays.com|adbitfly.com)#is", $host)) {
                             $proxy = 0;
                         } else {
                             scrape_valid(1);
                         }
                     }
-                    $cookie[] = ["ab" => 2];
+                    
                     if (strpos($final, "&token") !== false) {
                         $step_final = explode("?url=", str_replace("&token", "?tk", $final))[1];
                       
                     } else {
                         $step_final = explode("?url=", str_replace("&tk", "?token", $final))[1];
                     }
+                    $cookie[] = ["ab" => 2];
                     $r = base_short($final, 0, 0, $url1, 0, $cookie);
                     $cookie[] = $r["cookie"];
+                    
                     $r = base_short($step_final, 0, 0, $final, 0, $cookie, 0, $proxy);
                     $cookie[] = $r["cookie"];
                     $t = $r["token_csrf"];
-                    #die(print_r($r));
+                   # die(print_r($r));
                     if (explode('"', $t[1][2])[0] == "ad_form_data") {
                         $data = data_post($t, "four");
                         L($coundown);
                         $r1 = base_short(build($step_final)["go"][0], 1, $data, $step_final, 0, $cookie, 0, $proxy)["json"];
-                        #die(print_r($r1));
+                    #  die(print_r($r1));
                         if (preg_match("#(http)#is", $r1->url)) {
                             print h.$r1->status;
                             r();
