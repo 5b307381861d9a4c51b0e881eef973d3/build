@@ -2,6 +2,38 @@
 
 
 
+function flashproxy($skip = 0) {
+    if ($skip) {
+        return '';
+    }
+    exe:
+    $name = "flashproxy.txt";
+    $file_content = file_get_contents($name);
+    
+    if ($file_content === false || strlen($file_content) == 0){# || strpos($file_content, "flashproxy") !== false) {
+        print "pastikan kamu sudah ada file ".$name.n;
+        tx("enter to continue");
+        goto exe;
+    }
+    $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))[0];
+    $parts = explode(':', $proxy_array);
+    $proxy = str_replace(n, "", $parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://api.ipify.org');
+    curl_setopt($ch, CURLOPT_PROXY, $proxy);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    if (validateIP($response)) {
+        print p."proxy siap digunakan";
+        r();
+        return $proxy;
+    } else {
+        goto exe;
+    }
+    
+}
 
 function getUserAgent()
 {
@@ -422,7 +454,7 @@ function scrape_list() {
 
 
 
-function scrape_valid($validasi = false) {
+function proxyscrape($validasi = false) {
     re:// return 0;
     $key_scrape = save("key_scrape");
     $h = ["user-agent: Mozilla/5.0"];
