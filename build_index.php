@@ -2,6 +2,7 @@
 
 
 
+
 function flashproxy($skip = 0) {
     if ($skip) {
         return '';
@@ -15,21 +16,30 @@ function flashproxy($skip = 0) {
         tx("enter to continue");
         goto exe;
     }
-    $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))[0];
+    $proxy_array = trimed(arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))[0]);
     $parts = explode(':', $proxy_array);
-    $proxy = str_replace(n, "", $parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+    $proxy = $parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1];
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://api.ipify.org');
+    curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
     curl_setopt($ch, CURLOPT_PROXY, $proxy);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
     $response = curl_exec($ch);
     curl_close($ch);
-    
+    $info = curl_getinfo($ch);
+    if ($info["http_code"] == 0) {
+        print m."proxy mati";
+        r();
+        goto exe;
+    }
+
     if (validateIP($response)) {
         print p."proxy siap digunakan";
         r();
         return $proxy;
     } else {
+        print m."proxy mati";
+        r();
         goto exe;
     }
     
