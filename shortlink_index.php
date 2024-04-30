@@ -1,6 +1,6 @@
 <?php
 #ndie(print_r(curl("https://api.whatismybrowser.com/api/v2/software_version_numbers/all")));
-$userAgentArray = getUserAgent();
+
 #https://nx.chainfo.xyz/u9Mke
 #https://urlcorner.com/CBqzuo1tu69
 #https://cutp.in/TnqH
@@ -346,6 +346,7 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
 
 
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
+    $userAgentArray = getUserAgent();
     start:
     $r = curl($url,h_short($xml, $referer, $agent, $boundary), $data,false,false, $alternativ_cookie, $proxy);
     if ($r[0][1]["http_code"] == "0") {
@@ -500,8 +501,8 @@ function bypass_shortlinks($url, $separator = 0) {
     }
     if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|_revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz".$request_proxy.")#is", $host)) {
       
-        if ($method_proxy == "proxyscrape") {
-            $proxy = scrape_valid();
+        if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
+            $proxy = mode_proxy();
             if (preg_match("#(chainfo.xyz)#is", $host)) {
                 $proxyv = $proxy;
                 $proxy = 0;
@@ -1252,8 +1253,8 @@ function bypass_shortlinks($url, $separator = 0) {
     } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|_shortify.online|www.linkswift.click|shortano.link)#is", $host)) {
         $url = str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace("/short/", "/", $url));
         
-        if ($method_proxy == "proxyscrape") {
-            $proxy = scrape_valid();
+        if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
+            $proxy = mode_proxy();
             $r = base_short(str_replace("http:", "https:", $url), 0, 0, 0, 0, 0, 0, $proxy);
         } elseif ($method_proxy == "scraperapi") {
             $apikey = save("scraperapi");
@@ -1369,12 +1370,12 @@ function bypass_shortlinks($url, $separator = 0) {
                 
                 if (strpos($final, $query["path"])) {
                     
-                    if ($method_proxy == "proxyscrape") {
+                    if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
                       
-                        if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz|_slfly.net|coinfays.com|adbitfly.com)#is", $host)) {
+                        if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz|_slfly.net|adbitfly.com)#is", $host)) {
                             $proxy = 0;
                         } else {
-                            scrape_valid(1);
+                            mode_proxy(1);
                         }
                     }
                     
@@ -1396,7 +1397,7 @@ function bypass_shortlinks($url, $separator = 0) {
                         $data = data_post($t, "four");
                         L($coundown);
                         $r1 = base_short(build($step_final)["go"][0], 1, $data, $step_final, 0, $cookie, 0, $proxy)["json"];
-                    #  die(print_r($r1));
+                     // die(print_r($r1));
                         if (preg_match("#(http)#is", $r1->url)) {
                             print h.$r1->status;
                             r();
@@ -1683,7 +1684,7 @@ function bypass_shortlinks($url, $separator = 0) {
     } elseif (preg_match("#(clks.pro)#is", $host)) {
         $run = build($url);
         if (file_get_contents("key_scrape")) {
-            #$scrape = scrape_valid();
+            #$scrape = mode_proxy();
         }
         $time = time() + $seconds;
         $r = base_short($url);
