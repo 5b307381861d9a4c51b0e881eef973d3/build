@@ -1,12 +1,7 @@
 <?php
 
 
-
-
-function flashproxy($skip = 0) {
-    if ($skip) {
-        return '';
-    }
+function flashproxy($validasi = 0) {
     exe:
     $name = "flashproxy.txt";
     $file_content = file_get_contents($name);
@@ -16,24 +11,34 @@ function flashproxy($skip = 0) {
         tx("enter to continue");
         goto exe;
     }
-    $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+    if ($validasi) {
+        $proxy_array = array_fill(0, 10, $validasi);
+    } else {
+        $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+    }
     
     for ($i = 0; $i < count($proxy_array); $i++) {
       
         if (!$proxy_array[$i]) {
-          goto exe;
+            goto exe;
         }
-        $parts = explode(':', $proxy_array[$i]);
-        $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+        if ($validasi) {
+            $proxy = $validasi;
+        } else {
+            $parts = explode(':', $proxy_array[$i]);
+            $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+        }
         $timeout = 10;
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
+        curl_setopt($ch, CURLOPT_URL, 'https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites');
+        //curl_setopt($ch, CURLOPT_URL, 'https://easycut.io');
+       // curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
         curl_setopt($ch, CURLOPT_PROXY, $proxy);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         $start_time = microtime(true);
-        $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch));
         $end_time = microtime(true);
         $total_time = $end_time - $start_time;
         curl_close($ch);
@@ -43,17 +48,23 @@ function flashproxy($skip = 0) {
             r();
             continue;
         }
-        $info = curl_getinfo($ch);
-        
-        if ($info["http_code"] == 0) {
+        $country = $response->country;
+        if (!$country || curl_getinfo($ch, CURLINFO_HTTP_CODE) == 0 || !empty(curl_error($ch)) || curl_errno($ch) !== 0) {
             print m."proxy mati";
             r();
             continue;
         }
-
-        if (validateIP($response)) {
+        
+        if ($response || validateIP($response->ip)) {
+          
+            if ($validasi) {
+                print p."proxy ok";
+                r();
+                return 1;
+            }
             print p."proxy siap digunakan";
             r();
+            print k."server: ".$country." | ".$response->ip.n;
             return $proxy;
         } else {
             print m."proxy mati";
@@ -61,8 +72,8 @@ function flashproxy($skip = 0) {
             continue;
         }
     }
-    
 }
+
 
 function getUserAgent()
 {
