@@ -501,15 +501,15 @@ function bypass_shortlinks($url, $separator = 0) {
         $url = "https://ser7.crazyblog.in".explode("p=", $url)[1];
         $host = parse_url($url)["host"];
     }
-    if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|_revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz".$request_proxy.")#is", $host)) {
+    if (preg_match("#(go.bitss.sbs|489651.xyz|546512.xyz|go.shtfly.com|_revcut.net|l2.revcut.net|121989.xyz|go.urlcut.pro|131989.xyz|go.faho.us|141989.xyz|go.eazyurl.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net".$request_proxy.")#is", $host)) {
       
         if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
             $proxy = mode_proxy();
-            if (preg_match("#(chainfo.xyz)#is", $host)) {
+            if ("chainfo.xyz" == $host) {
                 $proxyv = $proxy;
                 $proxy = 0;
             }
-        } elseif ($method_proxy == "scraperapi") {
+        }/* elseif ($method_proxy == "scraperapi") {
             $apikey = save("scraperapi");
             $r = base_short(str_replace("http:", "https:", $url), 0, 0, "https://away.vk.com/", 0, 0, 0, "http://scraperapi:".$apikey."@proxy-server.scraperapi.com:8001");sleep(30);
             $cookie[] = $r["cookie"];#die(print_r($r));
@@ -526,7 +526,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 save("scraperapi");
                 goto ulang;
             }
-        }
+        }*/
     }
         
     if (preg_match("#(luckydice.net|kalimbanote.com|cryptoflare.cc|myhealths.icu|clk.st|urlsfly.me|wefly.me|shortsfly.me|linksfly.me|clicksfly.me|3link.co)#is", $host)) {
@@ -1254,37 +1254,8 @@ function bypass_shortlinks($url, $separator = 0) {
         }
     } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net)#is", $host)) {
         $url = str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace("/short/", "/", $url));
-        
-        if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
-            /*
-            if (preg_match("#(coinfays.com)#is", $host)) {
-                $proxy = 0;
-            } else {
-                $proxy = mode_proxy();
-            }*/
-            $proxy = mode_proxy();
-            $cookie[] = ["ab" => 2];
-            //$cookie[] = ["prefetchAd_7077598" => 1];
-            $r = base_short(str_replace("http:", "https:", $url), 0, 0, $url, 0, $cookie, 0, $proxy);
-        } elseif ($method_proxy == "scraperapi") {
-            $apikey = save("scraperapi");
-            $r = base_short(str_replace("http:", "https:", $url), 0, 0, 0, 0, 0, 0, "http://scraperapi:".$apikey."@proxy-server.scraperapi.com:8001");
-            if (md5($r["res"]) == "2334dc46017fbf6c6e1822a69efae72a") {
-                print m."apikey telah mencapai batas!".n;
-                unlink("scraperapi");
-                line();
-                save("scraperapi");
-                goto ulang;
-            } elseif (md5($r["res"]) == "a131fb6ed39facd8bccf24c597f56d5f") {
-                print m."invalid: ".$apikey.n;
-                unlink("scraperapi");
-                line();
-                save("scraperapi");
-                goto ulang;
-            }
-        } else {
-            $r = base_short($url);
-        }
+        $cookie[] = ["ab" => 2];
+        $r = base_short(str_replace("http:", "https:", $url), 0, 0, $url, 0, $cookie, 0, $proxy);
         $cookie[] = $r["cookie"];
         $url0 = urldecode($r["url6"]);
         #die(print_r($r));
@@ -1386,7 +1357,10 @@ function bypass_shortlinks($url, $separator = 0) {
                         if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz|_slfly.net|adbitfly.com)#is", $host)) {
                             $proxy = 0;
                         } else {
-                            mode_proxy(1);
+                          
+                            if(!mode_proxy($proxy)) {
+                                return "refresh";
+                            }
                         }
                     }
                     
