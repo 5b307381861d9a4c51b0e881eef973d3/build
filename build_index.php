@@ -16,31 +16,50 @@ function flashproxy($skip = 0) {
         tx("enter to continue");
         goto exe;
     }
-    $proxy_array = trimed(arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))[0]);
-    $parts = explode(':', $proxy_array);
-    $proxy = $parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
-    curl_setopt($ch, CURLOPT_PROXY, $proxy);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    $info = curl_getinfo($ch);
-    if ($info["http_code"] == 0) {
-        print m."proxy mati";
-        r();
-        goto exe;
-    }
+    $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+    
+    for ($i = 0; $i < count($proxy_array); $i++) {
+      
+        if (!$proxy_array[$i]) {
+          goto exe;
+        }
+        $parts = explode(':', $proxy_array[$i]);
+        $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+        $timeout = 10;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
+        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        $start_time = microtime(true);
+        $response = curl_exec($ch);
+        $end_time = microtime(true);
+        $total_time = $end_time - $start_time;
+        curl_close($ch);
+        
+        if ($total_time > $timeout) {
+            echo m."Response lambat";
+            r();
+            continue;
+        }
+        $info = curl_getinfo($ch);
+        
+        if ($info["http_code"] == 0) {
+            print m."proxy mati";
+            r();
+            continue;
+        }
 
-    if (validateIP($response)) {
-        print p."proxy siap digunakan";
-        r();
-        return $proxy;
-    } else {
-        print m."proxy mati";
-        r();
-        goto exe;
+        if (validateIP($response)) {
+            print p."proxy siap digunakan";
+            r();
+            return $proxy;
+        } else {
+            print m."proxy mati";
+            r();
+            continue;
+        }
     }
     
 }
