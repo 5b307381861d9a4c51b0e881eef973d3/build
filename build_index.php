@@ -12,7 +12,7 @@ function flashproxy($validasi = 0) {
         goto exe;
     }
     if ($validasi) {
-        $proxy_array = array_fill(0, 10, $validasi);
+        $proxy_array = array_fill(0, 15, $validasi);
     } else {
         $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
     }
@@ -28,20 +28,19 @@ function flashproxy($validasi = 0) {
             $parts = explode(':', $proxy_array[$i]);
             $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
         }
-        $timeout = 10;
+        $timeout = 30;
         $ch = curl_init();
         $url = 'https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites';
         curl_setopt($ch, CURLOPT_URL, $url);
-        //curl_setopt($ch, CURLOPT_URL, 'https://easycut.io');
-       // curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
         curl_setopt($ch, CURLOPT_PROXY, $proxy);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         $start_time = microtime(true);
-        $response = json_decode(curl_exec($ch));
+        $response = curl_exec($ch);
         $end_time = microtime(true);
         $total_time = $end_time - $start_time;
+        $info = curl_getinfo($ch);
         curl_close($ch);
         
         if ($total_time > $timeout) {
@@ -49,14 +48,14 @@ function flashproxy($validasi = 0) {
             r();
             continue;
         }
-        $country = $response->country;
-        if (!$country || curl_getinfo($ch, CURLINFO_HTTP_CODE) == 0 || !empty(curl_error($ch)) || curl_errno($ch) !== 0) {
+
+        if (!$info["primary_ip"] || $info["http_code"] == 0 || !empty(curl_error($ch)) || curl_errno($ch) !== 0) {
             print m."proxy mati";
             r();
             continue;
         }
-        
-        if ($response || validateIP($response->ip)) {
+        $json = json_decode($response);
+        if ($response || validateIP($json->ip)) {
           
             if ($validasi) {
                 print p."proxy ok";
@@ -65,7 +64,10 @@ function flashproxy($validasi = 0) {
             }
             print p."proxy siap digunakan";
             r();
-            print k."server: ".$country." | ".$response->ip.n;
+           
+            if ($json->country) {
+              print k."server: ".$json->country." | ".$json->ip.n;
+            }
             return $proxy;
         } else {
             print m."proxy mati";
