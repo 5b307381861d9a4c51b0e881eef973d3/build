@@ -30,7 +30,8 @@ function flashproxy($validasi = 0) {
         }
         $timeout = 10;
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites');
+        $url = 'https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites';
+        curl_setopt($ch, CURLOPT_URL, $url);
         //curl_setopt($ch, CURLOPT_URL, 'https://easycut.io');
        // curl_setopt($ch, CURLOPT_URL, 'https://api.proxyscrape.com/ip.php');
         curl_setopt($ch, CURLOPT_PROXY, $proxy);
