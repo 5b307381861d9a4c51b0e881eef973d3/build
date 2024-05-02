@@ -2,6 +2,9 @@
 
 
 function flashproxy($validasi = 0) {
+    if ($validasi == 1) {
+        return 1;
+    }
     exe:
     $name = "flashproxy.txt";
     $file_content = file_get_contents($name);
