@@ -2,8 +2,9 @@
 
 
 function flashproxy($validasi = 0) {
+  
     if ($validasi == 1) {
-        return 1;
+        return "";
     }
     exe:
     $name = "flashproxy.txt";
@@ -14,57 +15,24 @@ function flashproxy($validasi = 0) {
         tx("enter to continue");
         goto exe;
     }
-    if ($validasi) {
-        $proxy_array = array_fill(0, 15, $validasi);
-    } else {
-        $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
-    }
+    $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
     
     for ($i = 0; $i < count($proxy_array); $i++) {
       
         if (!$proxy_array[$i]) {
             goto exe;
         }
-        if ($validasi) {
-            $proxy = $validasi;
-        } else {
-            $parts = explode(':', $proxy_array[$i]);
-            $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
-        }
-        $timeout = 30;
-        $ch = curl_init();
-        $url = 'https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites';
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_PROXY, $proxy);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        $start_time = microtime(true);
-        $response = curl_exec($ch);
-        $end_time = microtime(true);
-        $total_time = $end_time - $start_time;
-        $info = curl_getinfo($ch);
-        curl_close($ch);
-        
-        if ($total_time > $timeout) {
-            echo m."Response lambat";
-            r();
-            continue;
-        }
+        $parts = explode(':', $proxy_array[$i]);
+        $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+        $json = curl("https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites", 0, 0, 0, 0, 0, $proxy)[2];
 
-        if (!$info["primary_ip"] || $info["http_code"] == 0 || !empty(curl_error($ch)) || curl_errno($ch) !== 0) {
+        if (!$json->country || !$json->ip) {
             print m."proxy mati";
             r();
             continue;
         }
-        $json = json_decode($response);
+        
         if ($response || validateIP($json->ip)) {
-          
-            if ($validasi) {
-                print p."proxy ok";
-                r();
-                return 1;
-            }
             print p."proxy siap digunakan";
             r();
            
@@ -960,9 +928,9 @@ function ket_line($a, $aa, $b = 0, $bb = 0, $c = 0, $cc = 0) {
 }
 
 function curl($url, $header = false, $post = false, $followlocation = false, $cookiejar = false, $alternativ_cookie = false, $proxy = false) {
-    $i = 0;
+    $x = 0;
     while (true) {
-        $i++;
+        $x++;
         if (!parse_url($url)["scheme"]) {
             print m."url tidak valid";
             sleep(2);
@@ -1034,10 +1002,15 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
             }
         }
         if ($info["http_code"] == 0) {
-            if (10 >= $i) {
+          
+            if (15 >= $x) {
                 print k.movePage()[$info["http_code"]];
                 r();
                 continue;
+            }
+            
+            if (strpos($proxy, 'flashproxy') !== false) {
+                return [[$header_array, $info, $output], $response, json_decode(str_replace([n, "﻿"], "", strip_tags($response)))];
             }
         }
         print p.movePage()[$info["http_code"]];
