@@ -1350,9 +1350,7 @@ function bypass_shortlinks($url, $separator = 0) {
                     if (preg_match("#(revcut.net|faho.us|urlcut.pro|bitad.org|cutlink.xyz|inlinks.online|bitss.sbs|chainfo.xyz)#is", $host)) {
                         $proxy = 0;
                     } else {
-                        if(!mode_proxy($proxy)) {
-                            return "refresh";
-                        }
+                        mode_proxy(1);
                     }
                 }
                 #print_r($r);
