@@ -37,7 +37,10 @@ function flashproxy($validasi = 0) {
             r();
            
             if ($json->country) {
-              print k."server: ".$json->country." | ".$json->ip.n;
+              
+                if (defined('bypassed')) {
+                    print k."server: ".$json->country." | ".$json->ip.n;
+                }
             }
             return $proxy;
         } else {
