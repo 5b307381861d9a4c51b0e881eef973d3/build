@@ -349,16 +349,12 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     $userAgentArray = getUserAgent();
     start:
     $r = curl($url,h_short($xml, $referer, $agent, $boundary), $data,false,false, $alternativ_cookie, $proxy);
-    /*if (!$r) {
-        return "";
-    }*/
-    if ($r[0][1]["http_code"] == "37720") {
-      goto start;
-    }#class="h-captcha is-hidden" data-callback="onCaptchaPass" data-sitekey="215ae94b-b7f2-4cc6-9af0-ee259eca5ad1"></div>
+    
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
     preg_match('#(invisible_reCAPTCHA_site_key":")(.*?)(")#is', $r[1], $invisible_recaptchav2);
     preg_match('#(h-captcha is-hidden" data-callback="onCaptchaPass" data-sitekey="|hcaptcha_checkbox_site_key":"|h-captcha" data-sitekey="|get_cap_data" data-site_key=")(.*?)(")#is', $r[1], $hcaptcha);
     preg_match('#(render=|g-recaptcha btn btn-warning" data-sitekey=")(.*?)(")#is', $r[1], $recaptchav3);
+    preg_match('#window.location.replace[(]"(.*?)"#is', $r[1], $url0);
     preg_match_all('#(window.location.replace[(]"|submit_data" action="|<a href="|action="|href = ")(.*?)(")#is', $r[1], $url1);
     preg_match_all("#(url='|location.href ='|<a href='|var api =".n."  ')(.*?)(')#is", $r[1], $url2);
     preg_match_all("#window.open(.*?)'(.*?)'#is", $r[1], $url3);
@@ -397,6 +393,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
         "timer" => $timer[2],
         "json" => json_decode($r[1]),
         "url" => $r[0][1]["redirect_url"],
+        "url0" => $url0[1],
         "url1" => $url1[2],
         "url2" => $url2[2],
         "url3" => $url3[2],
@@ -482,7 +479,7 @@ function executeNode($r, $stripslashes = 0) {
 }
 
 function bypass_shortlinks($url, $separator = 0) {
-    global $only_sl, $request_proxy, $method_proxy;
+    global $only_sl, $request_proxy, $method_proxy, $redirect_url;
     $url = str_replace("http:", "https:", $url);
     $coundown = 15;
     $seconds = 90;
@@ -1260,7 +1257,7 @@ function bypass_shortlinks($url, $separator = 0) {
     } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|kotenkoshort.xyz)#is", $host)) {
         $url = str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace("/short/", "/", $url));
         //$cookie[] = ["ab" => 2];
-        $r = base_short(str_replace("http:", "https:", $url), 0, 0, $url, 0, $cookie, 0, $proxy);
+        $r = base_short(str_replace("http:", "https:", $url), 0, 0, $redirect_url, 0, $cookie, 0, $proxy);
         $cookie[] = $r["cookie"];
         $url0 = urldecode($r["url6"]);
         #die(print_r($r));
@@ -1278,9 +1275,9 @@ function bypass_shortlinks($url, $separator = 0) {
         L(20);
         $r = base_short($url0, 0, 0, $url, 0, $cookie);
         $cookie[] = $r["cookie"];
-        $r = base_short($url1["url"]."?url8j=".$url, 0, 0, $url0, 0, $cookie);
+        $r = base_short($url1["url"]."?overrideSession=".$url, 0, 0, $url0, 0, $cookie);
         $cookie[] = $r["cookie"];
-        $url1 = $r["url"] ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
+        $url1 = $r["url"];// ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
 
         if (strpos($url1, "http") === false) {
           print m."mencoba generate ulang";
@@ -1320,7 +1317,7 @@ function bypass_shortlinks($url, $separator = 0) {
                     $r["token_csrf5"][1][0] => "true"
                 ]);
             } else {
-                L(25);
+                L(30);
                 $data = http_build_query([
                     "no-recaptcha-noresponse" => "true",
                     $valid => "true"
@@ -1348,9 +1345,9 @@ function bypass_shortlinks($url, $separator = 0) {
                 goto ulang;
             }
             $cookie[] = $r["cookie"];
-            $final = urldecode($r["url1"][1] ? $r["url1"][1] :  ($r["url1"][0] ? $r["url1"][0] : ($r["url6"] ? $r["url6"] : "")));
+            $final = urldecode($r["url0"] ? $r["url0"] : ( $r["url1"][1] ? $r["url1"][1] :  ($r["url1"][0] ? $r["url1"][0] : "")));
             $knt[] = $final;
-            $find = array_merge([$r["url6"]] ?? [], $r["url1"] ?? []);
+            $find = array_merge([$r["url0"]] ?? [], $r["url1"] ?? []);
             
             for ($c = 0; $c < count ($find); $c++) {
               
