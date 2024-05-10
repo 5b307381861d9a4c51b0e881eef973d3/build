@@ -32,13 +32,16 @@ function flashproxy($validasi = 0) {
         }
         
         if (validateIP($json->ip)) {
-          
+            print p."sedang mendeteksi proxy/VPN or Tor";
+            sleep(1);
+            r();
+
             if ($json->privacy->proxy || $json->privacy->tor || $json->privacy->vpn) {
                 print m."terdeteksi proxy/VPN or Tor";
                 r();
                 continue;
             }
-            $js = curl("https://proxycheck.io/v2/103.105.27.69?vpn=1&asn=1")[2]->{"103.105.27.69"};
+            $js = curl("https://proxycheck.io/v2/".$json->ip."?vpn=1&asn=1")[2]->{$json->ip};
             
             if ($js->proxy == "yes" || $js->vpn == "yes") {
                 print m."terdeteksi proxy/VPN or Tor";
@@ -55,7 +58,7 @@ function flashproxy($validasi = 0) {
             }
             
             if (defined('bypassed')) {
-                print k."server: ".$js->country." | ".$json->ip.n;
+                print k."country: ".$js->country." | ip: ".$json->ip.n;
             }
             return $proxy;
         }
