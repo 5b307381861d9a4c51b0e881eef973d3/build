@@ -10,7 +10,7 @@ function flashproxy($validasi = 0) {
     $name = "flashproxy.txt";
     $file_content = file_get_contents($name);
     
-    if ($file_content === false || strlen($file_content) == 0){# || strpos($file_content, "flashproxy") !== false) {
+    if ($file_content === false || strlen($file_content) == 0){
         print "pastikan kamu sudah ada file ".$name.n;
         tx("enter to continue");
         goto exe;
@@ -24,29 +24,40 @@ function flashproxy($validasi = 0) {
         }
         $parts = explode(':', $proxy_array[$i]);
         $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
-        $json = curl("https://ipinfo.io/?utm_source=ipecho.net&utm_medium=referral&utm_campaign=upsell_sister_sites", 0, 0, 0, 0, 0, $proxy)[2];
-
+        $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
         if (!$json->country || !$json->ip) {
             print m."proxy mati";
             r();
             continue;
         }
         
-        if ($response || validateIP($json->ip)) {
+        if (validateIP($json->ip)) {
+          
+            if ($json->privacy->proxy || $json->privacy->tor || $json->privacy->vpn) {
+                print m."terdeteksi proxy/VPN or Tor";
+                r();
+                continue;
+            }
+            $js = curl("https://proxycheck.io/v2/103.105.27.69?vpn=1&asn=1")[2]->{"103.105.27.69"};
+            
+            if ($js->proxy == "yes" || $js->vpn == "yes") {
+                print m."terdeteksi proxy/VPN or Tor";
+                r();
+                continue;
+            }
             print p."proxy siap digunakan";
             r();
            
-            if ($json->country) {
-              
-                if (defined('bypassed')) {
-                    print k."server: ".$json->country." | ".$json->ip.n;
-                }
+            if (!$js->country || !$json->country) {
+                print m."proxy mati";
+                r();
+                continue;
+            }
+            
+            if (defined('bypassed')) {
+                print k."server: ".$js->country." | ".$json->ip.n;
             }
             return $proxy;
-        } else {
-            print m."proxy mati";
-            r();
-            continue;
         }
     }
 }
@@ -968,8 +979,9 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         if ($alternativ_cookie) {
             $mergedCookies = call_user_func_array('array_merge', $alternativ_cookie);
             $default[CURLOPT_COOKIE] = http_build_query($mergedCookies, '', ';', PHP_QUERY_RFC3986).";";
-            //$default[CURLOPT_COOKIE] = $alternativ_cookie;
         }
+        
+        
         if ($proxy) {
             $default[CURLOPT_PROXY] = $proxy;
         }
@@ -980,12 +992,6 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         $response = substr($output, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $info = curl_getinfo($ch);
         curl_close($ch);
-        
-        /*if (curl_error($ch) == "CONNECT tunnel failed, response 407") {
-            print c.movePage()[$info["http_code"]];
-            r();
-            return "error";
-        }*/
         
         if (!$info["primary_ip"]) {
           
@@ -1006,7 +1012,7 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         }
         if ($info["http_code"] == 0) {
           
-            if (15 >= $x) {
+            if (10 >= $x) {
                 print k.movePage()[$info["http_code"]];
                 r();
                 continue;
