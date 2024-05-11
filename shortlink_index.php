@@ -7,7 +7,8 @@
 #eval(str_replace('<?php',"",file_get_contents(("build_index.php"))));
 
 #die(print_r(build("https://claim.cryptolink.click/kHweca")));
-
+//die(print_r(curl("https://ipinfo.io/widget/")));
+#die(print_r(curl("https://proxycheck.io/v2/103.49.202.252?proxy=1&asn=1")));
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
         $inc = "/clkclk.";
@@ -1437,7 +1438,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1["url"];
             }
         }
-    } elseif (preg_match("#(earnow.online)#is", $host)) {
+    } elseif (preg_match("#(_earnow.online)#is", $host)) {
           $r = base_short($url);
           $link_r[] = $r["url"] ? $r["url"] : ($r["url5"] ? $r["url5"] : "");
           $cookie[] = $r["cookie"];
