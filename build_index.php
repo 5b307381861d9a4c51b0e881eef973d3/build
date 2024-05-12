@@ -25,6 +25,7 @@ function flashproxy($validasi = 0) {
         $parts = explode(':', $proxy_array[$i]);
         $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
         $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
+        
         if (!$json->country || !$json->ip) {
             print m."proxy mati";
             r();
@@ -41,24 +42,24 @@ function flashproxy($validasi = 0) {
                 r();
                 continue;
             }
-            $js = curl("https://proxycheck.io/v2/".$json->ip."?vpn=1&asn=1")[2]->{$json->ip};
+           /* $js = curl("https://proxycheck.io/v2/".$json->ip."?vpn=1&asn=1")[2]->{$json->ip};
             
             if ($js->proxy == "yes" || $js->vpn == "yes") {
                 print m."terdeteksi proxy/VPN or Tor";
                 r();
                 continue;
-            }
+            }*/
             print p."proxy siap digunakan";
             r();
            
-            if (!$js->country || !$json->country) {
+            if (!$json->country) {
                 print m."proxy mati";
                 r();
                 continue;
             }
             
             if (defined('bypassed')) {
-                print k."country: ".$js->country." | ip: ".$json->ip.n;
+                print k."country: ".$json->country." | ip: ".$json->ip.n;
             }
             return $proxy;
         }
