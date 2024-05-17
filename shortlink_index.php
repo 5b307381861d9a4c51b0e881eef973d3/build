@@ -70,6 +70,7 @@ function build($url = 0) {
 
 
 function visit_short($r, $site_url = 0, $data_token = 0) {
+    $time = time() + 100;
     $file_name = "control";
     $control = file($file_name);
 
@@ -316,6 +317,11 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
                         $r2 = bypass_shortlinks($r1["url"]);
 
                         if (preg_match("#(http)#is", $r2)) {
+                            $timer = $time - time();
+                            
+                            if ($timer >= 1) {
+                                L($timer);
+                            }
                             return $r2;
                         }
                     
@@ -1292,6 +1298,10 @@ function bypass_shortlinks($url, $separator = 0) {
             }
         }
     } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun)#is", $host)) {
+        
+        if ($host == "exashorts.fun") {
+            $redirect_url = "https://exactpay.online/";
+        }
         $url = str_replace("nx.chainfo.xyz", "go.bitcosite.com", str_replace("/short/", "/", $url));
         //$cookie[] = ["ab" => 2];
         $r = base_short(str_replace("http:", "https:", $url), 0, 0, $redirect_url, 0, $cookie, 0, $proxy);
@@ -1412,7 +1422,7 @@ function bypass_shortlinks($url, $separator = 0) {
                     $step_final = explode("?url=", str_replace("&tk", "?token", $final))[1];
                 }
                 $cookie[] = ["ab" => 2];
-                $r = base_short($final, 0, 0, $url1, 0, $cookie);
+                $r = base_short($final, 0, 0, $url1, 0, $cookie, 0, $proxy);
                 $cookie[] = $r["cookie"];
                 $r = base_short(str_replace("/?", "?", $step_final), 0, 0, $final, 0, $cookie, 0, $proxy);
                 $cookie[] = $r["cookie"];
