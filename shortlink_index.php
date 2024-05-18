@@ -1339,6 +1339,11 @@ function bypass_shortlinks($url, $separator = 0) {
             $url1 = end(array_filter($knt));
             $r = base_short($url1, 0, 0, $url1, 0, $cookie);
             $cookie[] = $r["cookie"];
+            
+            if ($r["status"] == 302) {
+                $knt[] = $r["url"] ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
+                continue;
+            }
             $asu[] = $r["token_csrf5"][1][0];
             $valid = end(array_filter($asu));
             #die(print_r($r));
