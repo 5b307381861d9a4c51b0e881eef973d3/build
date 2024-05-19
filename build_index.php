@@ -19,7 +19,7 @@ function flashproxy($validasi = 0) {
   
     foreach ($proxy_array as $item) {
 
-        if (strpos($item, "-".$validasi."-") !== false) {
+        if (strpos($item, "-".$validasi."-") !== false || strpos($item, "-".$validasi."_") !== false) {
           $new_array[] = $item;
         }
     }
