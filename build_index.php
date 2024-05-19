@@ -2,7 +2,7 @@
 
 
 function flashproxy($validasi = 0) {
-  
+   # return "";
     if ($validasi == 1) {
         return "";
     }
@@ -16,7 +16,19 @@ function flashproxy($validasi = 0) {
         goto exe;
     }
     $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+  
+    foreach ($proxy_array as $item) {
+
+        if (strpos($item, "-".$validasi."-") !== false) {
+          $new_array[] = $item;
+        }
+    }
     
+    if ($new_array) {
+        unset($proxy_array);
+        $proxy_array = $new_array;
+    }
+
     for ($i = 0; $i < count($proxy_array); $i++) {
       
         if (!$proxy_array[$i]) {
