@@ -542,14 +542,14 @@ function bypass_shortlinks($url, $separator = 0) {
         $url = "https://ser7.crazyblog.in".explode("p=", $url)[1];
         $host = parse_url($url)["host"];
     }
-    if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun".$request_proxy.")#is", $host)) {
+    if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|clk.asia".$request_proxy.")#is", $host)) {
       
         if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|droplink.co|adbitfly.com|earnify.pro|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun)#is", $host)) {
             $id = "id";
         }
         if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
             $proxy = mode_proxy($id);
-            
+            #die($proxy);
             
             /*if ("chainfo.xyz" == $host) {
                 $proxyv = $proxy;
@@ -1256,11 +1256,12 @@ function bypass_shortlinks($url, $separator = 0) {
         }
     } elseif (preg_match("#(clk.asia)#is", $host)) {
         $url = str_replace("clk.asia", "clk.wiki", $url);
-        $r = base_short($url);
+        $r = base_short($url, 0, 0, 0, $redirect_url, 0, 0, $proxy);
         $cookie[] = $r["cookie"];
+        $cookie[] = ["ab" => 2];
         $t = $r["token_csrf"];
         $url1 = $url."?".http_build_query([$t[1][0] => $t[2][0]]);
-        $r = base_short($url1, 0, 0, 0, 0, $cookie);
+        $r = base_short($url1, 0, 0, 0, 0, $cookie, 0, $proxy);
         $cookie[] = $r["cookie"];
         $t = $r["token_csrf"];
        
@@ -1269,7 +1270,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $cap = request_captcha($method, $r[$method], $url1);
             $rsp = array("h-recaptcha-response" => $cap);
             $data = data_post($t, "six", $rsp);
-            $r = base_short($url1,0, $data, 0, 0, $cookie);
+            $r = base_short($url1,0, $data, 0, 0, $cookie, 0, $proxy);
         }
         $cookie[] = $r["cookie"];
         $t = $r["token_csrf"];
@@ -1277,9 +1278,13 @@ function bypass_shortlinks($url, $separator = 0) {
         if ($t[1][1] == "ad_form_data") {
             L($coundown);
             $data = data_post($t, "two");
-            $r1 = base_short(build($url)["go"][0], 1, $data, 0, 0, $cookie)["json"];
+            $r1 = base_short(build($url)["go"][0], 1, $data, 0, 0, $cookie, 0, $proxy)["json"];
             
             if (preg_match("#(http)#is", $r1->url)) {
+              
+                if ($only_sl) {
+                    return $r1;
+                }
                 h.$r1->status;
                 r();
                 return $r1->url;
