@@ -917,7 +917,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 print h.$r2->status;
                 r();
                 if ($only_sl) {
-                    return $r1;
+                    return $r2;
                 }
                 return $r2->url;
             }
