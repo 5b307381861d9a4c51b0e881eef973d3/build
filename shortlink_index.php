@@ -44,7 +44,7 @@ $cookie[] = $r["cookie"];
 die(print_r($r));
 */
 
-
+$userAgentArray = getUserAgent();
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
         $inc = "/clkclk.";
@@ -355,7 +355,7 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
     if ($xml){
       $headers[] = 'Accept: */*';
     } else {
-      $headers[] = 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v = b3;q=0.9';
+      $headers[] = 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v = b3;q=0.7';
     }
     if ($boundary){
       $headers[] = "content-type: multipart/form-data; boundary=----WebKitFormBoundary".$boundary;
@@ -364,7 +364,7 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
       $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8';
     }
     $headers[] = 'Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7';
-    $headers[] = 'Proxy-Connection: close';
+    //$headers[] = 'Proxy-Connection: close';
     ///$headers[] = 'CF-Connecting-IP: 127.0.0.1, 68.180.194.242';
     if ($agent){
     #$agent = ' (compatible; Google-Youtube-Links)';
@@ -392,7 +392,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     $userAgentArray = getUserAgent();
     start:
     $r = curl($url,h_short($xml, $referer, $agent, $boundary), $data,false,false, $alternativ_cookie, $proxy);
-    
+
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
     preg_match('#(invisible_reCAPTCHA_site_key":")(.*?)(")#is', $r[1], $invisible_recaptchav2);
     preg_match('#(h-captcha is-hidden" data-callback="onCaptchaPass" data-sitekey="|hcaptcha_checkbox_site_key":"|h-captcha" data-sitekey="|get_cap_data" data-site_key=")(.*?)(")#is', $r[1], $hcaptcha);
@@ -1088,14 +1088,16 @@ function bypass_shortlinks($url, $separator = 0) {
             $link[] = $r["url"] ? $r["url"] : "";
             $t = $r["token_csrf"];
             $url = end(array_filter($link));
-            
+ 
             if ($t[1][0]) {
                 break;
             }
                 continue;
         }
-        $data = data_post($t, "five2");
+        
+        $data = str_replace("=&", "=&f_n=sle&",query_data($t, 2));
         $r = base_short($url,0, $data, $url, 0, $cookie);
+        #die(print_r($data));
         $cookie[] = $r["cookie"];
         $t = $r["token_csrf"];
         $method = "invisible_recaptchav2";
@@ -1285,7 +1287,7 @@ function bypass_shortlinks($url, $separator = 0) {
             $method = "hcaptcha";
             $cap = request_captcha($method, $r[$method], $url1);
             $rsp = array("h-recaptcha-response" => $cap);
-            $data = data_post($t, "six", $rsp);
+            $data = query_data($t, 0, $rsp);
             $r = base_short($url1,0, $data, 0, 0, $cookie, 0, $proxy);
         }
         $cookie[] = $r["cookie"];
@@ -1293,7 +1295,7 @@ function bypass_shortlinks($url, $separator = 0) {
       
         if ($t[1][1] == "ad_form_data") {
             L($coundown);
-            $data = data_post($t, "two");
+            $data = query_data($t);
             $r1 = base_short(build($url)["go"][0], 1, $data, 0, 0, $cookie, 0, $proxy)["json"];
             
             if (preg_match("#(http)#is", $r1->url)) {
