@@ -2,7 +2,7 @@
 
 
 function flashproxy($validasi = 0) {
-   # return "";
+    #return "";
     if ($validasi == 1) {
         return "";
     }
@@ -15,11 +15,15 @@ function flashproxy($validasi = 0) {
         tx("enter to continue");
         goto exe;
     }
+
+    if ($validasi == "v2") {
+        $name = "flashproxy2.txt";
+    }
     $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
-  
+    
     foreach ($proxy_array as $item) {
 
-        if (strpos($item, "-".$validasi."-") !== false || strpos($item, "-".$validasi."_") !== false) {
+        if (strpos($item, "-99".$validasi."-") !== false || strpos($item, "-99".$validasi."_") !== false) {
           $new_array[] = $item;
         }
     }
@@ -34,10 +38,14 @@ function flashproxy($validasi = 0) {
         if (!$proxy_array[$i]) {
             goto exe;
         }
-        $parts = explode(':', $proxy_array[$i]);
-        $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+        if (strpos($proxy_array[$i], "@") !== false) {
+            $proxy = trimed($proxy_array[$i]);
+        } else {
+            $parts = explode(':', $proxy_array[$i]);
+            $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
+        }#die($proxy.n);
         $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
-        
+        #die(print_r($json));
         if (!$json->country || !$json->ip) {
             print m."proxy mati";
             r();
