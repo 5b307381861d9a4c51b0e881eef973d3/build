@@ -1,4 +1,43 @@
 <?php
+
+
+
+/*
+
+$url = 'https://carreviews.shop/';
+$apiKey = "CAI-FC3D5DE5C01BCF883676570364290AAC";
+$pageUrl = $url;
+$proxy = "bxC9uMd046QnRL0:wxgvCwuwz5@140.233.200.1:5137";
+
+//die(print_r(json_decode(file_get_contents("data.json"), 1)[explode("/", $url)[2]]));
+
+
+
+$h[] = "cookie: cf_clearance=EoAxMiRhP_9XhT5Iytp5LMppyeLVg9Rns3Bn5CDn9BY-1716883981-1.0.1.1-zjXanRNDR5RxHuJxNdotT2AvjG2oKedhx11Cu3ogbgqs1ZLH3USeXlawo3fjaSdw3vScv8fJ0UPiO8iyKVT8Lw;";
+$h[] = "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
+$t = h_short(0, 0, 0, 0, $url);
+
+
+    if ($plus = json_decode(file_get_contents("data.json"), true)[explode("/", $url)[2]]) {
+      die(print_r($plus));
+        $h[] = "cookie: ".$plus["cookie"];
+        $h[] = "user-agent: ".$plus["useragent"];
+        //$userAgentArray = $plus["useragent"];
+    }
+    //die(print_r($h));
+    //$h =  $headers;
+
+#die(print_r(curl($url, $t,0,0,0,0,$proxy)));
+#https://sharecut.io/lhlj
+die(print_r(base_short($url, 0, 0, 0, 0, 0, 0,$proxy)));
+cal($apiKey, $pageUrl, $proxy);
+exit;
+*/
+
+
+
+
 #ndie(print_r(curl("https://api.whatismybrowser.com/api/v2/software_version_numbers/all")));
 
 #https://nx.chainfo.xyz/u9Mke
@@ -350,39 +389,48 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
 
 
-function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
+function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
     global $userAgentArray;
+    
+    if ($plus = json_decode(file_get_contents("data.json"), 1)[explode("/", $url)[2]]) {
+        $userAgentArray = $plus["useragent"];
+    }
+    
     if ($xml){
-      $headers[] = 'Accept: */*';
+      $headers[] = "Accept: */*";
     } else {
-      $headers[] = 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v = b3;q=0.7';
+      $headers[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v = b3;q=0.7";
     }
     if ($boundary){
       $headers[] = "content-type: multipart/form-data; boundary=----WebKitFormBoundary".$boundary;
     }
     if ($xml){
-      $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8';
+      $headers[] = "Content-Type: application/x-www-form-urlencoded; charset=UTF-8";
     }
-    $headers[] = 'Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7';
-    $headers[] = 'Proxy-Connection: close';
+    $headers[] = "Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7";
+    $headers[] = "Proxy-Connection: close";
     ///$headers[] = 'CF-Connecting-IP: 127.0.0.1, 68.180.194.242';
     if ($agent){
     #$agent = ' (compatible; Google-Youtube-Links)';
-    $agent = ' (compatible; Googlebot/2.1; +https://www.google.com/bot.html)';
+    $agent = " (compatible; Googlebot/2.1; +https://www.google.com/bot.html)";
     } else {
     //$user_agent = user_agent();
     //$user_agent = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
     $user_agent = $userAgentArray;
     }
-    $headers[] = 'User-agent: '.$user_agent.$agent;
+    $headers[] = "user-agent: ".$user_agent;#.$agent;
     if ($xml){
-        $headers[] = 'X-Requested-With: XMLHttpRequest';
+        $headers[] = "X-Requested-With: XMLHttpRequest";
     }
     if ($referer){
-        $headers[] = 'referer: '.$referer;
+        $headers[] = "referer: ".$referer;
     }
+    //$headers[] = "cookie: ".$plus["cookie"];
+   
     return $headers;
 }
+
+
 
 
 
@@ -391,7 +439,7 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0){
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
     $userAgentArray = getUserAgent();
     start:
-    $r = curl($url,h_short($xml, $referer, $agent, $boundary), $data,false,false, $alternativ_cookie, $proxy);
+    $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
 
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
     preg_match('#(invisible_reCAPTCHA_site_key":")(.*?)(")#is', $r[1], $invisible_recaptchav2);
@@ -543,7 +591,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $host = parse_url($url)["host"];
     }
     if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|clk.asia|insfly.pw|clik.pw|swiftlnx.com|adcorto.com|short2money.com|bestlink.pro|shorti.io|shortplus.xyz|usalink.io|linksly.co|ex-foary.com|short2url.in|f.technicalatg.in|atglinks.com|ziplinker.net|tii.la|lnbz.la|exalink.fun|hatelink.me|wdu.info|addurl.biz|tinygo.co|viewfr.com|wez.info|24payu.top|freeltc.top|linkpays.in|link.urlfly.xyz|shrinkme.cc|tlin.me|loptelink.com".$request_proxy.")#is", $host)) {
-      
+       
         if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|linksfly.link|chainfo.xyz|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|droplink.co|adbitfly.com|earnify.pro|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|bestlink.pro|shortplus.xyz|short2url.in|exalink.fun|hatelink.me|wdu.info|addurl.biz|tinygo.co|viewfr.com|wez.info|24payu.top|freeltc.top|linkpays.in|link.urlfly.xyz|za.gl)#is", $host)) {
             $id = "id";
         }
@@ -1332,13 +1380,30 @@ function bypass_shortlinks($url, $separator = 0) {
             goto ulang;
         }
         L(20);
+        $server[] = $proxy;
+        $proxy_2 = end(array_filter($server));
+        $json = json_decode(file_get_contents("data.json"), true)[explode("/", $url_t)[2]];
+        $server[] = $json["proxy"] ?? 2;
         $r = base_short($url0, 0, 0, $url, 0, $cookie);
         $cookie[] = $r["cookie"];
-        $r = base_short($url1["url"]."?overrideSession=".$url, 0, 0, $url0, 0, $cookie);
+        $url_t = $url1["url"]."?overrideSession=".$url;
+        kntl:
+        $cookie[] = $json["cookie"] ?? [];
+        $apiKey = "CAI-FC3D5DE5C01BCF883676570364290AAC";
+        
+        $r = base_short($url_t, 0, 0, $url0, 0, $couokie, 0, $proxy_2);
+        
+
+        if ($r["status"] == 403) {
+            //new_save($url_t, 1);
+            cal($apiKey, $url_t, $proxy_2);
+            goto kntl;
+            
+        }
+
         $cookie[] = $r["cookie"];
         $url1 = $r["url"] ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
         #die(print_r($r));
-
         if (strpos($url1, "http") === false) {
           print m."mencoba generate ulang";
           sleep(2);
@@ -1349,9 +1414,9 @@ function bypass_shortlinks($url, $separator = 0) {
         while(true) {
             $cookie[] = [];
             $url1 = end(array_filter($knt));
-            $r = base_short($url1, 0, 0, $url1, 0, $cookie);
+            $r = base_short($url1, 0, 0, $url1, 0, $cookie, 0, $proxy_2);
             $cookie[] = $r["cookie"];
-            
+            #print_r($r);
             if ($r["status"] == 302) {
                 $knt[] = $r["url"] ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
                 continue;
@@ -1399,7 +1464,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 goto ulang;
                 //return "refresh";
             }
-            $r = base_short($url1, 1, $data, $url1, 0, $cookie);
+            $r = base_short($url1, 1, $data, $url1, 0, $cookie, 0, $proxy_2);
             
             if (preg_match("#NO_SHORTENER_LINK_FOUND#is", $r["res"])) {
                 unset($cookie);
