@@ -1,5 +1,61 @@
 <?php
 
+function cal($apiKey, $pageUrl, $proxy) {
+    $data = json_encode([
+        "clientKey" => $apiKey,
+        "task" => [
+            "type" => 'AntiCloudflareTask',
+            "websiteURL" => $pageUrl,
+            "proxy" => $proxy
+        ]
+    ]);
+    ulang:
+    while(true) {
+       $r = curl("https://api.capsolver.com/createTask", 0, $data)[2];
+       $taskId = $r->taskId;
+
+       if ($taskId) {
+          echo 'Created taskId: ' . $taskId . "\n";
+          break;
+       }
+    }
+    
+    while (true) {
+        sleep(5);
+        $data = json_encode([
+            "clientKey" => $apiKey,
+            "taskId" => $taskId
+        ]);
+        
+        $resp = curl("https://api.capsolver.com/getTaskResult", 0, $data)[2];
+        print_r($resp);
+        $status = $resp->status ?? '';
+        
+        if ($status == "ready") {
+            echo "Successfully solved\n";
+            $solution = $resp->solution;
+            break;
+        }
+        
+        if ($resp->errorCode == "ERROR_CAPTCHA_SOLVE_FAILED") {
+            echo "Failed to solve captcha\n";
+            goto ulang;
+        }
+        if ($status == "failed" || $resp->errorId) {
+            echo "Failed to solve\n";
+            continue;
+        }
+    }
+    $h[] = "user-agent: ".$solution->headers->{"user-agent"};
+    $h[] = "cookie: cf_clearance=".$solution->cookies->cf_clearance.";";
+    $r = curl("https://carreviews.shop", $h, 0, 0, 0, 0, $proxy);
+    new_save(explode("/", $pageUrl)[2], 0, [
+        "cookie" => ["cf_clearance" => $solution->cookies->cf_clearance],
+        "useragent" => $solution->headers->{"user-agent"},
+        "proxy" => $proxy
+    ]);
+    return 1;
+}
 
 function flashproxy($validasi = 0) {
     #return "";
@@ -21,6 +77,9 @@ function flashproxy($validasi = 0) {
     }
     $proxy_array = arr_rand(file($name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
     
+    if (strlen($validasi) >= 20) {
+        $proxy_array = [$validasi];
+    }
     foreach ($proxy_array as $item) {
 
         if (strpos($item, "-99".$validasi."-") !== false || strpos($item, "-99".$validasi."_") !== false) {
@@ -726,7 +785,7 @@ function ex($a, $b, $c, $d) {
     return explode($b, explode($a, $d)[$c])[0];
 }
 
-function new_save($name, $delete = false){
+function new_save($name, $delete = false, $auto = 0){
     $file = "data.json";
     $host = explode("/", $name)[2] ? explode("/", $name)[2] : ($name ? $name : "");
     
@@ -742,12 +801,18 @@ function new_save($name, $delete = false){
         }
     }
     
-    if ($decode[$host] == null) {
-        $data[$host] = tx($host);
+    if ($decode[$host] == null || $auto) {
+      
+      if ($auto) {
+            $data[$host] = $auto;
+      } else {
+            $data[$host] = tx($host);
+      }
         $create = 1;
     } else {
         $data[$host] = $decode[$host];
     }
+    #die(print_r($data));
     $array = array_merge($decode, $data);
     
     if (strpos(http_build_query($array), $host) !== false) {
@@ -1007,7 +1072,10 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
         
         
         if ($proxy) {
-            $default[CURLOPT_PROXY] = $proxy;
+          
+            if ($proxy !== 2) {
+                $default[CURLOPT_PROXY] = $proxy;
+            }
         }
         $options = $default;
         $ch = curl_init();
