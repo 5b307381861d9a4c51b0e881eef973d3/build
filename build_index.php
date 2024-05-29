@@ -1,6 +1,10 @@
 <?php
 
 function cal($apiKey, $pageUrl, $proxy) {
+    proxy:
+    //$proxy = flashproxy();
+    $proxy = "Fq5ZBSd7SGNKRCc:oyrFia9uNs@140.233.206.119:5105";
+    ulang:
     $data = json_encode([
         "clientKey" => $apiKey,
         "task" => [
@@ -9,9 +13,9 @@ function cal($apiKey, $pageUrl, $proxy) {
             "proxy" => $proxy
         ]
     ]);
-    ulang:
+    
     while(true) {
-       $r = curl("https://api.capsolver.com/createTask", 0, $data)[2];
+       $r = curl("https://api.capsolver.com/createTask", 0, $data)[2]; print_r($data);print_r($r);
        $taskId = $r->taskId;
 
        if ($taskId) {
@@ -20,13 +24,12 @@ function cal($apiKey, $pageUrl, $proxy) {
        }
     }
     
+    $data = json_encode([
+        "clientKey" => $apiKey,
+        "taskId" => $taskId
+    ]);
     while (true) {
-        sleep(5);
-        $data = json_encode([
-            "clientKey" => $apiKey,
-            "taskId" => $taskId
-        ]);
-        
+        sleep(1);
         $resp = curl("https://api.capsolver.com/getTaskResult", 0, $data)[2];
         print_r($resp);
         $status = $resp->status ?? '';
@@ -37,7 +40,11 @@ function cal($apiKey, $pageUrl, $proxy) {
             break;
         }
         
-        if ($resp->errorCode == "ERROR_CAPTCHA_SOLVE_FAILED") {
+        if (strpos(json_encode($resp), "PROXY") !== FALSE) {
+            continue;
+            #goto proxy;
+        }
+        if ($resp->errorCode == "ERROR_CAPTCHA_SOLVE_FAILED" || $resp->errorCode == "ERROR_TYPE_NOT_SUPPORTED") {
             echo "Failed to solve captcha\n";
             goto ulang;
         }
@@ -48,12 +55,15 @@ function cal($apiKey, $pageUrl, $proxy) {
     }
     $h[] = "user-agent: ".$solution->headers->{"user-agent"};
     $h[] = "cookie: cf_clearance=".$solution->cookies->cf_clearance.";";
-    $r = curl("https://carreviews.shop", $h, 0, 0, 0, 0, $proxy);
+    $r = curl($pageUrl, $h, 0, 0, 0, 0, $proxy)[0][1]["http_code"];
+    if ($r == 403) {
+        goto ulang;
+    }
     new_save(explode("/", $pageUrl)[2], 0, [
         "cookie" => ["cf_clearance" => $solution->cookies->cf_clearance],
         "useragent" => $solution->headers->{"user-agent"},
         "proxy" => $proxy
-    ]);
+    ]); print_r($h);
     return 1;
 }
 
@@ -102,7 +112,7 @@ function flashproxy($validasi = 0) {
         } else {
             $parts = explode(':', $proxy_array[$i]);
             $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
-        }#die($proxy.n);
+        } #print $proxy.n;
         $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
         #die(print_r($json));
         if (!$json->country || !$json->ip) {
@@ -1113,7 +1123,7 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
             if (strpos($proxy, 'flashproxy') !== false) {
                 return [[$header_array, $info, $output], $response, json_decode(str_replace([n, "﻿"], "", strip_tags($response)))];
             }
-        }
+        }#print $proxy.n;
         print p.movePage()[$info["http_code"]];
         r();
         return [[$header_array, $info, $output], $response, json_decode(str_replace([n, "﻿"], "", strip_tags($response)))];
