@@ -1,8 +1,6 @@
 <?php
 
 
-#die(print_r(cap_cf("https://www2.carreviews.shop/")));
-
 
 
 #flashproxy();
@@ -158,6 +156,9 @@ die(print_r($r));
 
 //$userAgentArray = getUserAgent();
 $userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+#die(print_r(base_short("https://blackwoodacademy.org/")));
+//die(print_r(base_short("https://btcut.io/")));
+
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
         $inc = "/clkclk.";
@@ -507,6 +508,12 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
 
 
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
+    if (status_cf($url, "cek")) {
+        if (!is_array($alternativ_cookie)) {
+          $alternativ_cookie = [];
+        }
+    $alternativ_cookie[] = status_cf($url, "cek") ?? [];
+    }
     $userAgentArray = getUserAgent();
     start:
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
@@ -1463,12 +1470,12 @@ function bypass_shortlinks($url, $separator = 0) {
         $url_t = $url1["url"]."?overrideSession=".$url;
         kntl:
         $file = json_decode(file_get_contents("data.json"),1)[parse_url($url_t)["host"]];
-        $cookie[] = $file["cookie"] ?? [];
+        //$cookie[] = $file["cookie"] ?? [];
         $proxy_2 = $file["proxy"];
         $r = base_short($url_t, 0, 0, $url0, 0, $cookie, 0, $proxy_2);
         #die(print_r($r));
         
-        while (true) {
+        /*while (true) {
           
             if (!status_cf($url, "cek")) {
                 break;
@@ -1476,8 +1483,9 @@ function bypass_shortlinks($url, $separator = 0) {
             print p."sessions cloudflare sedang berlangsung";
             sleep(60);
             r();
-        }
-
+        }*/
+        
+        
         if ($r["status"] == 403) {
             cap_cf($url_t);
             goto kntl;
@@ -1495,7 +1503,7 @@ function bypass_shortlinks($url, $separator = 0) {
         }
         $knt[] = $url1;
         while(true) {
-            while (true) {
+            /*while (true) {
           
                 if (!status_cf($url, "cek")) {
                     $cookie[] = json_decode(file_get_contents("data.json"),1)[parse_url($url_t)["host"]]["cookie"] ?? [];
@@ -1504,7 +1512,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 print p."sessions cloudflare sedang berlangsung";
                 sleep(30);
                 r();
-            }
+            }*/
             $cookie[] = [];
             $url1 = end(array_filter($knt));
             $r = base_short($url1, 0, 0, $url1, 0, $cookie, 0, $proxy_2);
