@@ -1,6 +1,7 @@
 <?php
 
 function status_cf($url, $aaa = false) {
+    ulang:
     $host = parse_url($url)["host"];
     $filename = "status_cf.lock";
     
@@ -13,10 +14,13 @@ function status_cf($url, $aaa = false) {
         $array = arr_rand(file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
         foreach ($array as $item) {
             if ($item == $host){
-                return 1;
+                print p."sessions cloudflare sedang berlangsung";
+                sleep(30);
+                r();
+                goto ulang;
             }
         }
-        return 0;
+        return json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]]["cookie"] ?? [];
     } elseif ($aaa == "del") {
         file_put_contents($filename, trim(str_replace($host, "", $content)));
         return 1;
@@ -1254,6 +1258,7 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
                 }
             }
         }
+
         if ($info["http_code"] == 0) {
           
             if (10 >= $x) {
