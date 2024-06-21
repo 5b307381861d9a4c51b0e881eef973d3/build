@@ -1,7 +1,163 @@
 <?php
 
 
-$userAgentArray = getUserAgent();
+#die(print_r(cap_cf("https://www2.carreviews.shop/")));
+
+
+
+#flashproxy();
+#die(print_r(curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, "4989a929c9e52adec966__cr.us:a59c6051abce740e@gw.dataimpulse.com:10929")[2]));
+
+
+
+/*
+$ua[] = "user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0";
+
+$r = curl("https://blackwoodacademy.org", $ua);
+die(print_r($r[0][2]));
+*/
+
+
+
+
+/*
+// Define the target website URL
+$targetURL = 'gofaucet.my.id';
+die(print_r(gethostbyname(htmlspecialchars(addslashes($targetURL)))));
+// Define a function to extract the challenge parameters from the HTML source
+function getChallengeParams($html) {
+    // Use regular expressions to match the challenge parameters
+    preg_match('/name="jschl_vc" value="(\w+)"/', $html, $challengeMatch);
+    preg_match('/name="pass" value="(.+?)"/', $html, $passMatch);
+    preg_match('/s\s*=\s*document\.createElement\(\'div\'\);\s*s\.innerHTML\s*=\s*"(.+?)";/', $html, $sMatch);
+    preg_match('/k\s*=\s*\'(\w+)\';/', $html, $kMatch);
+
+    return [
+        'challenge' => $challengeMatch[1],
+        'pass' => $passMatch[1],
+        's' => $sMatch[1],
+        'k' => $kMatch[1]
+    ];
+}
+
+// Define a function to solve the challenge expression using eval
+function solveChallengeExpr($expr) {
+    // Replace document.getElementById with a dummy function
+    $expr = str_replace('document.getElementById', 'function(){}', $expr);
+    // Evaluate the expression and return the result
+    return eval("return $expr;");
+}
+
+// Define a function to make a request using cURL
+function makeRequest($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
+}
+
+// Make an initial request to the target website
+$response = makeRequest($targetURL);
+die(print_r($response));
+// Get the challenge parameters from the response
+$params = getChallengeParams($response);
+
+// Solve the challenge expression using eval
+$answer = solveChallengeExpr($params['s'] . $params['k']);
+
+// Construct the verification URL with the challenge parameters and answer
+$verifyURL = $targetURL . '/cdn-cgi/l/chk_jschl?jschl_vc=' . $params['challenge'] . '&pass=' . $params['pass'] . '&jschl_answer=' . $answer;
+
+// Wait for 4 seconds before making the verification request
+sleep(4);
+
+$response = makeRequest($verifyURL);
+
+// Check if the verification was successful
+if (strpos($response, 'You are being redirected') !== false) {
+    // Redirect to the target website
+    header("Location: $targetURL");
+    exit;
+} else {
+    // Display an error message
+    echo 'Verification failed';
+}
+exit;
+*/
+
+/*
+$url_t = 'https://blackwoodacademy.org/';
+$apiKey = "CAI-FC3D5DE5C01BCF883676570364290AAC";
+$pageUrl = $url_t;
+#$proxy = flashproxy();
+
+//$server[] = $proxy;
+//$proxy_2 = end(array_filter($server));
+$json = json_decode(file_get_contents("data.json"), true)[explode("/", $url_t)[2]];
+//$server[] = $json["proxy"] ?? 2;
+//$proxy_2 = end(array_filter($server));
+#die(print_r($proxy_2));
+$h[] = "cookie: ".http_build_query($json["cookie"]).";";
+$h[] = "user-agent: ".$json["useragent"];
+#die(print_r(curl($pageUrl, $h, 0, 0, 0, 0, $proxy_2)));
+#die(print_r(curl($pageUrl, ["user-agent: ".$json["useragent"]], 0, 0, 0, [$json["cookie"]],  $proxy_2)));
+die(print_r(base_short($url_t, 0, 0, 0, 0, [$json["cookie"]], 0,$proxy_2)));
+cal($apiKey, $pageUrl, $proxy);
+exit;
+
+*/
+
+
+
+#ndie(print_r(curl("https://api.whatismybrowser.com/api/v2/software_version_numbers/all")));
+
+#https://nx.chainfo.xyz/u9Mke
+#https://urlcorner.com/CBqzuo1tu69
+#https://cutp.in/TnqH
+#eval(str_replace('<?php',"",file_get_contents(("build_index.php"))));
+
+#die(print_r(build("https://claim.cryptolink.click/kHweca")));
+//die(print_r(curl("https://ipinfo.io/widget/")));
+#die(print_r(curl("https://proxycheck.io/v2/103.49.202.252?proxy=1&asn=1")));
+
+/*
+$proxy = flashproxy();
+$ua = ["user-agent: ".getUserAgent()];
+$r = curl("https://www.highcpmgate.com/e8azyvy6km?key=a8d63089811fe782a3b9fca9a41b17f7", $ua, 0, "https://www.highcpmgate.com/", 0, 0, $proxy);
+$cookie[] = $r["cookie"];
+
+$r = curl("https://www.highcpmgate.com/api/users?token=".explode('"', explode('name="token" value="', $r[1])[1])[0]."&uuid=&pii=&in=false", $ua, 0, "https://www.highcpmgate.com/", $cookie, 0, $proxy);
+$cookie[] = $r["cookie"];
+#die(print_r($r));
+$url1 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
+
+$r = curl($url1, $ua, 0, "https://www.highcpmgate.com/", $cookie, 0, $proxy);
+$cookie[] = $r["cookie"];
+
+$url2 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
+
+$r = curl($url2, $ua, 0, $url1, $cookie, 0, $proxy);
+$cookie[] = $r["cookie"];
+
+
+$url3 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
+
+$r = curl($url3, $ua, 0, $url2, $cookie, 0, $proxy);
+$cookie[] = $r["cookie"];
+$url4 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
+
+$r = curl($url4, $ua, 0, $url3, $cookie, 0, $proxy);
+$cookie[] = $r["cookie"];
+
+
+
+die(print_r($r));
+*/
+
+//$userAgentArray = getUserAgent();
+$userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
         $inc = "/clkclk.";
@@ -310,10 +466,6 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
     global $userAgentArray;
     
-    if ($plus = json_decode(file_get_contents("data.json"), 1)[explode("/", $url)[2]]) {
-        $userAgentArray = $plus["useragent"];
-    }
-    
     if ($xml){
       $headers[] = "Accept: */*";
     } else {
@@ -510,7 +662,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $url = "https://ser7.crazyblog.in".explode("p=", $url)[1];
         $host = parse_url($url)["host"];
     }
-    if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|clk.asia|clk.wiki|insfly.pw|clik.pw|swiftlnx.com|adcorto.com|short2money.com|bestlink.pro|shorti.io|shortplus.xyz|usalink.io|linksly.co|ex-foary.com|short2url.in|f.technicalatg.in|atglinks.com|ziplinker.net|tii.la|lnbz.la|exalink.fun|hatelink.me|wdu.info|addurl.biz|tinygo.co|viewfr.com|wez.info|24payu.top|freeltc.top|linkpays.in|link.urlfly.xyz|shrinkme.cc|shrinkme.vip|tlin.me|loptelink.com|adfoc.us|eazyurl.xyz|_link.tfly.link".$request_proxy.")#is", $host)) {
+    if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|link.adlink.click|linksfly.link|chainfo.xyz|ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|clk.asia|clk.wiki|insfly.pw|clik.pw|swiftlnx.com|adcorto.com|short2money.com|bestlink.pro|shorti.io|shortplus.xyz|usalink.io|linksly.co|ex-foary.com|short2url.in|f.technicalatg.in|atglinks.com|ziplinker.net|tii.la|lnbz.la|exalink.fun|hatelink.me|wdu.info|addurl.biz|tinygo.co|viewfr.com|wez.info|24payu.top|freeltc.top|linkpays.in|link.urlfly.xyz|shrinkme.cc|shrinkme.vip|tlin.me|loptelink.com|adfoc.us|eazyurl.xyz|_link.tfly.link|easy4skip.com".$request_proxy.")#is", $host)) {
        
         if (preg_match("#(489651.xyz|546512.xyz|go.shtfly.com|121989.xyz|131989.xyz|141989.xyz|link.eazyurl.xyz|go.cutlink.xyz|151989.xyz|120898.xyz|bitcosite.com|161989.xyz|845265.xyz|viefaucet.link|linksfly.link|chainfo.xyz|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|droplink.co|adbitfly.com|earnify.pro|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|cutsme.xyz|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|bestlink.pro|shortplus.xyz|short2url.in|exalink.fun|hatelink.me|wdu.info|addurl.biz|tinygo.co|viewfr.com|wez.info|24payu.top|freeltc.top|linkpays.in|link.urlfly.xyz|za.gl)#is", $host)) {
             $id = "id";
@@ -845,10 +997,11 @@ function bypass_shortlinks($url, $separator = 0) {
             $r1 = base_short(str_replace("pwrpa.cc", "pwrpa.cc/go", str_replace("jameeltips.us", "jameeltips.us/blog", str_replace("techyuth.xyz", "techyuth.xyz/blog", $run["go"][0]))), 1, $data, 0, $cloud, $cookie, 0, $proxy)["json"];
             #die(print_r($r1));
             if (strpos($r1->url, "limit") !== false){
-                print m."kena limit kontol!".n;
+                print m."kena limit kontol!".n.$proxy.n;
                 return "refresh";
-            } elseif(strpos($r1->url, "proxy") !== false){
+            } elseif(strpos($r1->url, "proxy") !== false || strpos($r1->message, "proxy") !== false){
                 print m."terdeteksi proxy!".n;
+                #die(print($proxy));
                 return "refresh";
             } elseif (strpos($r1->url, "http") !== false){
                 if ($only_sl) {
@@ -1282,7 +1435,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 return $r1->url;
             }
         }
-    } elseif (preg_match("#hhhhj#is"/*"#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun)#is"*/, $host)) {
+    } elseif (preg_match("#(ctr.sh|easycut.io|revcut.net|crypto-radio.eu|todaynewsview.store|shrinkme.link|faho.us|urlcut.pro|ez4short.com|bitad.org|cutlink.xyz|bitss.sbs|inlinks.online|shortino.link|sharecut.io|droplink.co|adbitfly.com|earnify.pro|btcut.io|slfly.net|info.linkzfly.xyz|_linkzfly.xyz|cfshort.xyz|flukesnips.com|freebonk.paycut.io|nx.chainfo.xyz|coinfays.com|paycut.io|linkmay.me|shrinkmy.site|www.linkswift.click|shortano.link|shortify.online|owllink.net|birdurls.com|illink.net|kotenkoshort.xyz|kyshort.xyz|zshort.io|exashorts.fun|easy4skip.com)#is", $host)) {
         
         if ($host == "exashorts.fun") {
             $redirect_url = "https://exactpay.online/";
@@ -1309,29 +1462,31 @@ function bypass_shortlinks($url, $separator = 0) {
         $cookie[] = $r["cookie"];
         $url_t = $url1["url"]."?overrideSession=".$url;
         kntl:
-        $server[] = $proxy;
-        $proxy_2 = end(array_filter($server));
-        $json = json_decode(file_get_contents("data.json"), true)[explode("/", $url_t)[2]];
-        $server[] = $json["proxy"] ?? 2;
-        $proxy_2 = end(array_filter($server));
-        $cookie[] = $json["cookie"] ?? [];
-        $apiKey = "CAI-FC3D5DE5C01BCF883676570364290AAC";
+        $file = json_decode(file_get_contents("data.json"),1)[parse_url($url_t)["host"]];
+        $cookie[] = $file["cookie"] ?? [];
+        $proxy_2 = $file["proxy"];
+        $r = base_short($url_t, 0, 0, $url0, 0, $cookie, 0, $proxy_2);
+        #die(print_r($r));
         
-        $r = base_short($url_t, 0, 0, $url0, 0, $couokie, 0, $proxy_2);
-        
+        while (true) {
+          
+            if (!status_cf($url, "cek")) {
+                break;
+            }
+            print p."sessions cloudflare sedang berlangsung";
+            sleep(60);
+            r();
+        }
 
         if ($r["status"] == 403) {
-            //new_save($url_t, 1);
-            $server[] = $proxy;
-            $proxy_2 = end(array_filter($server));
-            cal($apiKey, $url_t, $proxy_2);
+            cap_cf($url_t);
             goto kntl;
             
         }
 
         $cookie[] = $r["cookie"];
         $url1 = $r["url"] ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
-        print_r($r);
+        
         if (strpos($url1, "http") === false) {
           print m."mencoba generate ulang";
           sleep(2);
@@ -1340,6 +1495,16 @@ function bypass_shortlinks($url, $separator = 0) {
         }
         $knt[] = $url1;
         while(true) {
+            while (true) {
+          
+                if (!status_cf($url, "cek")) {
+                    $cookie[] = json_decode(file_get_contents("data.json"),1)[parse_url($url_t)["host"]]["cookie"] ?? [];
+                    break;
+                }
+                print p."sessions cloudflare sedang berlangsung";
+                sleep(30);
+                r();
+            }
             $cookie[] = [];
             $url1 = end(array_filter($knt));
             $r = base_short($url1, 0, 0, $url1, 0, $cookie, 0, $proxy_2);
