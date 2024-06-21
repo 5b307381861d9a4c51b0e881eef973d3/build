@@ -1,5 +1,117 @@
 <?php
 
+function status_cf($url, $aaa = false) {
+    $host = parse_url($url)["host"];
+    $filename = "status_cf.lock";
+    
+    if (!file_exists($filename)) {
+        fclose(fopen($filename, 'w'));
+    }
+    $content = file_get_contents($filename);
+    
+    if ($aaa == "cek") {
+        $array = arr_rand(file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+        foreach ($array as $item) {
+            if ($item == $host){
+                return 1;
+            }
+        }
+        return 0;
+    } elseif ($aaa == "del") {
+        file_put_contents($filename, trim(str_replace($host, "", $content)));
+        return 1;
+    }
+    
+    if (strpos($content, $host) === false ){
+        $content .= n.$host;
+        file_put_contents($filename, trim($content));
+        return 1;
+    }
+}
+
+
+function cap_cf($input_url) {
+    ulang:
+    while (true) {
+        status_cf($input_url);
+        $apiKey = "e1ea64e9e17ad310c57236de98216227";
+        $proxy = "aldigamerz2890zJFH:xmFBmJsjAh@161.77.228.45:50100";
+        $user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+        $link = parse_url($input_url);
+        $html = base64_encode(curl($input_url)[1]);
+        $parse = parse_url("http://".$proxy);
+        $url_cap = "https://api.capmonster.cloud/";
+        $header = array("Content-Type: application/json");
+        $data = json_encode(array(
+            'clientKey' => $apiKey,
+            'task' => array(
+                'type' => 'TurnstileTask',
+                'websiteURL' => $input_url,
+                'websiteKey' => '0x4AAAAAAADnPIDROrmt1Wwj',
+                'cloudflareTaskType' => 'cf_clearance',
+                'htmlPageBase64' => $html,
+                'userAgent' => $user_agent,
+                'proxyType' => $parse["scheme"],
+                'proxyAddress' => $parse["host"],
+                'proxyPort' => $parse["port"],
+                'proxyLogin' => $parse["user"],
+                'proxyPassword' => $parse["pass"]
+            )
+        ));
+
+        $r = curl($url_cap."createTask", $header, $data)[2];#die(print_r($r));
+        $taskId = $r->taskId;
+        print p."get taskId";
+        r();
+        $errorCode = str_replace("_", " ", $r->errorCode);
+        if ($r->errorCode == "ERROR KEY DOES NOT EXIST") {
+            print m.$errorCode.n;
+            exit;
+        } elseif ($errorCode == "ERROR ZERO BALANCE") {
+            print m.$errorCode.n;
+            print "silakan isi saldo".n;
+            tx("enter to continue");
+            continue;
+        } elseif ($taskId) {
+            $data = json_encode(array(
+                'clientKey' => $apiKey,
+                'taskId' => $taskId
+            ));
+            break;
+        }
+    }
+
+    while (true) {
+        $r = curl($url_cap."getTaskResult", $header, $data)[2];
+        $status = $r->status;
+        #print_r($r);
+        if ($r->errorId) {
+            print m."invalid bypass cloudflare!";
+            r();
+            goto ulang;
+        } elseif ($status == "ready") {
+            $cf_clearance = $r->solution->cf_clearance;
+            $h[] = "user-agent: ".$user_agent;
+            $h[] = "cookie: cf_clearance=".$cf_clearance.";";
+            $r = curl($input_url, $h, 0, 0, 0, 0, $proxy)[0][1]["http_code"];
+            
+            if ($r == 403) {
+                unset($h);
+                goto ulang;
+            }
+            new_save($link["host"], 0, [
+                "cookie" => ["cf_clearance" => $cf_clearance],
+                "proxy" => $proxy
+            ]);
+            status_cf($input_url, "del");
+            return ["cookie" => json_decode(file_get_contents("data.json"),1)[$link["host"]]["cookie"], "proxy" => $proxy];
+        }
+        print p.$status;
+        sleep(5);
+        r();
+    }
+}
+
 function cal($apiKey, $pageUrl, $proxy) {
     proxy:
     //$proxy = flashproxy();
@@ -67,6 +179,31 @@ function cal($apiKey, $pageUrl, $proxy) {
     return 1;
 }
 
+
+function dataimpulse($string) {
+    $pattern = '/__cr\.([a-z,]+):/';
+    preg_match($pattern, $string, $matches);
+
+    if (isset($matches[1])) {
+        $countryCodes = explode(',', $matches[1]);
+    } else {
+        $countryCodes = [];
+    }
+
+    $newStrings = [];
+    foreach ($countryCodes as $code) {
+        $newString = preg_replace($pattern, "__cr.$code:", $string);
+        $parsedUrl = parse_url("http://".$newString);
+        if (isset($parsedUrl["port"])) {
+            $newString = str_replace($parsedUrl["port"], rand(10000, 10999), $newString);
+        }
+        $newStrings[] = $newString;
+    }
+    
+    return arr_rand($newStrings)[0];
+}
+
+
 function flashproxy($validasi = 0) {
     #return "";
     if ($validasi == 1) {
@@ -107,18 +244,25 @@ function flashproxy($validasi = 0) {
         if (!$proxy_array[$i]) {
             goto exe;
         }
+        
         if (strpos($proxy_array[$i], "@") !== false) {
             $proxy = trimed($proxy_array[$i]);
         } else {
             $parts = explode(':', $proxy_array[$i]);
             $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
-        } #print $proxy.n;
+        }
+        
+        if (strpos($proxy, "dataimpulse") !== false) {
+            $proxy = dataimpulse($proxy);
+        }
+        #print($proxy.n);exit;
         $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
         #die(print_r($json));
         if (!$json->country || !$json->ip) {
             print m."proxy mati";
             r();
-            continue;
+            #continue;
+            goto exe;
         }
         
         if (validateIP($json->ip)) {
@@ -126,25 +270,23 @@ function flashproxy($validasi = 0) {
             sleep(1);
             r();
 
-            if ($json->privacy->proxy || $json->privacy->tor || $json->privacy->vpn) {
-                print m."terdeteksi proxy/VPN or Tor";
-                r();
-                continue;
+            $flags = ['vpn', 'proxy', 'tor', 'relay', 'hosting'];
+            foreach ($flags as $flag) {
+              
+                if (!empty($json->privacy->$flag)) {
+                    Print m."terdeteksi ".$flag;
+                    r();
+                    goto exe;
+                }
             }
-           /* $js = curl("https://proxycheck.io/v2/".$json->ip."?vpn=1&asn=1")[2]->{$json->ip};
-            
-            if ($js->proxy == "yes" || $js->vpn == "yes") {
-                print m."terdeteksi proxy/VPN or Tor";
-                r();
-                continue;
-            }*/
             print p."proxy siap digunakan";
             r();
            
             if (!$json->country) {
                 print m."proxy mati";
                 r();
-                continue;
+                #continue;
+                goto exe;
             }
             
             if (defined('bypassed')) {
@@ -1120,7 +1262,7 @@ function curl($url, $header = false, $post = false, $followlocation = false, $co
                 continue;
             }
             
-            if (strpos($proxy, 'flashproxy') !== false) {
+            if (strpos($proxy, 'flashproxy') !== false || strpos($proxy, 'dataimpulse') !== false) {
                 return [[$header_array, $info, $output], $response, json_decode(str_replace([n, "﻿"], "", strip_tags($response)))];
             }
         }#print $proxy.n;
