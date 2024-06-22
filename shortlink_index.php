@@ -1,163 +1,9 @@
 <?php
 
-
-
-
-#flashproxy();
-#die(print_r(curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, "4989a929c9e52adec966__cr.us:a59c6051abce740e@gw.dataimpulse.com:10929")[2]));
-
-
-
-/*
-$ua[] = "user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0";
-
-$r = curl("https://blackwoodacademy.org", $ua);
-die(print_r($r[0][2]));
-*/
-
-
-
-
-/*
-// Define the target website URL
-$targetURL = 'gofaucet.my.id';
-die(print_r(gethostbyname(htmlspecialchars(addslashes($targetURL)))));
-// Define a function to extract the challenge parameters from the HTML source
-function getChallengeParams($html) {
-    // Use regular expressions to match the challenge parameters
-    preg_match('/name="jschl_vc" value="(\w+)"/', $html, $challengeMatch);
-    preg_match('/name="pass" value="(.+?)"/', $html, $passMatch);
-    preg_match('/s\s*=\s*document\.createElement\(\'div\'\);\s*s\.innerHTML\s*=\s*"(.+?)";/', $html, $sMatch);
-    preg_match('/k\s*=\s*\'(\w+)\';/', $html, $kMatch);
-
-    return [
-        'challenge' => $challengeMatch[1],
-        'pass' => $passMatch[1],
-        's' => $sMatch[1],
-        'k' => $kMatch[1]
-    ];
-}
-
-// Define a function to solve the challenge expression using eval
-function solveChallengeExpr($expr) {
-    // Replace document.getElementById with a dummy function
-    $expr = str_replace('document.getElementById', 'function(){}', $expr);
-    // Evaluate the expression and return the result
-    return eval("return $expr;");
-}
-
-// Define a function to make a request using cURL
-function makeRequest($url) {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    return $response;
-}
-
-// Make an initial request to the target website
-$response = makeRequest($targetURL);
-die(print_r($response));
-// Get the challenge parameters from the response
-$params = getChallengeParams($response);
-
-// Solve the challenge expression using eval
-$answer = solveChallengeExpr($params['s'] . $params['k']);
-
-// Construct the verification URL with the challenge parameters and answer
-$verifyURL = $targetURL . '/cdn-cgi/l/chk_jschl?jschl_vc=' . $params['challenge'] . '&pass=' . $params['pass'] . '&jschl_answer=' . $answer;
-
-// Wait for 4 seconds before making the verification request
-sleep(4);
-
-$response = makeRequest($verifyURL);
-
-// Check if the verification was successful
-if (strpos($response, 'You are being redirected') !== false) {
-    // Redirect to the target website
-    header("Location: $targetURL");
-    exit;
-} else {
-    // Display an error message
-    echo 'Verification failed';
-}
-exit;
-*/
-
-/*
-$url_t = 'https://blackwoodacademy.org/';
-$apiKey = "CAI-FC3D5DE5C01BCF883676570364290AAC";
-$pageUrl = $url_t;
-#$proxy = flashproxy();
-
-//$server[] = $proxy;
-//$proxy_2 = end(array_filter($server));
-$json = json_decode(file_get_contents("data.json"), true)[explode("/", $url_t)[2]];
-//$server[] = $json["proxy"] ?? 2;
-//$proxy_2 = end(array_filter($server));
-#die(print_r($proxy_2));
-$h[] = "cookie: ".http_build_query($json["cookie"]).";";
-$h[] = "user-agent: ".$json["useragent"];
-#die(print_r(curl($pageUrl, $h, 0, 0, 0, 0, $proxy_2)));
-#die(print_r(curl($pageUrl, ["user-agent: ".$json["useragent"]], 0, 0, 0, [$json["cookie"]],  $proxy_2)));
-die(print_r(base_short($url_t, 0, 0, 0, 0, [$json["cookie"]], 0,$proxy_2)));
-cal($apiKey, $pageUrl, $proxy);
-exit;
-
-*/
-
-
-
-#ndie(print_r(curl("https://api.whatismybrowser.com/api/v2/software_version_numbers/all")));
-
-#https://nx.chainfo.xyz/u9Mke
-#https://urlcorner.com/CBqzuo1tu69
-#https://cutp.in/TnqH
-#eval(str_replace('<?php',"",file_get_contents(("build_index.php"))));
-
-#die(print_r(build("https://claim.cryptolink.click/kHweca")));
-//die(print_r(curl("https://ipinfo.io/widget/")));
-#die(print_r(curl("https://proxycheck.io/v2/103.49.202.252?proxy=1&asn=1")));
-
-/*
-$proxy = flashproxy();
-$ua = ["user-agent: ".getUserAgent()];
-$r = curl("https://www.highcpmgate.com/e8azyvy6km?key=a8d63089811fe782a3b9fca9a41b17f7", $ua, 0, "https://www.highcpmgate.com/", 0, 0, $proxy);
-$cookie[] = $r["cookie"];
-
-$r = curl("https://www.highcpmgate.com/api/users?token=".explode('"', explode('name="token" value="', $r[1])[1])[0]."&uuid=&pii=&in=false", $ua, 0, "https://www.highcpmgate.com/", $cookie, 0, $proxy);
-$cookie[] = $r["cookie"];
-#die(print_r($r));
-$url1 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
-
-$r = curl($url1, $ua, 0, "https://www.highcpmgate.com/", $cookie, 0, $proxy);
-$cookie[] = $r["cookie"];
-
-$url2 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
-
-$r = curl($url2, $ua, 0, $url1, $cookie, 0, $proxy);
-$cookie[] = $r["cookie"];
-
-
-$url3 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
-
-$r = curl($url3, $ua, 0, $url2, $cookie, 0, $proxy);
-$cookie[] = $r["cookie"];
-$url4 = $r[0][1]["redirect_url"] ? $r[0][1]["redirect_url"] : ( $r[0][1]["url"] ? $r[0][1]["url"] : "");
-
-$r = curl($url4, $ua, 0, $url3, $cookie, 0, $proxy);
-$cookie[] = $r["cookie"];
-
-
-
-die(print_r($r));
-*/
-
 //$userAgentArray = getUserAgent();
 $userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
-#die(print_r(base_short("https://blackwoodacademy.org/")));
-//die(print_r(base_short("https://btcut.io/")));
+#die(print_r(base_short("https://www2.carreviews.shop/")));
+//die(print_r(bypass_shortlinks("https://btcut.io/")));
 
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
@@ -508,16 +354,21 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
 
 
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
+    start:
     if (status_cf($url, "cek")) {
         if (!is_array($alternativ_cookie)) {
           $alternativ_cookie = [];
         }
-    $alternativ_cookie[] = status_cf($url, "cek") ?? [];
+        $data_cf = status_cf($url, "cek");
+        $alternativ_cookie[] = $data_cf[0] ?? [];
+        $proxy = $data_cf[1];
     }
-    $userAgentArray = getUserAgent();
-    start:
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
-
+    
+    if (preg_match("#Just a moment...#is", $r[1])) {
+       cap_cf($url);
+       goto start;
+   }
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
     preg_match('#(invisible_reCAPTCHA_site_key":")(.*?)(")#is', $r[1], $invisible_recaptchav2);
     preg_match('#(h-captcha is-hidden" data-callback="onCaptchaPass" data-sitekey="|hcaptcha_checkbox_site_key":"|h-captcha" data-sitekey="|get_cap_data" data-site_key=")(.*?)(")#is', $r[1], $hcaptcha);
@@ -545,6 +396,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     preg_match("#zunsoach.com',(.*?),#is", $r[1], $ads2);
     preg_match('#var click_url = "(.*?)"#is', $r[1], $go_link);
    // print_r(set_cookie($r[0][2], 1));
+   
     return [
         "status" => $r[0][1]["http_code"],
         "cookie" => set_cookie($r[0][2], 1),
@@ -1469,28 +1321,13 @@ function bypass_shortlinks($url, $separator = 0) {
         $cookie[] = $r["cookie"];
         $url_t = $url1["url"]."?overrideSession=".$url;
         kntl:
-        $file = json_decode(file_get_contents("data.json"),1)[parse_url($url_t)["host"]];
-        //$cookie[] = $file["cookie"] ?? [];
-        $proxy_2 = $file["proxy"];
-        $r = base_short($url_t, 0, 0, $url0, 0, $cookie, 0, $proxy_2);
-        #die(print_r($r));
-        
-        /*while (true) {
-          
-            if (!status_cf($url, "cek")) {
-                break;
-            }
-            print p."sessions cloudflare sedang berlangsung";
-            sleep(60);
-            r();
-        }*/
-        
-        
-        if ($r["status"] == 403) {
+        $r = base_short($url_t, 0, 0, $url0, 0, $cookie, 0);
+
+        /*if ($r["status"] == 403) {
             cap_cf($url_t);
             goto kntl;
             
-        }
+        }*/
 
         $cookie[] = $r["cookie"];
         $url1 = $r["url"] ? $r["url"] : ($r["url1"][0] ? $r["url1"][0] : "");
@@ -1503,19 +1340,9 @@ function bypass_shortlinks($url, $separator = 0) {
         }
         $knt[] = $url1;
         while(true) {
-            /*while (true) {
-          
-                if (!status_cf($url, "cek")) {
-                    $cookie[] = json_decode(file_get_contents("data.json"),1)[parse_url($url_t)["host"]]["cookie"] ?? [];
-                    break;
-                }
-                print p."sessions cloudflare sedang berlangsung";
-                sleep(30);
-                r();
-            }*/
             $cookie[] = [];
             $url1 = end(array_filter($knt));
-            $r = base_short($url1, 0, 0, $url1, 0, $cookie, 0, $proxy_2);
+            $r = base_short($url1, 0, 0, $url1, 0, $cookie, 0);
             $cookie[] = $r["cookie"];
             if (preg_match('/Step:\s*(\d+)\/(\d+)/', $r["res"], $matches)) {
                 print h.$matches[0];
@@ -1569,7 +1396,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 goto ulang;
                 //return "refresh";
             }
-            $r = base_short($url1, 1, $data, $url1, 0, $cookie, 0, $proxy_2);
+            $r = base_short($url1, 1, $data, $url1, 0, $cookie, 0);
             #print_r($r);
             if (preg_match("#NO_SHORTENER_LINK_FOUND#is", $r["res"])) {
                 unset($cookie);
