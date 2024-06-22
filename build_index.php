@@ -15,12 +15,13 @@ function status_cf($url, $aaa = false) {
         foreach ($array as $item) {
             if ($item == $host){
                 print p."sessions cloudflare sedang berlangsung";
-                sleep(30);
+                sleep(5);
                 r();
                 goto ulang;
             }
         }
-        return json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]]["cookie"] ?? [];
+        $data = json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]];
+        return [$data["cookie"] ?? [], $data["proxy"]];
     } elseif ($aaa == "del") {
         file_put_contents($filename, trim(str_replace($host, "", $content)));
         return 1;
@@ -38,8 +39,8 @@ function cap_cf($input_url) {
     ulang:
     while (true) {
         status_cf($input_url);
-        $apiKey = "e1ea64e9e17ad310c57236de98216227";
-        $proxy = "aldigamerz2890zJFH:xmFBmJsjAh@161.77.228.45:50100";
+        $apiKey = file_line("capmonster");
+        $proxy = file_line("proxy");
         $user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
         $link = parse_url($input_url);
         $html = base64_encode(curl($input_url)[1]);
@@ -63,14 +64,15 @@ function cap_cf($input_url) {
             )
         ));
 
-        $r = curl($url_cap."createTask", $header, $data)[2];#die(print_r($r));
+        $r = curl($url_cap."createTask", $header, $data)[2];
         $taskId = $r->taskId;
         print p."get taskId";
         r();
         $errorCode = str_replace("_", " ", $r->errorCode);
         if ($r->errorCode == "ERROR KEY DOES NOT EXIST") {
             print m.$errorCode.n;
-            exit;
+            file_line("capmonster", 1);
+            continue;
         } elseif ($errorCode == "ERROR ZERO BALANCE") {
             print m.$errorCode.n;
             print "silakan isi saldo".n;
@@ -260,6 +262,7 @@ function flashproxy($validasi = 0) {
             $proxy = dataimpulse($proxy);
         }
         #print($proxy.n);exit;
+        #$proxy = "Fq5ZBSd7SGNKRCc:oyrFia9uNs@140.233.206.119:5105";
         $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
         #die(print_r($json));
         if (!$json->country || !$json->ip) {
@@ -1016,7 +1019,40 @@ function new_save($name, $delete = false, $auto = 0){
         return $decode;
     }
 }
-
+function file_line($input, $new = false) {
+    ulang:
+    $filename = "note.txt";
+    
+    if (!file_exists($filename)) {
+        fclose(fopen($filename, 'w'));
+    }
+    $array = arr_rand(file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+    
+   if ($new) {
+        foreach ($array as $item) {
+            $data = explode(">", trim($item));
+        
+            if ($data[0] == $input){
+                file_put_contents($filename, trim(str_replace($item, "", file_get_contents($filename))));
+            }
+        }
+    }
+    $content = file_get_contents($filename);
+    $array = arr_rand(file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+    if (strpos($content, $input) === false ){
+        $content .= n.$input.">".tx($input);
+        file_put_contents($filename, trim($content));
+        return explode(">", trim($content))[1];
+    }
+    
+    foreach ($array as $item) {
+        $data = explode(">", trim($item));
+        
+        if ($data[0] == $input){
+            return $data[1];
+        }
+    }
+}
 
 function Save($a) {
     if (file_exists($a)) {
@@ -1391,7 +1427,7 @@ function head($xml = 0, $boundary = 0) {
 
 
 function multi_atb($r) {
-    $apikey = save("apikey_multibot");
+    $apikey = file_line("multibot");
     preg_match_all('# <img src="(.*?)"#is', $r, $main_img);
     preg_match_all('#rel=\\\"(.*?)\\\"><img src=\\\"(.*?)\\\"#is', $r, $rell_img);
     if ($rell_img[1]) {
@@ -1474,8 +1510,8 @@ function multibot($method, $sitekey, $pageurl, $rr = 0) {
     refresh:
     print p;
     $host = "api.multibot.in";
-    $name_api = "apikey_multibot";
-    $apikey = save($name_api);
+    $name_api = "multibot";
+    $apikey = file_line($name_api);
     $recaptchav2 = http_build_query([
         "key" => $apikey,
         "method" => "userrecaptcha",
@@ -1509,11 +1545,11 @@ function multibot($method, $sitekey, $pageurl, $rr = 0) {
         $s++;
         $r = curl("http://" . $host . "/in.php?" . $type[$method], $ua)[1];
         if ($r == "ERROR_USER_BALANCE_ZERO") {
-            unlink($name_api);
+            print m.$r.n;
             goto refresh;
         } elseif ($r == "ERROR_WRONG_USER_KEY") {
             if ($s == 3) {
-                unlink($name_api);
+                file_line($name_api, 1);
                 goto refresh;
             }
         }
@@ -1566,8 +1602,8 @@ function xevil($method, $sitekey, $pageurl, $rr = 0) {
     refresh:
     print p;
     $host = "sctg.xyz";
-    $name_api = "apikey_xevil";
-    $apikey = save($name_api);
+    $name_api = "xevil";
+    $apikey = file_line($name_api);
     $recaptchav2 = http_build_query([
         "key" => $apikey,
         "method" => "userrecaptcha",
@@ -1593,11 +1629,11 @@ function xevil($method, $sitekey, $pageurl, $rr = 0) {
         $s++;
         $r = curl("http://" . $host . "/in.php?" . $type[$method], $ua)[1];
         if ($r == "ERROR_USER_BALANCE_ZERO") {
-            unlink($name_api);
+            print m.$r.n;
             goto refresh;
         } elseif ($r == "ERROR_WRONG_USER_KEY") {
             if ($s == 3) {
-                unlink($name_api);
+                file_line($name_api, 1);
                 goto refresh;
             }
         }
