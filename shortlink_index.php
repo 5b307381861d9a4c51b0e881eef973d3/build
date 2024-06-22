@@ -361,8 +361,11 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
         }
         $data_cf = status_cf($url, "cek");
         $alternativ_cookie[] = $data_cf[0] ?? [];
-        $proxy = $data_cf[1];
+        if ($data[1]) {
+            $proxy = $data_cf[1];
+        }
     }
+
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
     
     if (preg_match("#Just a moment...#is", $r[1])) {
