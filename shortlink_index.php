@@ -361,7 +361,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
         }
         $data_cf = status_cf($url, "cek");
         $alternativ_cookie[] = $data_cf[0] ?? [];
-        if ($data[1]) {
+        if ($data_cf[1]) {
             $proxy = $data_cf[1];
         }
     }
