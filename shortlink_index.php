@@ -2,7 +2,8 @@
 
 //$userAgentArray = getUserAgent();
 $userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
-#die(print_r(base_short("https://www2.carreviews.shop/")));
+#$data_cf = status_cf($url, "cek");die(print_r(curl("https://blackwoodacademy.org/")));
+#die(print_r(base_short("https://blackwoodacademy.org/")));
 //die(print_r(bypass_shortlinks("https://btcut.io/")));
 
 function build($url = 0) {
@@ -356,12 +357,10 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
     start:
     if (status_cf($url, "cek")) {
-        if (!is_array($alternativ_cookie)) {
-          $alternativ_cookie = [];
-        }
         $data_cf = status_cf($url, "cek");
-        $alternativ_cookie[] = $data_cf[0] ?? [];
-        if ($data_cf[1]) {
+        
+        if ($data_cf[0]) {
+            $alternativ_cookie[] = $data_cf[0] ?? [];
             $proxy = $data_cf[1];
         }
     }
