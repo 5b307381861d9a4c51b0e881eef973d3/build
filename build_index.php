@@ -21,7 +21,7 @@ function status_cf($url, $aaa = false) {
             }
         }
         $data = json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]];
-        return [$data["cookie"] ?? [], $data["proxy"]];
+        return [$data["cookie"], $data["proxy"]];
     } elseif ($aaa == "del") {
         file_put_contents($filename, trim(str_replace($host, "", $content)));
         return 1;
