@@ -356,13 +356,11 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
 
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
     start:
-    if (status_cf($url, "cek")) {
-        $data_cf = status_cf($url, "cek");
-        
-        if ($data_cf[0]) {
-            $alternativ_cookie[] = $data_cf[0] ?? [];
-            $proxy = $data_cf[1];
-        }
+    $data_cf = status_cf($url, "cek");
+    
+    if ($data_cf[1]) {
+        $alternativ_cookie[] = $data_cf[0] ?? [];
+        $proxy = $data_cf[1];
     }
 
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
