@@ -1,5 +1,26 @@
 <?php
 
+
+function ex_string($string, $delimiters, $array) {
+    $result = null;
+
+    foreach ($delimiters as $delimiter) {
+        $result = explode($delimiter, $string);
+        if (count($result) > 1) {
+            break;
+        }
+    }
+
+    if ($result !== null && count($result) > 1) {
+        return $result[$array];
+    } else {
+        return false;
+    }
+}
+
+
+$userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+
 function status_cf($url, $aaa = false) {
     ulang:
     $host = parse_url($url)["host"];
@@ -36,12 +57,13 @@ function status_cf($url, $aaa = false) {
 
 
 function cap_cf($input_url) {
+    global $userAgentArray;
     ulang:
     while (true) {
         status_cf($input_url);
         $apiKey = file_line("capmonster");
         $proxy = file_line("proxy");
-        $user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+        $user_agent = $userAgentArray;
         $link = parse_url($input_url);
         $html = base64_encode(curl($input_url)[1]);
         $parse = parse_url("http://".$proxy);
@@ -200,8 +222,14 @@ function dataimpulse($string) {
     foreach ($countryCodes as $code) {
         $newString = preg_replace($pattern, "__cr.$code:", $string);
         $parsedUrl = parse_url("http://".$newString);
+        
+        /*if ($code == "us" || $code == "id" || $code == $code == "eg" || $code == "in" || $code == "au") {
+            $angka = 10000 + 900;
+        } else {
+            $angka = 10000 + 100;
+        }*/
         if (isset($parsedUrl["port"])) {
-            $newString = str_replace($parsedUrl["port"], rand(10000, 10999), $newString);
+            $newString = str_replace($parsedUrl["port"], rand(10000, 15000), $newString);
         }
         $newStrings[] = $newString;
     }
@@ -257,12 +285,13 @@ function flashproxy($validasi = 0) {
             $parts = explode(':', $proxy_array[$i]);
             $proxy = trimed($parts[2].':' .$parts[3].'@'.$parts[0].':'. $parts[1]);
         }
-        
+        #$proxy = "4989a929c9e52adec966__cr.au,in,id,ca,eg,is,nz,sg,ch,us:a59c6051abce740e@gw.dataimpulse.com:10000";
         if (strpos($proxy, "dataimpulse") !== false) {
             $proxy = dataimpulse($proxy);
         }
-        #print($proxy.n);exit;
-        #$proxy = "Fq5ZBSd7SGNKRCc:oyrFia9uNs@140.233.206.119:5105";
+        
+        #$proxy = "4989a929c9e52adec966__cr.is:a59c6051abce740e@gw.dataimpulse.com:13871";
+        #print($proxy.n);
         $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
         #die(print_r($json));
         if (!$json->country || !$json->ip) {
