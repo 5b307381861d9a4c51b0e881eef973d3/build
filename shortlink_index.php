@@ -1,4 +1,7 @@
 <?php
+
+#die(print_r(parse_url("https://blackwoodacademy.org/ref.php?conf=aO%2FUxB%2F6NliFGneB34ZxNPdov0HRoGMDdGceB7j8uq89YMDM8Ou%2F0rlQxRADlCTmUpX26g%2FtP1xRYtEL8NFgLYUNWQNmQLQD0ZFXkn3cQOPkJgX6wjuzoFetctGemCae8fMWX39paw7muUw%2BkdVVJqOlTpb5BD2sp%2FkRE%2FXX%2B58NPnRlloIqrqmWjM6GJm106BH8bSuOda67g%2Fb8iEoVzn4DXdoHSxrtDu4QHuvtITin8Y66wtz%2BIUAWpt6uYtEo5Xl89a0ocuI0tr60tAz%2FLc3wlzeEkvOG9UdwSpz%2FBkc%3D")));
+
 #flashproxy();
 //$userAgentArray = getUserAgent();
 
@@ -1313,12 +1316,16 @@ function bypass_shortlinks($url, $separator = 0) {
             return "refresh";
         }
         
-        $url_parse =  $url0;
-        $urlx = ex_string($url0, ["ref.php?conf="], "0");
-        if ($urlx) {
-            $url1["url"] = $urlx;
-        } else {
-            parse_str($url_parse, $url1);
+        $url_parse =  ltrim(rtrim($url0));
+        parse_str($url_parse, $url1);
+        $host = parse_url($url_parse)["host"];
+        #die(print_r($url1));
+        #$urlx = ex_string($url0, ["ref.php?conf="], "0");
+        if (!$url1["url"]) {
+          
+            if ($host) {
+                $url1["url"] = "https://".$host."/";
+            }
         }
 
         #die(print_r($url1["url"]));
