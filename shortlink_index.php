@@ -7,7 +7,7 @@
 
 #$data_cf = status_cf($url, "cek");die(print_r(curl("https://blackwoodacademy.org/")));
 #die(print_r(base_short("https://blackwoodacademy.org/")));
-//die(print_r(bypass_shortlinks("https://btcut.io/")));
+#die(print_r(bypass_shortlinks("https://linx.cc/")));
 
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
@@ -368,7 +368,9 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
 
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
     if ($r[0][1]["http_code"] == 403) {
-        if (preg_match("#Just a moment...#is", $r[1])) {
+      
+        if (parse_url($url)["host"] == "blog.adlink.click") {
+          } elseif (preg_match("#Just a moment...#is", $r[1])) {
             cap_cf($url);
             goto start;
         }
