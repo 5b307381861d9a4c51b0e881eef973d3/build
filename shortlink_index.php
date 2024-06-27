@@ -369,10 +369,13 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
     if ($r[0][1]["http_code"] == 403) {
       
-        if (parse_url($url)["host"] == "blog.adlink.click") {
-          } elseif (preg_match("#Just a moment...#is", $r[1])) {
-            cap_cf($url);
-            goto start;
+        /*if (parse_url($url)["host"] == "blackwoodacademy.org") {
+          } else*/
+        if (preg_match("#Just a moment...#is", $r[1])) {
+            if (parse_url($url)["host"] == "blackwoodacademy.org") {
+                cap_cf($url);
+                goto start;
+            }
         }
     }
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
@@ -1341,9 +1344,6 @@ function bypass_shortlinks($url, $separator = 0) {
         $url_t = $url1["url"]."?overrideSession=".$url;
         kntl:
         $r = base_short($url_t, 0, 0, $url0, 0, $cookie, 0);
-        
-
-        $cookie[] = $r["cookie"];
         $url1 = $r["url"] ?: $r["url1"][0];
         
         if (strpos($url1, "http") === false) {
@@ -1352,6 +1352,7 @@ function bypass_shortlinks($url, $separator = 0) {
           goto ulang;
           r();
         }
+        $cookie[] = $r["cookie"];
         $knt[] = $url1;
         while(true) {
             $cookie[] = [];
@@ -1421,7 +1422,7 @@ function bypass_shortlinks($url, $separator = 0) {
                 goto ulang;
             }
             $cookie[] = $r["cookie"];
-            $final = urldecode($r["url0"] ? $r["url0"] : ( $r["url1"][1] ? $r["url1"][1] :  ($r["url1"][0] ? $r["url1"][0] : "")));
+            $final = urldecode($r["url0"] ?: $r["url1"][1] ?: $r["url1"][0]);
             $knt[] = $final;
             $find = array_merge([$r["url0"]] ?? [], $r["url1"] ?? []);
             
