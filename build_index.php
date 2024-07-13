@@ -20,6 +20,44 @@ function ex_string($string, $delimiters, $array) {
 
 
 $userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+function cap_cf($url) {
+    $expired = 0;
+    
+    while(true) {
+        status_cf($url);
+        $proxy = file_line("proxy");
+        $parse = parse_url("http://".$proxy);
+        $domain = parse_url($url)["host"];
+        $data = json_encode(["url" => "https://".$domain, "proxy" => "http://".$parse["host"].":".$parse["port"]]);
+        $r = curl("http://188.166.211.93:5000/get_cookies", ["content-type: application/json"], $data)[2];
+        print k."bypass cloudflare";
+        if ($r->error > 1) {
+            r();
+            print p.$r->description;
+            sleep(5);
+            r();
+            continue;
+        }
+        
+        $expired++;
+        if ($expired == 10) {
+            status_cf($url, "del");
+            print m."invalid bypass cloudflare";
+            return 0;
+        } elseif ($r->cf_clearance) {
+            new_save($domain, 0, [
+                "cookie" => ["cf_clearance" => $r->cf_clearance],
+                "user-agent" => $r->{"user-agent"},
+                "proxy" => $proxy
+            ]);
+            status_cf($url, "del");
+            $file = json_decode(file_get_contents("data.json"),1);
+            return ["cookie" => $file[$domain]["cookie"], "user-agent" => $file[$domain]["user-agent"], "proxy" => $proxy];
+        }
+        sleep(20);
+    }
+}
+
 
 function status_cf($url, $aaa = false) {
     ulang:
@@ -36,13 +74,13 @@ function status_cf($url, $aaa = false) {
         foreach ($array as $item) {
             if ($item == $host){
                 print p."sessions cloudflare sedang berlangsung";
-                sleep(5);
+                sleep(rand(5, 10));
                 r();
                 goto ulang;
             }
         }
         $data = json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]];
-        return [$data["cookie"], $data["proxy"]];
+        return [$data["cookie"], $data["user-agent"], $data["proxy"]];
     } elseif ($aaa == "del") {
         file_put_contents($filename, trim(str_replace($host, "", $content)));
         return 1;
@@ -56,7 +94,7 @@ function status_cf($url, $aaa = false) {
 }
 
 
-function cap_cf($input_url) {
+function cap_ctf($input_url) {
     global $userAgentArray;
     ulang:
     while (true) {
@@ -86,7 +124,7 @@ function cap_cf($input_url) {
             )
         ));
 
-        $r = curl($url_cap."createTask", $header, $data)[2];
+        $r = curl($url_cap."createTask", $header, $data)[2];#print_r($r);
         $taskId = $r->taskId;
         print p."get taskId";
         r();
@@ -140,71 +178,76 @@ function cap_cf($input_url) {
     }
 }
 
-function cal($apiKey, $pageUrl, $proxy) {
-    proxy:
-    //$proxy = flashproxy();
-    $proxy = "Fq5ZBSd7SGNKRCc:oyrFia9uNs@140.233.206.119:5105";
+function cap_cff($input_url) {
+    global $userAgentArray;
     ulang:
-    $data = json_encode([
-        "clientKey" => $apiKey,
-        "task" => [
-            "type" => 'AntiCloudflareTask',
-            "websiteURL" => $pageUrl,
-            "proxy" => $proxy
-        ]
-    ]);
-    
-    while(true) {
-       $r = curl("https://api.capsolver.com/createTask", 0, $data)[2]; print_r($data);print_r($r);
-       $taskId = $r->taskId;
-
-       if ($taskId) {
-          echo 'Created taskId: ' . $taskId . "\n";
-          break;
-       }
-    }
-    
-    $data = json_encode([
-        "clientKey" => $apiKey,
-        "taskId" => $taskId
-    ]);
     while (true) {
-        sleep(1);
-        $resp = curl("https://api.capsolver.com/getTaskResult", 0, $data)[2];
-        print_r($resp);
-        $status = $resp->status ?? '';
-        
-        if ($status == "ready") {
-            echo "Successfully solved\n";
-            $solution = $resp->solution;
+        status_cf($input_url);
+        $apiKey = file_line("capsolver");
+        $proxy = "http://".file_line("proxy");
+        $url_cap = "https://api.capsolver.com/";
+        $header = array("Content-Type: application/json");
+        $data = json_encode(array(
+            'clientKey' => $apiKey,
+            'task' => array(
+                'type' => 'AntiCloudflareTask',
+                'websiteURL' => $input_url,
+                'proxy' => $proxy
+            )
+        ));
+
+        $r = curl($url_cap."createTask", $header, $data)[2];print_r($r);
+        $taskId = $r->taskId;
+        print p."get taskId";
+        r();
+        $errorCode = str_replace("_", " ", $r->errorCode);
+        if ($r->errorCode == "ERROR KEY DOES NOT EXIST") {
+            print m.$errorCode.n;
+            file_line("capmonster", 1);
+            continue;
+        } elseif ($errorCode == "ERROR ZERO BALANCE") {
+            print m.$errorCode.n;
+            print "silakan isi saldo".n;
+            tx("enter to continue");
+            continue;
+        } elseif ($taskId) {
+            $data = json_encode(array(
+                'clientKey' => $apiKey,
+                'taskId' => $taskId
+            ));
             break;
         }
-        
-        if (strpos(json_encode($resp), "PROXY") !== FALSE) {
-            continue;
-            #goto proxy;
-        }
-        if ($resp->errorCode == "ERROR_CAPTCHA_SOLVE_FAILED" || $resp->errorCode == "ERROR_TYPE_NOT_SUPPORTED") {
-            echo "Failed to solve captcha\n";
+    }
+
+    while (true) {
+        $r = curl($url_cap."getTaskResult", $header, $data)[2];
+        $status = $r->status;
+        print_r($r);
+        if ($r->errorId) {
+            print m."invalid bypass cloudflare!";
+            r();
             goto ulang;
+        } elseif ($status == "ready") {
+            $cf_clearance = $r->solution->cf_clearance;
+            $h[] = "user-agent: ".$user_agent;
+            $h[] = "cookie: cf_clearance=".$cf_clearance.";";
+            $r = curl($input_url, $h, 0, 0, 0, 0, $proxy)[0][1]["http_code"];
+            
+            if ($r == 403) {
+                unset($h);
+                goto ulang;
+            }
+            new_save($link["host"], 0, [
+                "cookie" => ["cf_clearance" => $cf_clearance],
+                "proxy" => $proxy
+            ]);
+            status_cf($input_url, "del");
+            return ["cookie" => json_decode(file_get_contents("data.json"),1)[$link["host"]]["cookie"], "proxy" => $proxy];
         }
-        if ($status == "failed" || $resp->errorId) {
-            echo "Failed to solve\n";
-            continue;
-        }
+        print p.$status;
+        sleep(5);
+        r();
     }
-    $h[] = "user-agent: ".$solution->headers->{"user-agent"};
-    $h[] = "cookie: cf_clearance=".$solution->cookies->cf_clearance.";";
-    $r = curl($pageUrl, $h, 0, 0, 0, 0, $proxy)[0][1]["http_code"];
-    if ($r == 403) {
-        goto ulang;
-    }
-    new_save(explode("/", $pageUrl)[2], 0, [
-        "cookie" => ["cf_clearance" => $solution->cookies->cf_clearance],
-        "useragent" => $solution->headers->{"user-agent"},
-        "proxy" => $proxy
-    ]); print_r($h);
-    return 1;
 }
 
 
