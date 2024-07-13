@@ -1,5 +1,6 @@
 <?php
 
+
 #die(print_r(parse_url("https://blackwoodacademy.org/ref.php?conf=aO%2FUxB%2F6NliFGneB34ZxNPdov0HRoGMDdGceB7j8uq89YMDM8Ou%2F0rlQxRADlCTmUpX26g%2FtP1xRYtEL8NFgLYUNWQNmQLQD0ZFXkn3cQOPkJgX6wjuzoFetctGemCae8fMWX39paw7muUw%2BkdVVJqOlTpb5BD2sp%2FkRE%2FXX%2B58NPnRlloIqrqmWjM6GJm106BH8bSuOda67g%2Fb8iEoVzn4DXdoHSxrtDu4QHuvtITin8Y66wtz%2BIUAWpt6uYtEo5Xl89a0ocuI0tr60tAz%2FLc3wlzeEkvOG9UdwSpz%2FBkc%3D")));
 
 #flashproxy();
@@ -8,7 +9,7 @@
 #$data_cf = status_cf($url, "cek");die(print_r(curl("https://blackwoodacademy.org/")));
 #die(print_r(base_short("https://blackwoodacademy.org/")));
 #die(print_r(bypass_shortlinks("https://linx.cc/")));
-
+#die(print_r(cap_cf("https://blackwoodacademy.org/")));
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
         $inc = "/clkclk.";
@@ -339,7 +340,7 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
     //$user_agent = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
     $user_agent = $userAgentArray;
     }
-    $headers[] = "user-agent: ".$user_agent;#.$agent;
+    $headers[] = "user-agent: ".json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]]["user-agent"] ?: $user_agent;#.$agent;
     if ($xml){
         $headers[] = "X-Requested-With: XMLHttpRequest";
     }
@@ -360,10 +361,9 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
     start:
     $data_cf = status_cf($url, "cek");
-    
-    if ($data_cf[1]) {
-        $alternativ_cookie[] = $data_cf[0] ?? [];
-        $proxy = $data_cf[1];
+    if ($data_cf[2]) {
+        $alternativ_cookie[] = $data_cf[0] ?: [];
+        $proxy = $data_cf[2];
     }
 
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
