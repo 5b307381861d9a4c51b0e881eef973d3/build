@@ -372,10 +372,10 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
         /*if (parse_url($url)["host"] == "blackwoodacademy.org") {
           } else*/
         if (preg_match("#Just a moment...#is", $r[1])) {
-            if (parse_url($url)["host"] == "blackwoodacademy.org") {
+            //if (parse_url($url)["host"] == "blackwoodacademy.org") {
                 cap_cf($url);
                 goto start;
-            }
+            //}
         }
     }
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
