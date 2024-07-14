@@ -21,7 +21,10 @@ function ex_string($string, $delimiters, $array) {
 
 $userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 function cap_cf($url) {
-    $expired = 0;
+
+    if (302 > curl($url)[0][1]["http_code"]) {
+        return 0;
+    }
     
     while(true) {
         status_cf($url);
@@ -37,13 +40,6 @@ function cap_cf($url) {
             sleep(5);
             r();
             continue;
-        }
-        
-        $expired++;
-        if ($expired == 10) {
-            status_cf($url, "del");
-            print m."invalid bypass cloudflare";
-            return 0;
         } elseif ($r->cf_clearance) {
             new_save($domain, 0, [
                 "cookie" => ["cf_clearance" => $r->cf_clearance],
