@@ -20,7 +20,7 @@ function ex_string($string, $delimiters, $array) {
 
 
 $userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
-function cap_cf($url) {
+function cap_cdf($url) {
 
     if (302 > curl($url)[0][1]["http_code"]) {
         return 0;
@@ -90,8 +90,10 @@ function status_cf($url, $aaa = false) {
 }
 
 
-function cap_ctf($input_url) {
+function cap_cf($input_url) {
     global $userAgentArray;
+    $cookie_old = json_decode(file_get_contents("data.json"),1)[parse_url($input_url)["host"]]["cookie"];
+    $expired = 0;
     ulang:
     while (true) {
         status_cf($input_url);
@@ -99,6 +101,11 @@ function cap_ctf($input_url) {
         $proxy = file_line("proxy");
         $user_agent = $userAgentArray;
         $link = parse_url($input_url);
+
+        if ($cookie_old !== json_decode(file_get_contents("data.json"),1)[$link["host"]]["cookie"]) {
+            status_cf($input_url, "del");
+            return 1;
+        }
         $html = base64_encode(curl($input_url)[1]);
         $parse = parse_url("http://".$proxy);
         $url_cap = "https://api.capmonster.cloud/";
@@ -144,29 +151,34 @@ function cap_ctf($input_url) {
     }
 
     while (true) {
+      
+        if ($cookie_old !== json_decode(file_get_contents("data.json"),1)[$link["host"]]["cookie"]) {
+            status_cf($input_url, "del");
+            return 1;
+        }
         $r = curl($url_cap."getTaskResult", $header, $data)[2];
         $status = $r->status;
         #print_r($r);
         if ($r->errorId) {
+            $expired++;
             print m."invalid bypass cloudflare!";
             r();
+            
+            if ($expired == 2) {
+                status_cf($input_url, "del");
+                return 1;
+            }
             goto ulang;
         } elseif ($status == "ready") {
             $cf_clearance = $r->solution->cf_clearance;
-            $h[] = "user-agent: ".$user_agent;
-            $h[] = "cookie: cf_clearance=".$cf_clearance.";";
-            $r = curl($input_url, $h, 0, 0, 0, 0, $proxy)[0][1]["http_code"];
-            
-            if ($r == 403) {
-                unset($h);
-                goto ulang;
-            }
             new_save($link["host"], 0, [
                 "cookie" => ["cf_clearance" => $cf_clearance],
+                "user-agent" => $user_agent,
                 "proxy" => $proxy
             ]);
             status_cf($input_url, "del");
-            return ["cookie" => json_decode(file_get_contents("data.json"),1)[$link["host"]]["cookie"], "proxy" => $proxy];
+            print p.$status;
+            return 1;
         }
         print p.$status;
         sleep(5);
