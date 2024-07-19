@@ -359,7 +359,9 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
 
 
 function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_cookie=0, $boundary=0, $proxy=0) {
+    $expired = 0;
     start:
+    $expired++;
     $data_cf = status_cf($url, "cek");
     if ($data_cf[2]) {
         $alternativ_cookie[] = $data_cf[0] ?: [];
@@ -369,13 +371,12 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
     $r = curl($url,h_short($xml, $referer, $agent, $boundary, $url), $data,false,false, $alternativ_cookie, $proxy);
     if ($r[0][1]["http_code"] == 403) {
       
-        /*if (parse_url($url)["host"] == "blackwoodacademy.org") {
-          } else*/
         if (preg_match("#Just a moment...#is", $r[1])) {
-            //if (parse_url($url)["host"] == "blackwoodacademy.org") {
+            
+            if ($expired == 3) {
                 cap_cf($url);
                 goto start;
-            //}
+            }
         }
     }
     preg_match('#(reCAPTCHA_site_key":"|data-sitekey=")(.*?)(")#is', $r[1], $recaptchav2);
@@ -537,12 +538,6 @@ function bypass_shortlinks($url, $separator = 0) {
         }
         if ($method_proxy == "proxyscrape" || $method_proxy == "flashproxy") {
             $proxy = mode_proxy($id);
-            #die($proxy);
-            
-            /*if ("chainfo.xyz" == $host) {
-                $proxyv = $proxy;
-                $proxy = 0;
-            }*/
         }
     }
     
@@ -720,7 +715,7 @@ function bypass_shortlinks($url, $separator = 0) {
         $r = base_short($run["links"], 0, 0, $referer, $cloud, 0, 0, $proxy);
         $cookie[] = $r["cookie"];
         $cookie[] = ["ab" => 2];
-        $t = $r["token_csrf"];;
+        $t = $r["token_csrf"];
         #die(print_r($r));
         #print_r($r);
         if (preg_match("#(verify/[?]/)#is", $r["url"])) {
