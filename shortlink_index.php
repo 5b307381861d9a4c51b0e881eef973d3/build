@@ -373,7 +373,7 @@ function base_short($url, $xml=0, $data=0, $referer=0, $agent=0, $alternativ_coo
       
         if (preg_match("#Just a moment...#is", $r[1])) {
             
-            if ($expired == 3) {
+            if ($expired <= 2) {
                 cap_cf($url);
                 goto start;
             }
