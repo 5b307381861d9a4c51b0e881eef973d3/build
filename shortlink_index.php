@@ -722,6 +722,8 @@ function bypass_shortlinks($url, $separator = 0) {
                 $alt_reff = "writeprofit.org";
             } elseif (preg_match("#(161989.xyz)#is", $host)) {
                 $alt_reff = "infonerd.org";
+            } elseif (preg_match("#(131989.xyz)#is", $host)) {
+                $alt_reff = "eblog.pro";
             }
             if ($alt_reff) {
                 $referer = "https://".$alt_reff."?safelink_redirect=".base64_encode(json_encode(["second_safelink_url" => "", "safelink" => $url]));
