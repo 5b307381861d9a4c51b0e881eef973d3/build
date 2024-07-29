@@ -19,7 +19,7 @@ function ex_string($string, $delimiters, $array) {
 }
 
 
-$userAgentArray = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36";
+$userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 function cap_cdf($url) {
 
     if (302 > curl($url)[0][1]["http_code"]) {
