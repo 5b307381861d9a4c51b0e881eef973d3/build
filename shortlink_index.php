@@ -8,8 +8,8 @@
 
 #$data_cf = status_cf($url, "cek");die(print_r(curl("https://blackwoodacademy.org/")));
 #die(print_r(base_short("https://blackwoodacademy.org/")));
-#die(print_r(bypass_shortlinks("https://linx.cc/")));
-#die(print_r(cap_cf("https://blackwoodacademy.org/")));
+#die(print_r(bypass_shortlinks("https://120898.xyz/zc49jdT6aJvm4ax")));
+#die(print_r(cap_cf("https://infotrends.co/")));
 function build($url = 0) {
     if (preg_match("#(clk.st|clks.pro)#is", $url)) {
         $inc = "/clkclk.";
@@ -316,8 +316,7 @@ function visit_short($r, $site_url = 0, $data_token = 0) {
 
 
 function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
-    global $userAgentArray;
-    
+    global $userAgentArray, $chromeUA;
     if ($xml){
       $headers[] = "Accept: */*";
     } else {
@@ -332,23 +331,24 @@ function h_short($xml = 0, $referer = 0, $agent =0, $boundary = 0, $url = 0){
     $headers[] = "Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7";
     $headers[] = "Proxy-Connection: close";
     ///$headers[] = 'CF-Connecting-IP: 127.0.0.1, 68.180.194.242';
-    if ($agent){
+   /* if ($agent){
     #$agent = ' (compatible; Google-Youtube-Links)';
     $agent = " (compatible; Googlebot/2.1; +https://www.google.com/bot.html)";
     } else {
     //$user_agent = user_agent();
     //$user_agent = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
+    
+    }*/
+    
     $user_agent = $userAgentArray;
-    }
-    $headers[] = "user-agent: ".json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]]["user-agent"] ?: $user_agent;#.$agent;
+    $headers[] = "user-agent: ".(json_decode(file_get_contents("data.json"),1)[parse_url($url)["host"]]["user-agent"] ?: $chromeUA ?: $user_agent);
     if ($xml){
         $headers[] = "X-Requested-With: XMLHttpRequest";
     }
     if ($referer){
         $headers[] = "referer: ".$referer;
     }
-    //$headers[] = "$cookie[] =".$plus["cookie"];
-   
+    //print_r($headers);
     return $headers;
 }
 
@@ -511,7 +511,8 @@ function executeNode($r, $stripslashes = 0) {
 }
 
 function bypass_shortlinks($url, $separator = 0) {
-    global $only_sl, $request_proxy, $method_proxy, $redirect_url;
+    global $only_sl, $request_proxy, $method_proxy, $redirect_url, $chromeUA;
+    $chromeUA = chromeUA();
     $url = str_replace("http:", "https:", $url);
     $url_ori = $url;
     $coundown = 15;
