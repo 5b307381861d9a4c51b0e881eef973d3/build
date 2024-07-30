@@ -1,6 +1,55 @@
 <?php
 
 
+$userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+
+function chromeUA() {
+    $model = [
+        '9' => [
+            'SM-G960F', 'SM-G965F', 'SM-N960F', 'SM-A505F', 'SM-A705F', 'SM-J610F', 'SM-J810F', 'SM-T830',
+            'M2010J19CG', 'M2007J20CG', 'M2010J19SI', 'M2006C3LG', 'M1908C3IC', 'M1906G7I',
+            'M1906G9I', 'CPH1969', 'CPH1983', 'CPH1979', 'CPH1851'
+        ],
+        '10' => [
+            'SM-G970F', 'SM-G973F', 'SM-G975F', 'SM-N970F', 'SM-N975F', 'SM-A515F', 'SM-A715F', 'SM-F700F',
+            'SM-T860', 'M2007J20CG', 'M2007J3SY', 'M2004J19C', 'M2007J17C', 'M2003J15SC', 'M2004J19C',
+            'M2007J3SY', 'M2006C3LC', 'CPH2023', 'CPH1989', 'CPH1983', 'CPH2035'
+        ],
+        '11' => [
+            'SM-G980F', 'SM-G985F', 'SM-G988B', 'SM-N980F', 'SM-N985F', 'SM-A525F', 'SM-A725F', 'SM-T875',
+            'SM-F916B', 'M2012K11AG', '', 'M2011K2C', 'M2012K11G', 'M2010J19CG', 'M2007J3SY',
+            'M2010J19SI', 'M2011K9G', 'CPH2179', 'CPH2095', 'CPH2109', 'CPH2083'
+        ],
+        '12' => [
+            'SM-G991B', 'SM-G996B', 'SM-G998B', 'SM-N986B', 'SM-A528B', 'SM-A725F', 'SM-T735', 'SM-F926B',
+            'SM-F711B', 'CPH2359', 'CPH2375', 'CPH2381', 'CPH2431'
+        ],
+        '13' => [
+            'SM-S901B', 'SM-S906B', 'SM-S908B', 'SM-F936B', 'SM-F721B', 'SM-A536B', 'SM-A736B', 'SM-X700',
+            'SM-X900', 'CPH2451', 'CPH2471', 'CPH2483', 'CPH2491'
+        ],
+        '14' => [
+            'SM-S911B', 'SM-S916B', 'SM-S918B', 'SM-F946B', 'SM-F731B', 'SM-A546B', 'SM-X710', 'SM-X910',
+            'CPH2511', 'CPH2523', 'CPH2535', 'CPH2541'
+        ]
+    ];
+
+    $windowsModel = [
+        "Windows NT 4.0",
+        "Windows XP",
+        "Windows Vista"
+    ];
+
+    $androidVersion = rand(9, 14);
+    $models = $model[$androidVersion];
+    $deviceModel = $models[array_rand($models)];
+    $chromeVersion = rand(90, 127);
+    $deviceTypes = ["Desktop", "Mobile"];
+    $randomDeviceType = rand(0, 1);
+
+    return "Mozilla/5.0 (".[$windowsModel[rand(0, 2)]."; Win64; x64", "Linux; Android ".$androidVersion."; ".$deviceModel][$randomDeviceType].";) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/".$chromeVersion.".0.0.0 ".$deviceTypes[$randomDeviceType]." Safari/537.36";
+}
+
 function ex_string($string, $delimiters, $array) {
     $result = null;
 
@@ -19,7 +68,7 @@ function ex_string($string, $delimiters, $array) {
 }
 
 
-$userAgentArray = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+
 function cap_cdf($url) {
 
     if (302 > curl($url)[0][1]["http_code"]) {
@@ -99,7 +148,7 @@ function cap_cf($input_url) {
         status_cf($input_url);
         $apiKey = file_line("capmonster");
         $proxy = file_line("proxy");
-        $user_agent = $userAgentArray;
+        $user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";;
         $link = parse_url($input_url);
 
         if ($cookie_old !== json_decode(file_get_contents("data.json"),1)[$link["host"]]["cookie"]) {
@@ -187,7 +236,6 @@ function cap_cf($input_url) {
 }
 
 function cap_cff($input_url) {
-    global $userAgentArray;
     ulang:
     while (true) {
         status_cf($input_url);
@@ -383,29 +431,6 @@ function flashproxy($validasi = 0) {
         }
     }
 }
-
-
-function getUserAgent()
-{
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-A205U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-A102U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-G960U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; SM-N960U) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; LM-X420) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; LM-Q720) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Linux; Android 14; LM-Q710(FGN)) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36";
-	$userAgentArray[] = "Mozilla/5.0 (Android 14; Seluler; rv:68.0) Gecko/68.0 Firefox/125.0";
-	$userAgentArray[] = "Mozilla/5.0 (Android 14; Seluler; LG-M255; rv:125.0) Gecko/125.0 Firefox/125.0";
-	
-	$getArrayKey = array_rand($userAgentArray);
-	return $userAgentArray[$getArrayKey];
-
-}
-
-
-
-
 
 
 
