@@ -392,7 +392,7 @@ function flashproxy($validasi = 0) {
         #$proxy = "4989a929c9e52adec966__cr.is:a59c6051abce740e@gw.dataimpulse.com:13871";
         #print($proxy.n);
         $json = curl("https://api.ipapi.is", 0, 0, 0, 0, 0, $proxy)[2];
-
+#print_r($json);
         if (!$json->location->country || !$json->ip) {
             print m."proxy mati";
             r();
@@ -409,13 +409,14 @@ function flashproxy($validasi = 0) {
                 'is_proxy' => 'Koneksi menggunakan proxy',
                 'is_vpn' => 'Koneksi menggunakan VPN',
                 'is_tor' => 'Koneksi menggunakan jaringan Tor',
-                'is_abuser' => 'Koneksi terdeteksi sebagai pelanggar'
+                'is_abuser' => 'Koneksi terdeteksi sebagai pelanggar',
+                'is_datacenter' => 'Koneksi mencurigakan'
             ];
             $isSuspicious = false;
             
             foreach ($suspiciousCriteria as $criteria =>   $message) {
               
-                if (!empty($connectionData->$criteria)) {
+                if (!empty($json->$criteria)) {
                   print m.$message;
                   sleep(1);
                   r();
