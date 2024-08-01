@@ -708,7 +708,7 @@ function bypass_shortlinks($url, $separator = 0) {
         } elseif (preg_match("#(141989.xyz)#is", $host)) {
             $referer = "https://coingraph.us/";
         } elseif (preg_match("#(121989.xyz#is", $host)) {
-            $referer = "https://horoscop.info/";
+            $referer = "https://healthytip.eu";
         } elseif (preg_match("#(131989.xyz#is", $host)) {
             $referer = "https://eblog.pro/";
         } elseif (preg_match("#(546512.xyz|489651.xyz#is", $host)) {
