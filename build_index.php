@@ -391,9 +391,9 @@ function flashproxy($validasi = 0) {
         
         #$proxy = "4989a929c9e52adec966__cr.is:a59c6051abce740e@gw.dataimpulse.com:13871";
         #print($proxy.n);
-        $json = curl("https://ipinfo.io/widget/", 0, 0, 0, 0, 0, $proxy)[2];
-        #die(print_r($json));
-        if (!$json->country || !$json->ip) {
+        $json = curl("https://api.ipapi.is", 0, 0, 0, 0, 0, $proxy)[2];
+
+        if (!$json->location->country || !$json->ip) {
             print m."proxy mati";
             r();
             #continue;
@@ -401,23 +401,36 @@ function flashproxy($validasi = 0) {
         }
         
         if (validateIP($json->ip)) {
-            print p."sedang mendeteksi proxy/VPN or Tor";
+            print p."sedang mendeteksi";
             sleep(1);
             r();
 
-            $flags = ['vpn', 'proxy', 'tor', 'relay', 'hosting'];
-            foreach ($flags as $flag) {
+            $suspiciousCriteria = [
+                'is_proxy' => 'Koneksi menggunakan proxy',
+                'is_vpn' => 'Koneksi menggunakan VPN',
+                'is_tor' => 'Koneksi menggunakan jaringan Tor',
+                'is_abuser' => 'Koneksi terdeteksi sebagai pelanggar'
+            ];
+            $isSuspicious = false;
+            
+            foreach ($suspiciousCriteria as $criteria =>   $message) {
               
-                if (!empty($json->privacy->$flag)) {
-                    Print m."terdeteksi ".$flag;
-                    r();
-                    goto exe;
+                if (!empty($connectionData->$criteria)) {
+                  print m.$message;
+                  sleep(1);
+                  r();
+                  $isSuspicious = true;
                 }
             }
+        
+            if ($isSuspicious) {
+                goto exe;
+            }
+            
             print p."proxy siap digunakan";
             r();
            
-            if (!$json->country) {
+            if (!$json->location->country) {
                 print m."proxy mati";
                 r();
                 #continue;
@@ -425,7 +438,7 @@ function flashproxy($validasi = 0) {
             }
             
             if (defined('bypassed')) {
-                print k."country: ".$json->country." | ip: ".$json->ip.n;
+                print k."country: ".$json->location->country." | ip: ".$json->ip.n;
             }
             return $proxy;
         }
